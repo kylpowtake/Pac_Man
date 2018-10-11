@@ -1,79 +1,64 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
+public abstract class Game implements Runnable,Sujet{
 
-
-
-
-public abstract class  Game implements Runnable, Subject  {
-	
-	protected int compteur_Nombre_Tours;
-	protected int nombre_Tours_Maximum;
-	protected Thread threadJeu;
-	public boolean isRunning;
-	
-	private List<Observer> observers = new ArrayList<>();
-
-	
-	public void launch(){
-		threadJeu = new Thread(this);
-		threadJeu.start();
-		isRunning = true;
-	}
+//attributs 
+	protected int NbTours;
+	protected int NbToursMax = 7;
+    Thread thread; 
+	boolean isRunning;
+	private List<Observateur> observateurs = new ArrayList<>();
 	
 	
+//methodes concrètes
 	public void init(){
-		compteur_Nombre_Tours = 0;
+		NbTours = 0;
 		initializeGame();
+		notifierObservateur();
 	}
-	
 	
 	public void step(){
-		if(compteur_Nombre_Tours < nombre_Tours_Maximum){
-			takeTurn();
-			try {
-				Thread.sleep((long)500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		} else {
-			gameOver();
+		if(NbTours < NbToursMax){takeTurn();}
+		else{gameOver();}
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
-	
 	
 	public void run(){
-		isRunning = true;
-		while(compteur_Nombre_Tours < nombre_Tours_Maximum && isRunning){
+		while(isRunning == true && NbTours < NbToursMax){
 			step();
+			notifierObservateur();
 		}
-		gameOver();
+		stop();
+		System.out.println("End Game");
+		notifierObservateur();
 	}
 	
+	public void stop(){isRunning = false;}
 	
-	public void pause(){
-		isRunning = false;
-	}
+    public void launch(){ 
+        thread = new Thread(this);    
+        thread.start();    //lance la methode run avec l'implementation de Runnable
+        isRunning = true;
+    }
 	
-	public abstract void gameOver();
+    
+ //méthodes abstraites
+	abstract void gameOver();
+	abstract void takeTurn();
+	abstract void initializeGame();
 	
-	public abstract void  initializeGame();
-	
-	public abstract void takeTurn();
-	
-	public void addObserver(Observer observer){
-		observers.add(observer);
-	}
-	
-	public void removeObserver(Observer observer){
-		observers.remove(observer);
-	}
-	
-	public void notifyObserver(){
-		for(int i = 0; i<observers.size(); i++){
-			observers.get(i).update();
+
+//observateur     
+	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
+	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
+	public void notifierObservateur() {
+		for(int i = 0; i< observateurs.size(); i++) {
+			observateurs.get(i).actualiser();
 		}
 	}
-	
 }

@@ -1,22 +1,18 @@
 
-
-
-
 public class SimpleGame extends Game{
-
-	public void initializeGame() {
-		System.out.print("Jeu initialisé \n");
-		this.nombre_Tours_Maximum = 10; 
-	}
-
-	public void takeTurn() {
-		System.out.print("Nouveau tour lancé \n");
-		compteur_Nombre_Tours++;
-		notifyObserver();
+	
+	void gameOver(){
+		System.out.print("You Died");
 	}
 	
-	public void gameOver() {
-		System.out.print("Jeu fini \n");
+	void takeTurn(){
+		System.out.println("New turn");
+		NbTours++;
 	}
-
+	
+	void initializeGame(){
+		System.out.println("Init " + NbToursMax + " tours");
+		
+		
+	}
 }

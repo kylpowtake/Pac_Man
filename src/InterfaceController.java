@@ -1,9 +1,8 @@
 
 public interface InterfaceController {
-
-	public void step();
-	public void pause();
 	public void start();
-	public void restart();
-	
+    public void restart();
+    public void step();
+    public void pause();
+    
 }
