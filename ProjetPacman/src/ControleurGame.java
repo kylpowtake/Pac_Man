@@ -2,9 +2,11 @@
 public class ControleurGame implements InterfaceController {
 
 	public Game game;
+	private ViewCommande view;
 	
 	public ControleurGame(Game game){
 		this.game = game;
+		view = new ViewCommande(game,this);
 	}
 	
 	@Override
@@ -21,6 +23,7 @@ public class ControleurGame implements InterfaceController {
 	@Override
 	public void start() {
 		this.game.run();
+		
 	}
 
 	@Override

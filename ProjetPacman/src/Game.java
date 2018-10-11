@@ -47,7 +47,9 @@ public abstract class  Game implements Runnable, Subject  {
 		isRunning = true;
 		while(compteur_Nombre_Tours < nombre_Tours_Maximum && isRunning){
 			step();
+			notifyObserver();
 		}
+		
 		gameOver();
 	}
 	
