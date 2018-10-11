@@ -27,6 +27,11 @@ public class View implements Observateur{
 	JLabel Label_2;
 	JLabel Label_3;
 	
+	public JButton Step;
+	public JButton Restart;
+	public JButton Run;
+	public JButton Pause;
+	
 	
 	
 //méthodes
@@ -65,44 +70,74 @@ public class View implements Observateur{
 		
 		
 		
-		//restart------------------------------------------
 		Icon icon_restart = new ImageIcon("img/icon_restart.png");
-		final JButton Restart = new JButton(icon_restart);
+		Restart = new JButton(icon_restart);
+		Icon icon_run = new ImageIcon("img/icon_run.png");
+		Run = new JButton(icon_run);
+		Icon icon_step = new ImageIcon("img/icon_step.png");
+		Step = new JButton(icon_step);
+		Icon icon_pause = new ImageIcon("img/icon_pause.png");
+		Pause = new JButton(icon_pause);
+		
+		
+		Run.setEnabled(false);
+		Pause.setEnabled(false);
+		Step.setEnabled(false);
+		
+		
+		
+		
+		//restart------------------------------------------
 		
 		Restart.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.restart();
 		    	Restart.setEnabled(false);
+		    	Run.setEnabled(true);
+		    	Step.setEnabled(true);
 			}
 		});
+		
 		//run------------------------------------------
-		Icon icon_run = new ImageIcon("img/icon_run.png");
-		JButton Run = new JButton(icon_run);
 		
 		Run.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.start();
-		    	Restart.setEnabled(true);
+		    	Restart.setEnabled(false);
+		    	Pause.setEnabled(true);
+		    	Step.setEnabled(false);
 			}
 		});
+		
 		//step------------------------------------------
-		Icon icon_step = new ImageIcon("img/icon_step.png");
-		JButton Step = new JButton(icon_step);
+
 		
 		Step.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.step();
+		    	Restart.setEnabled(true);
+		    	Run.setEnabled(true);
+		    	Pause.setEnabled(false);
 			}
 		});
+		
 		//pause------------------------------------------
-		Icon icon_pause = new ImageIcon("img/icon_pause.png");
-		JButton Pause = new JButton(icon_pause);
+
 		
 		Pause.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.pause();
+		    	Restart.setEnabled(true);
+		    	Step.setEnabled(true);
+		    	Pause.setEnabled(false);
 			}
 		});
+		
+		
+		
+		
+		
+		
 		
 		JLabel Label_1 = new JLabel("Number of turns per second");
 		Label_1.setHorizontalAlignment(JLabel.CENTER);
