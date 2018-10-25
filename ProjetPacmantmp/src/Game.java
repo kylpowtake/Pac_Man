@@ -8,6 +8,7 @@ public abstract class Game implements Runnable,Sujet{
 	protected int NbToursMax = 7;
     Thread thread; 
 	boolean isRunning;
+	long nombre_de_tours_par_secondes = 2;
 	private List<Observateur> observateurs = new ArrayList<>();
 	
 	
@@ -19,12 +20,15 @@ public abstract class Game implements Runnable,Sujet{
 	}
 	
 	public void step(){
-		if(NbTours < NbToursMax){takeTurn();notifierObservateur();}
-		else{gameOver();notifierObservateur();}
+		if(NbTours < NbToursMax){takeTurn();}
+		else{gameOver();}
 		try {
-			Thread.sleep(500);
+			Thread.sleep(1000/this.nombre_de_tours_par_secondes);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+		if(this.NbTours == this.NbToursMax){
+			gameOver();
 		}
 	}
 	
@@ -35,10 +39,8 @@ public abstract class Game implements Runnable,Sujet{
 		}
 		stop();
 		if(NbTours >= NbToursMax){
-			
 			System.out.println("fin du jeu");
 		}
-		notifierObservateur();
 	}
 	
 	public void stop(){isRunning = false;}

@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 
 public class View implements Observateur{
@@ -32,9 +35,10 @@ public class View implements Observateur{
 	public JButton Run;
 	public JButton Pause;
 	
+	public JPanel jPanelMaze;
+	public Maze maze;
 	
-	
-//méthodes
+    //méthodes
 	public View(InterfaceController controller,Game game) {	
 		this.game = game;
 		this.controller = controller;
@@ -46,11 +50,25 @@ public class View implements Observateur{
 	public void actualiser() {
 		this.Label_2.setText("Turn : " + this.game.NbTours);
 		this.Label_3.setText("Turn : " + this.game.NbTours);
+		if(this.game.NbTours >= this.game.NbToursMax){
+			this.Restart.setEnabled(true);
+			this.Pause.setEnabled(false);
+			this.Step.setEnabled(false);
+			this.Run.setEnabled(false);
+		}
 	}
 	
 	
 	
 	public void createUserFrame() {
+		
+		try {
+			maze = new Maze("layouts/bigCorners.lay");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		jPanelMaze = new PanelPacmanGame(maze);
+		
 		
 		
 		Commandes = new JFrame("Commandes");
@@ -66,8 +84,9 @@ public class View implements Observateur{
 		JPanel controlPanelHaut = new JPanel(new GridLayout(1, 4));
 		JPanel controlPanelBas = new JPanel(new GridLayout(1, 2));
 		JPanel controlPanelSlide = new JPanel(new GridLayout(2, 1));
-		JPanel controlPanelTurn = new JPanel(new GridLayout(1, 1));
+		JPanel controlPanelTurn = new JPanel(new GridLayout());
 		
+		JPanel jeuPanel = new JPanel(new BorderLayout(2,1));
 		
 		
 		Icon icon_restart = new ImageIcon("img/icon_restart.png");
@@ -103,6 +122,7 @@ public class View implements Observateur{
 		Run.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.start();
+		    	Run.setEnabled(false);
 		    	Restart.setEnabled(false);
 		    	Pause.setEnabled(true);
 		    	Step.setEnabled(false);
@@ -116,7 +136,6 @@ public class View implements Observateur{
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.step();
 		    	Restart.setEnabled(true);
-		    	Run.setEnabled(true);
 		    	Pause.setEnabled(false);
 			}
 		});
@@ -153,7 +172,17 @@ public class View implements Observateur{
 	    slide.setMinorTickSpacing(1);
 	    slide.setMajorTickSpacing(1);
 	    
-	    
+		slide.addChangeListener(new ChangeListener(){
+			
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				JSlider source = (JSlider) event.getSource();
+				game.nombre_de_tours_par_secondes = source.getValue();
+			}
+			
+		});	  
+		
+		
 	    
 	    Label_2 = new JLabel("Turn : 8");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
@@ -186,7 +215,11 @@ public class View implements Observateur{
 		Commandes.add(controlPanelCommande);
 		Commandes.setVisible(true);
 		
-		Jeu.add(Label_3);
+		
+		jeuPanel.add(Label_3,BorderLayout.PAGE_START);
+		jeuPanel.add(jPanelMaze,BorderLayout.CENTER);
+		
+		Jeu.add(jeuPanel);
 		Jeu.setVisible(true);
 
 	}
