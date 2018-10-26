@@ -15,6 +15,8 @@ public abstract class Game implements Runnable,Sujet{
 //methodes concrètes
 	public void init(){
 		NbTours = 0;
+		notifierObservateur();
+
 		initializeGame();
 		notifierObservateur();
 	}
