@@ -1,3 +1,6 @@
+import java.io.File;
+
+
 
 public class Main {
 	
@@ -15,9 +18,15 @@ public class Main {
 	  System.out.println(i);
 	}
 	*/
-		
-		SimpleGame game = new SimpleGame();
-		ControleurGame controleur = new ControleurGame(game);
+
+		try {
+			Maze laby = new Maze("layouts/testClassic.lay");
+			PacmanGame game = new PacmanGame(laby);
+			ControleurGame controleur = new ControleurGame(game);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	/*	
 		game.initializeGame();
 		game.launch();	

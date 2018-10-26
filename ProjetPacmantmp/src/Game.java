@@ -21,7 +21,6 @@ public abstract class Game implements Runnable,Sujet{
 	public void init(){
 		NbTours = 0;
 		initializeGame();
-		notifierObservateur();
 	}
 	
 	public void step(){
@@ -40,7 +39,6 @@ public abstract class Game implements Runnable,Sujet{
 	public void run(){
 		while(isRunning == true && NbTours < NbToursMax){
 			step();
-			notifierObservateur();
 		}
 		stop();
 		if(NbTours >= NbToursMax){
@@ -66,9 +64,9 @@ public abstract class Game implements Runnable,Sujet{
 //observateur     
 	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
 	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
-	public void notifierObservateur() {
+	public void notifierObservateur(boolean testBool) {
 		for(int i = 0; i< observateurs.size(); i++) {
-			observateurs.get(i).actualiser();
+			observateurs.get(i).actualiser(testBool);
 		}
 	}
 }

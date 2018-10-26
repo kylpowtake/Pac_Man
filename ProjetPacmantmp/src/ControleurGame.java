@@ -1,10 +1,10 @@
 
 public class ControleurGame implements InterfaceController{
 	
-	private Game game;
+	private PacmanGame game;
 	private View view;
 	
-	public ControleurGame(Game game) { 	
+	public ControleurGame(PacmanGame game) { 	
     	this.game = game; 	
         view = new View(this,game);
     }

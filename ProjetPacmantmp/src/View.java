@@ -23,7 +23,7 @@ public class View implements Observateur{
 	
 	
 	//attributs 
-	Game game;
+	PacmanGame game;
 	InterfaceController controller;
 	private String labyrinthe;
 
@@ -33,7 +33,6 @@ public class View implements Observateur{
 	
 	//label d'affichage du tour courant
 	JLabel Label_2;
-	JLabel Label_3;
 	
 	public JButton Step;
 	public JButton Restart;
@@ -45,37 +44,44 @@ public class View implements Observateur{
 	public Maze maze;
 	
     //méthodes
-	public View(InterfaceController controller,Game game) {	
-		this.labyrinthe = "layouts/bigCorners.lay";
+	public View(InterfaceController controller,PacmanGame game) {	
 		this.game = game;
+		this.labyrinthe = "layouts/bigCorners.lay";
 		this.controller = controller;
 		game.enregistrerObservateur(this);
 		this.createUserFrame(labyrinthe);
 		}	
 
 	
-	public void actualiser() {
+	public void actualiser(boolean testBool) {
 		this.Label_2.setText("Turn : " + this.game.NbTours);
-		this.Label_3.setText("Turn : " + this.game.NbTours);
 		if(this.game.NbTours >= this.game.NbToursMax){
 			this.Restart.setEnabled(true);
 			this.Pause.setEnabled(false);
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
 		}
-		try {
-			maze = new Maze(labyrinthe);
-		} catch (Exception e) {
-			System.out.println("erreur");
-			e.printStackTrace();
+		
+		if(testBool){
+			try {
+				maze = new Maze(labyrinthe);
+			} catch (Exception e) {
+				System.out.println("erreur");
+				e.printStackTrace();
+			}		
 		}
+
+		Jeu.getContentPane().removeAll();
+		Jeu.validate();
+		//Jeu.repaint();
+		
+		if(testBool){
 		jPanelMaze = new PanelPacmanGame(maze);
+		}
 		
-		Jeu.getContentPane().remove(jPanelMaze);
-		Jeu.getContentPane().invalidate();
-		
-		Jeu.getContentPane().add(jPanelMaze,BorderLayout.CENTER);
-		Jeu.getContentPane().revalidate();		
+		Jeu.add(jPanelMaze,BorderLayout.CENTER);
+		Jeu.validate();
+		//Jeu.repaint();
 	}
 	
 	
@@ -107,9 +113,7 @@ public class View implements Observateur{
 		JPanel controlPanelHaut = new JPanel(new GridLayout(1, 4));
 		JPanel controlPanelBas = new JPanel(new GridLayout(1, 2));
 		JPanel controlPanelSlide = new JPanel(new GridLayout(2, 1));
-		JPanel controlPanelTurn = new JPanel(new GridLayout(2, 1));		
-		JPanel jeuPanel = new JPanel(new BorderLayout(2,1));
-		
+		JPanel controlPanelTurn = new JPanel(new GridLayout(2, 1));				
 		
 		Icon icon_restart = new ImageIcon("img/icon_restart.png");
 		Restart = new JButton(icon_restart);
@@ -230,13 +234,6 @@ public class View implements Observateur{
 	    Label_2 = new JLabel("Turn : 8");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_3 = new JLabel("Current turn");
-	    Label_3.setHorizontalAlignment(JLabel.CENTER);
-	    Label_3.setVerticalAlignment(JLabel.TOP);
-	    
-	    
-	    
-	    
 		
 		
 		controlPanelHaut.add(Restart);
@@ -261,10 +258,8 @@ public class View implements Observateur{
 		Commandes.setVisible(true);
 		
 		
-		jeuPanel.add(Label_3,BorderLayout.PAGE_START);
-		jeuPanel.add(jPanelMaze,BorderLayout.CENTER);
 		
-		Jeu.add(jeuPanel);
+		Jeu.add(jPanelMaze,BorderLayout.CENTER);
 		Jeu.setVisible(true);
 
 	}
