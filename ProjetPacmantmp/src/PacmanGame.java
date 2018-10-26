@@ -25,11 +25,11 @@ public class PacmanGame extends Game{
 		super();
 		this.labyrinthe = labyrinthe;
 		for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(0,labyrinthe.getGhosts_start().get(i));
+			Agent fantome_temp = new Agent(false,labyrinthe.getGhosts_start().get(i));
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
-			Agent pacman_temp = new Agent(1,labyrinthe.getPacman_start().get(i));
+			Agent pacman_temp = new Agent(true,labyrinthe.getPacman_start().get(i));
 			this.pacmans.add(pacman_temp);
 		}
 	}		

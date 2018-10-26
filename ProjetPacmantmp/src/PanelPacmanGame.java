@@ -157,7 +157,7 @@ public class PanelPacmanGame extends JPanel{
 		
 		g.fillArc((int)(npx+posx),(int)(npy+posy),(int)(nsx+10),(int)nsy,sa,fa);
 		g.setColor(Color.BLACK);
-		g.fillOval((int)(temp1+posx+npx+nsx/5.0),(int)(temp2+npy+posy+nsy/3.0),10,10);
+		g.fillOval((int)(temp1+posx+npx+nsx/5.0),(int)(temp2+npy+posy+nsy/3.0),200/m.getSizeX(),150/m.getSizeY());
 		
 	}
 
