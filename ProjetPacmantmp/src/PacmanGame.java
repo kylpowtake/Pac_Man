@@ -38,7 +38,6 @@ public class PacmanGame extends Game{
 		}
 	}		
 	
-	
 	public void setLabyrinthe(Maze labyrinthe){
 		this.labyrinthe = labyrinthe;
 	}
@@ -123,5 +122,6 @@ public class PacmanGame extends Game{
     		return false;
     	}
     }
+	
 	
 }

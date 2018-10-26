@@ -11,11 +11,11 @@ public class Maze implements Serializable{
 	/** 
 	 * Les differentes directions possibles pour les actions et les orientations des agents
 	 */
-	public final static int NORTH=0;
-	public final static int SOUTH=1;
-	public final static int EAST=2;
-	public final static int WEST=3;
-	public final static int STOP=4;
+	public final static int NORTH=0; 
+	public final static int SOUTH=1; 
+	public final static int EAST=2; 
+	public final static int WEST=3; 
+	public final static int STOP=4; 
 	
 	private int size_x;
 	private int size_y;

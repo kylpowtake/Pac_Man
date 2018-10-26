@@ -25,7 +25,7 @@ public class View implements Observateur{
 	//attributs 
 	PacmanGame game;
 	InterfaceController controller;
-	private String labyrinthe;
+	private Maze labyrinthe;
 
 	//panel de jeu et de commande 
 	JFrame Commandes;
@@ -46,7 +46,7 @@ public class View implements Observateur{
     //méthodes
 	public View(InterfaceController controller,PacmanGame game) {	
 		this.game = game;
-		this.labyrinthe = "layouts/bigCorners.lay";
+		this.labyrinthe = game.getLabyrinthe();
 		this.controller = controller;
 		game.enregistrerObservateur(this);
 		this.createUserFrame(labyrinthe);
@@ -61,22 +61,13 @@ public class View implements Observateur{
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
 		}
-		
-		if(testBool){
-			try {
-				maze = new Maze(labyrinthe);
-			} catch (Exception e) {
-				System.out.println("erreur");
-				e.printStackTrace();
-			}		
-		}
 
 		Jeu.getContentPane().removeAll();
 		Jeu.validate();
 		//Jeu.repaint();
 		
 		if(testBool){
-		jPanelMaze = new PanelPacmanGame(maze);
+		jPanelMaze = new PanelPacmanGame(labyrinthe);
 		}
 		
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
@@ -85,14 +76,23 @@ public class View implements Observateur{
 	}
 	
 	
-	void setLabyrinthe(String Labyrinthe){
+	void setLabyrinthe(Maze Labyrinthe){
 		this.labyrinthe = Labyrinthe;
 	}
 	
-	public void createUserFrame(String labyrinthe) {
+	void transformation(String laby){
+		try {
+			Maze maze = new Maze(laby);
+			this.setLabyrinthe(maze);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void createUserFrame(Maze labyrinthe) {
 				
 		try {
-			maze = new Maze(labyrinthe);
+			maze = game.getLabyrinthe();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -192,7 +192,7 @@ public class View implements Observateur{
 				JFileChooser chooser = new JFileChooser(); 
 				chooser.setCurrentDirectory(new File("/home/etudiant/workspace/ProjetPacman/layouts")); 
 				chooser.showOpenDialog(null);
-				setLabyrinthe(chooser.getSelectedFile().getAbsolutePath());
+				transformation(chooser.getSelectedFile().getAbsolutePath());
 				
 		    	Restart.setEnabled(true);
 		    	Run.setEnabled(false);

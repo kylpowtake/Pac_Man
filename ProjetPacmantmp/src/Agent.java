@@ -1,7 +1,7 @@
 public class Agent {
 	private boolean typeAgent;
 	private PositionAgent position;
-	
+	private int nextAction;
 	
 	public Agent(boolean typeAgent,PositionAgent p){
 		if(p.getDir()<5 && p.getDir()>-1){
@@ -23,4 +23,15 @@ public class Agent {
 			this.position = p;
 		}
 	}
+	
+	public void setNextAction(int nextAction){
+		if(nextAction > -1 && nextAction < 5){
+			this.nextAction = nextAction;
+		}
+	}
+	
+	public int getNextAction(){
+		return this.nextAction;
+	}
+
 }
