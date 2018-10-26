@@ -9,7 +9,7 @@ public class PanelPacmanGame extends JPanel{
 	private Color wallColor=Color.BLUE;
 	private Color wallColor2=Color.CYAN;
 
-	private double sizePacman=1.1;	
+	private double sizePacman=0.65;	
 	private Color pacmansColor = Color.yellow;
 	
 	private Color ghostsColor = Color.white;
@@ -89,7 +89,7 @@ public class PanelPacmanGame extends JPanel{
 			posx+=stepx;
 		}
 
-		/*
+		
 		for(int i = 0; i < pacmans_pos.size(); i++){
 			PositionAgent pos = pacmans_pos.get(i);
 			drawPacmans(g, pos.getX(), pos.getY(), pos.getDir(), pacmansColor);	
@@ -103,7 +103,7 @@ public class PanelPacmanGame extends JPanel{
 				drawGhosts(g, pos.getX(), pos.getY(), ghostsColor);	
 			}
 		}
-		*/
+		
 	}
 
 	void drawPacmans(Graphics g, int px, int py, int pacmanDirection, Color color)
@@ -127,25 +127,37 @@ public class PanelPacmanGame extends JPanel{
 		double npy=(stepy-nsy)/2.0;
 		int sa=0;
 		int fa=0;
+		double temp1 = 0;
+		double temp2 = 0;
 		
 		if (pacmanDirection==Maze.NORTH)
 		{
 			sa=70; fa=-320;
+			temp1 = fa/100;
+			temp2 = sa/10000;
 		}
 		if (pacmanDirection==Maze.SOUTH)
 		{
 			sa=250; fa=-320;
+			temp1 = -fa/20;
+			temp2 = sa/80;
 		}
 		if (pacmanDirection==Maze.EAST)
 		{
-			sa=340; fa=-320;				
+			sa=340; fa=-320;
+			temp1 = sa/75;
+			temp2 = fa/75;
 		}
 		if (pacmanDirection==Maze.WEST)
 		{
 			sa=160; fa=-320;
+			temp1 = sa/30;
+			temp2 = fa/30;
 		}
-
-		g.fillArc((int)(npx+posx),(int)(npy+posy),(int)(nsx),(int)nsy,sa,fa);
+		
+		g.fillArc((int)(npx+posx),(int)(npy+posy),(int)(nsx+10),(int)nsy,sa,fa);
+		g.setColor(Color.BLACK);
+		g.fillOval((int)(temp1+posx+npx+nsx/5.0),(int)(temp2+npy+posy+nsy/3.0),10,10);
 		
 	}
 

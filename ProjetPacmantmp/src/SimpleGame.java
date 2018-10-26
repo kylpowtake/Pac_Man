@@ -1,4 +1,5 @@
 
+ 
 public class SimpleGame extends Game{
 	
 	void gameOver(){
@@ -9,11 +10,12 @@ public class SimpleGame extends Game{
 	void takeTurn(){
 		System.out.println("New turn");
 		NbTours++;
-		this.notifierObservateur();
+		notifierObservateur();
 	}
 	
 	void initializeGame(){
-		System.out.println("Init " + NbToursMax + " tours");		
-		this.notifierObservateur();
+		System.out.println("Init " + NbToursMax + " tours");
+		
+		
 	}
 }

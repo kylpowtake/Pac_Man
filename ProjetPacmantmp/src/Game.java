@@ -13,10 +13,13 @@ public abstract class Game implements Runnable,Sujet{
 	
 	
 //methodes concrètes
+	
+	public Game(){
+		this.NbTours = 0;
+	}
+	
 	public void init(){
 		NbTours = 0;
-		notifierObservateur();
-
 		initializeGame();
 		notifierObservateur();
 	}

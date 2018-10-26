@@ -1,14 +1,14 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
@@ -23,8 +23,6 @@ public class View implements Observateur{
 	//attributs 
 	Game game;
 	InterfaceController controller;
-	private String labyrinthe;
-	
 
 	//panel de jeu et de commande 
 	JFrame Commandes;
@@ -38,18 +36,16 @@ public class View implements Observateur{
 	public JButton Restart;
 	public JButton Run;
 	public JButton Pause;
-	public JButton changeMaze;
 	
 	public JPanel jPanelMaze;
 	public Maze maze;
 	
     //méthodes
 	public View(InterfaceController controller,Game game) {	
-		this.labyrinthe = "layouts/bigCorners.lay";
 		this.game = game;
 		this.controller = controller;
 		game.enregistrerObservateur(this);
-		this.createUserFrame(labyrinthe);
+		this.createUserFrame();
 	}	
 
 	
@@ -62,29 +58,14 @@ public class View implements Observateur{
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
 		}
-		try {
-			maze = new Maze(labyrinthe);
-		} catch (Exception e) {
-			System.out.println("erreur");
-			e.printStackTrace();
-		}
-		jPanelMaze = new PanelPacmanGame(maze);
-		
-		Jeu.getContentPane().remove(jPanelMaze);
-		Jeu.getContentPane().invalidate();
-		
-		Jeu.getContentPane().add(jPanelMaze,BorderLayout.CENTER);
-		Jeu.getContentPane().revalidate();		
 	}
 	
-	void setLabyrinthe(String Labyrinthe){
-		this.labyrinthe = Labyrinthe;
-	}
 	
-	public void createUserFrame(String labyrinthe) {
+	
+	public void createUserFrame() {
 		
 		try {
-			maze = new Maze(labyrinthe);
+			maze = new Maze("layouts/bigSafeSearch.lay");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -105,7 +86,7 @@ public class View implements Observateur{
 		JPanel controlPanelHaut = new JPanel(new GridLayout(1, 4));
 		JPanel controlPanelBas = new JPanel(new GridLayout(1, 2));
 		JPanel controlPanelSlide = new JPanel(new GridLayout(2, 1));
-		JPanel controlPanelTurn = new JPanel(new GridLayout(2, 1));
+		JPanel controlPanelTurn = new JPanel(new GridLayout());
 		
 		JPanel jeuPanel = new JPanel(new BorderLayout(2,1));
 		
@@ -118,14 +99,12 @@ public class View implements Observateur{
 		Step = new JButton(icon_step);
 		Icon icon_pause = new ImageIcon("img/icon_pause.png");
 		Pause = new JButton(icon_pause);
-
-		changeMaze = new JButton("change Maze");
-		changeMaze.setPreferredSize(new Dimension(40, 40));
+		
 		
 		Run.setEnabled(false);
 		Pause.setEnabled(false);
 		Step.setEnabled(false);
-	
+		
 		
 		
 		
@@ -137,7 +116,6 @@ public class View implements Observateur{
 		    	Restart.setEnabled(false);
 		    	Run.setEnabled(true);
 		    	Step.setEnabled(true);
-		    	changeMaze.setEnabled(true);
 			}
 		});
 		
@@ -150,7 +128,6 @@ public class View implements Observateur{
 		    	Restart.setEnabled(false);
 		    	Pause.setEnabled(true);
 		    	Step.setEnabled(false);
-		    	changeMaze.setEnabled(false);	
 			}
 		});
 		
@@ -162,7 +139,6 @@ public class View implements Observateur{
 		    	controller.step();
 		    	Restart.setEnabled(true);
 		    	Pause.setEnabled(false);
-		    	changeMaze.setEnabled(true);
 			}
 		});
 		
@@ -175,25 +151,10 @@ public class View implements Observateur{
 		    	Restart.setEnabled(true);
 		    	Step.setEnabled(true);
 		    	Pause.setEnabled(false);
-		    	changeMaze.setEnabled(true);
 			}
 		});
 		
-		//changeMaze------------------------------------------
 		
-		changeMaze.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evenement) {
-				JFileChooser chooser = new JFileChooser(); 
-				chooser.setCurrentDirectory(new File("/home/etudiant/workspace/ProjetPacman/layouts")); 
-				chooser.showOpenDialog(null);
-				setLabyrinthe(chooser.getSelectedFile().getAbsolutePath());
-				
-		    	Restart.setEnabled(true);
-		    	Run.setEnabled(false);
-		    	Step.setEnabled(false);
-				controller.restart();
-			}
-		});
 		
 		
 		
@@ -246,7 +207,6 @@ public class View implements Observateur{
 		controlPanelSlide.add(slide);
 		
 		controlPanelTurn.add(Label_2);
-		controlPanelTurn.add(changeMaze);
 		
 		controlPanelBas.add(controlPanelSlide);
 		controlPanelBas.add(controlPanelTurn);

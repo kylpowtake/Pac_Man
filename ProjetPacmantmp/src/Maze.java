@@ -79,7 +79,7 @@ public class Maze implements Serializable{
 					if (ligne.charAt(x)=='%') walls[x][y]=true; else walls[x][y]=false;
 					if (ligne.charAt(x)=='.') food[x][y]=true; else food[x][y]=false;
 					if (ligne.charAt(x)=='o') capsules[x][y]=true; else capsules[x][y]=false;
-					if (ligne.charAt(x)=='P') {pacman_start.add(new PositionAgent(x,y,Maze.NORTH));}
+					if (ligne.charAt(x)=='P') {pacman_start.add(new PositionAgent(x,y,Maze.SOUTH));}
 					if (ligne.charAt(x)=='G') {ghosts_start.add(new PositionAgent(x,y,Maze.NORTH));}
 				}
 				y++;
