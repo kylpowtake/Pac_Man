@@ -93,4 +93,35 @@ public class PacmanGame extends Game{
 		this.notifierObservateur(true);
 	}
 	
+	//Retourne vrai si l'agent peut faire l'action, retourne faux sinon
+    public boolean isLegalMove(Agent agent, AgentAction action){
+    	PositionAgent agentPosition = agent.getPosition();
+    	int XPosition = agentPosition.getX();
+    	int YPosition = agentPosition.getY();
+    	
+    	switch (action.getDirection()){
+    		case Maze.NORTH:
+    			XPosition++;
+    			break;
+    		case Maze.SOUTH:
+    			XPosition--;
+    			break;
+    		case Maze.EAST:
+    			YPosition++;
+    			break;
+    		case Maze.WEST:
+    			YPosition--;
+    			break;
+    		case Maze.STOP:
+    			break;
+    	}
+    	
+    	
+    	if(!this.labyrinthe.isWall(XPosition,YPosition)){
+    		return true;
+    	} else {
+    		return false;
+    	}
+    }
+	
 }

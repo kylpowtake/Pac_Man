@@ -53,7 +53,7 @@ public abstract class Game implements Runnable,Sujet{
         thread.start();    //lance la methode run avec l'implementation de Runnable
         isRunning = true;
     }
-	
+    
     
  //méthodes abstraites
 	abstract void gameOver();
