@@ -122,6 +122,13 @@ public class PacmanGame extends Game{
     		return false;
     	}
     }
+    
+    public void moveAgent(Agent agent ,AgentAction action){
+    	PositionAgent position = new PositionAgent(action.getVx(),action.getVy(),action.getDirection());
+    	if(isLegalMove(agent,action)){
+    		agent.setPosition(position);
+    	}
+    }
 	
 	
 }
