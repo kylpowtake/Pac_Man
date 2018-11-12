@@ -1,81 +1,72 @@
-
 import java.util.ArrayList;
 import java.util.List;
 
+public abstract class Game implements Runnable,Sujet{
 
-
-
-
-public abstract class  Game implements Runnable, Subject  {
+//attributs 
+	protected int NbTours;
+	protected int NbToursMax = 25;
+    Thread thread; 
+	boolean isRunning;
+	long nombre_de_tours_par_secondes = 2;
+	private List<Observateur> observateurs = new ArrayList<>();
 	
-	protected int compteur_Nombre_Tours;
-	protected int nombre_Tours_Maximum;
-	protected Thread threadJeu;
-	public boolean isRunning;
 	
-	private List<Observer> observers = new ArrayList<>();
-
+//methodes concrètes
 	
-	public void launch(){
-		threadJeu = new Thread(this);
-		threadJeu.start();
-		isRunning = true;
+	public Game(){
+		this.NbTours = 0;
 	}
 	
-	
 	public void init(){
-		compteur_Nombre_Tours = 0;
+		NbTours = 0;
 		initializeGame();
 	}
 	
-	
 	public void step(){
-		if(compteur_Nombre_Tours < nombre_Tours_Maximum){
-			takeTurn();
-			try {
-				Thread.sleep((long)500);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		} else {
+		if(NbTours < NbToursMax){takeTurn();}
+		else{gameOver();}
+		try {
+			Thread.sleep(1000/this.nombre_de_tours_par_secondes);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		if(this.NbTours == this.NbToursMax){
 			gameOver();
 		}
 	}
 	
-	
 	public void run(){
-		isRunning = true;
-		while(compteur_Nombre_Tours < nombre_Tours_Maximum && isRunning){
+		while(isRunning == true && NbTours < NbToursMax){
 			step();
-			notifyObserver();
 		}
-		
-		gameOver();
-	}
-	
-	
-	public void pause(){
-		isRunning = false;
-	}
-	
-	public abstract void gameOver();
-	
-	public abstract void  initializeGame();
-	
-	public abstract void takeTurn();
-	
-	public void addObserver(Observer observer){
-		observers.add(observer);
-	}
-	
-	public void removeObserver(Observer observer){
-		observers.remove(observer);
-	}
-	
-	public void notifyObserver(){
-		for(int i = 0; i<observers.size(); i++){
-			observers.get(i).update();
+		stop();
+		if(NbTours >= NbToursMax){
+			System.out.println("fin du jeu");
 		}
 	}
 	
+	public void stop(){isRunning = false;}
+	
+    public void launch(){ 
+        thread = new Thread(this);    
+        thread.start();    //lance la methode run avec l'implementation de Runnable
+        isRunning = true;
+    }
+	
+    
+ //méthodes abstraites
+	abstract void gameOver();
+	abstract void takeTurn();
+	abstract void initializeGame();
+	
+
+//observateur     
+	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
+	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
+	public void notifierObservateur(boolean testBool) {
+		for(int i = 0; i< observateurs.size(); i++) {
+			observateurs.get(i).actualiser(testBool);
+		}
+	}
 }

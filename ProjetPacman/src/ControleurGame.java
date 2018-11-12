@@ -1,34 +1,56 @@
 
-public class ControleurGame implements InterfaceController {
-
-	public Game game;
-	private ViewCommande view;
+public class ControleurGame implements InterfaceController{
 	
-	public ControleurGame(Game game){
-		this.game = game;
-		view = new ViewCommande(game,this);
-	}
+	private PacmanGame game;
+	private View view;
+	
+	public ControleurGame(PacmanGame game) { 	
+    	this.game = game; 	
+        view = new View(this,game);
+    }
 	
 	@Override
-	public void step() {
-		System.out.println("Test step");
+	public void start(){
+		this.game.launch();
+		System.out.println("start");
+    }
+	
+	@Override
+    public void restart(){
+		this.game.init();
+		System.out.println("restart");
+    	
+    }
+	
+	@Override
+    public void step(){
 		this.game.step();
+		System.out.println("step");
+    	
+    }
+	
+	@Override
+    public void pause(){
+		this.game.stop();
+		System.out.println("stop");
+    }
+	
+	public View GetView(){
+		return this.view;
+	}
+	
+	public void SetView(View view){
+		this.view = view;
 	}
 
 	@Override
-	public void pause() {
-		this.game.pause();
-	}
-
-	@Override
-	public void start() {
-		this.game.run();
+	public void SetGame(Game game) {
+		this.game = (PacmanGame) game;
 		
 	}
 
 	@Override
-	public void restart() {
-		this.game.init();
+	public Game GetGame() {
+		return this.game;
 	}
-
 }

@@ -1,9 +1,11 @@
 
 public interface InterfaceController {
-
-	public void step();
-	public void pause();
 	public void start();
-	public void restart();
-	
+    public void restart();
+    public void step();
+    public void pause();
+    public void SetView(View view);
+    public View GetView();
+    public void SetGame(Game game);
+    public Game GetGame();    
 }
