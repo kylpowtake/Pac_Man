@@ -19,26 +19,41 @@ public class PacmanGame extends Game{
 	private Maze labyrinthe;
 	private ArrayList<Agent> fantomes;
 	private ArrayList<Agent> pacmans;
-
+	private String chemin;
+	
 	//Constructeur de PacmanGame avec un labrinthe
-	public PacmanGame(Maze labyrinthe){
+	public PacmanGame(Maze labyrinthe, String chemin){
 		super();
+		
+		this.chemin = chemin;
 		
 		fantomes = new ArrayList<Agent>();
 		pacmans = new ArrayList<Agent>();
 		
 		this.labyrinthe = labyrinthe;
 		for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false,new PositionAgent(1,2,3));//labyrinthe.getGhosts_start().get(i));
+			//Agent fantome_temp = new Agent(false,new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
+			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i));
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
-			Agent pacman_temp = new Agent(true,labyrinthe.getPacman_start().get(i));
+			
+			//Agent pacman_temp = new Agent(false,new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
+			Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i));
 			this.pacmans.add(pacman_temp);
 		}
 	}		
 	
+	public String getChemin(){
+		return this.chemin;
+	}
+	
+	public void setChemin(String chemin){
+		this.chemin = chemin;
+	}
+	
 	public void setLabyrinthe(Maze labyrinthe){
+		System.out.println("Dans le set de labyrinthe : ");
 		this.labyrinthe = labyrinthe;
 	}
 	
@@ -47,6 +62,7 @@ public class PacmanGame extends Game{
 	}
 	
 	public void setFantomes(ArrayList<Agent> fantomes){
+		System.out.println("Dans le set de fantomes : ");
 		this.fantomes = fantomes;
 	}
 	
@@ -67,16 +83,20 @@ public class PacmanGame extends Game{
 	//Méthode appelé quand une des conditions de fin de partie est vérifié
 	void gameOver(){
 		System.out.print("You Died");
-		this.notifierObservateur(false);
+		this.notifierObservateur(false, false);
 	}
 	
 	//Méthode appelé quand un tour est lancé
 	void takeTurn(){
+		
 		AgentAction action = new AgentAction(0);
 		for(int i = 0; i < fantomes.size(); i++){
+			System.out.println("on est dans le mouvement : " + fantomes.get(i).getPosition().getX() + fantomes.get(i).getPosition().getY() + 
+					" et dans initial : " + this.labyrinthe.getGhosts_start().get(i).getX() + this.labyrinthe.getGhosts_start().get(i).getY() + ".\n\n");
 			action.setDirection(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
 		}
+		
 		for(int i = 0; i < pacmans.size(); i++){
 			action.setDirection(pacmans.get(i).getNextAction());
 			this.moveAgent(pacmans.get(i), action);
@@ -87,19 +107,59 @@ public class PacmanGame extends Game{
 		}
 		
 		NbTours++;
-		this.notifierObservateur(true);
+		this.notifierObservateur(false, false);
 	}
 	
 	//Méthode appelé quand le jeu est initialisé ou réinitialisé
 	void initializeGame(){
 		for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
+			/*
+			PositionAgent p = new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir());
+			this.fantomes.get(i).setPosition(p);
+			*/
 			this.fantomes.get(i).setPosition(labyrinthe.getGhosts_start().get(i));
 		}
 		for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
+			/*
+			PositionAgent p = new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir());
+			this.fantomes.get(i).setPosition(p);
+			*/
 			this.pacmans.get(i).setPosition(labyrinthe.getPacman_start().get(i));
-		}
-		this.notifierObservateur(true);
+			}
+		this.notifierObservateur(true, false);
 	}
+	
+	
+	//Méthode prenant en paramètre un chemin vers un layout et actualisant les valeurs
+	public void actualiser(String chemin){
+		this.chemin = chemin;
+		try {
+			System.out.println("On est dans actualiser : ");
+			this.labyrinthe = new Maze(chemin);
+			
+			this.fantomes.clear();
+			this.pacmans.clear();
+			
+			for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
+				//Agent fantome_temp = new Agent(false,new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
+				Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i));
+				this.fantomes.add(fantome_temp);
+			}
+			for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
+				
+				//Agent pacman_temp = new Agent(false,new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
+				Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i));
+				this.pacmans.add(pacman_temp);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		this.notifierObservateur(false, true);
+		
+	}
+	
 	
 	//Retourne vrai si l'agent peut faire l'action, retourne faux sinon
     public boolean isLegalMove(Agent agent, AgentAction action){

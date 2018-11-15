@@ -20,8 +20,9 @@ public class Main {
 	*/
 
 		try {
-			Maze laby = new Maze("layouts/testClassic.lay");
-			PacmanGame game = new PacmanGame(laby);
+			String chemin = "layouts/testClassic.lay";
+			Maze laby = new Maze(chemin);
+			PacmanGame game = new PacmanGame(laby, chemin);
 			game.setLabyrinthe(laby);
 			ControleurGame controleur = new ControleurGame(game);
 		} catch (Exception e) {

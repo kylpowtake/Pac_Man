@@ -35,6 +35,11 @@ public class ControleurGame implements InterfaceController{
 		System.out.println("stop");
     }
 	
+	@Override
+	public void changement(String chemin){
+		this.game.changement(chemin);
+	}
+	
 	public View GetView(){
 		return this.view;
 	}

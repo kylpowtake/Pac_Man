@@ -24,7 +24,9 @@ public abstract class Game implements Runnable,Sujet{
 	}
 	
 	public void step(){
-		if(NbTours < NbToursMax){takeTurn();}
+		if(NbTours < NbToursMax){
+			takeTurn();
+		}
 		else{gameOver();}
 		try {
 			Thread.sleep(1000/this.nombre_de_tours_par_secondes);
@@ -53,20 +55,24 @@ public abstract class Game implements Runnable,Sujet{
         thread.start();    //lance la methode run avec l'implementation de Runnable
         isRunning = true;
     }
+    
+    public void changement(String chemin){
+    	actualiser(chemin);
+    }
 	
     
  //méthodes abstraites
 	abstract void gameOver();
 	abstract void takeTurn();
 	abstract void initializeGame();
-	
+	abstract void actualiser(String chemin);
 
 //observateur     
 	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
 	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
-	public void notifierObservateur(boolean testBool) {
+	public void notifierObservateur(boolean testrestart, boolean testtransformation) {
 		for(int i = 0; i< observateurs.size(); i++) {
-			observateurs.get(i).actualiser(testBool);
+			observateurs.get(i).actualiser(testrestart, testtransformation);
 		}
 	}
 }

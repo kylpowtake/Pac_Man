@@ -27,6 +27,8 @@ public class View implements Observateur{
 	InterfaceController controller;
 	private Maze labyrinthe;
 
+	String chemin = "";
+	
 	//panel de jeu et de commande 
 	JFrame Commandes;
 	JFrame Jeu;
@@ -46,6 +48,7 @@ public class View implements Observateur{
     //méthodes
 	public View(InterfaceController controller,PacmanGame game) {	
 		this.game = game;
+		System.out.println("test");
 		this.labyrinthe = game.getLabyrinthe();
 		this.controller = controller;
 		game.enregistrerObservateur(this);
@@ -53,7 +56,8 @@ public class View implements Observateur{
 		}	
 
 	
-	public void actualiser(boolean testBool) {
+	public void actualiser(boolean testrestart, boolean testtransformation) {
+	
 		this.Label_2.setText("Turn : " + this.game.NbTours);
 		if(this.game.NbTours >= this.game.NbToursMax){
 			this.Restart.setEnabled(true);
@@ -61,15 +65,34 @@ public class View implements Observateur{
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
 		}
-
 		Jeu.getContentPane().removeAll();
 		Jeu.validate();
 		//Jeu.repaint();
 		
-		if(testBool){
-			jPanelMaze = new PanelPacmanGame(labyrinthe);
-			
+		if(testrestart){
+			try {
+				System.out.println("Dans le test de testBool : ");
+				this.labyrinthe = new Maze(this.game.getChemin());
+				game.actualiser(this.game.getChemin());
+				controller.SetView(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
+		
+		if(testtransformation){
+			if(this.chemin == ""){
+				this.chemin = this.game.getChemin();
+			}
+			try {
+				this.labyrinthe = new Maze(this.chemin);
+				controller.SetView(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+				}
+			}
+		
+		jPanelMaze = new PanelPacmanGame(this.game.getLabyrinthe());
 		
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
 		Jeu.validate();
@@ -79,27 +102,20 @@ public class View implements Observateur{
 	
 	void setLabyrinthe(Maze Labyrinthe){
 		this.labyrinthe = Labyrinthe;
-		game = new PacmanGame(Labyrinthe);
+		game = new PacmanGame(Labyrinthe,this.game.getChemin());
 	}
-	
-	void transformation(String laby){
-		try {
-			Maze maze = new Maze(laby);
-			this.setLabyrinthe(maze);
-			controller.SetView(this);
-			//controller = new ControleurGame(game);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 	
 	public void createUserFrame(Maze labyrinthe) {
 				
 		try {
+			System.out.println("test");
 			maze = game.getLabyrinthe();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("test");
+
 		jPanelMaze = new PanelPacmanGame(maze);
 		
 		
@@ -196,12 +212,13 @@ public class View implements Observateur{
 				JFileChooser chooser = new JFileChooser(); 
 				chooser.setCurrentDirectory(new File("/home/etudiant/workspace/ProjetPacman/layouts")); 
 				chooser.showOpenDialog(null);
-				transformation(chooser.getSelectedFile().getAbsolutePath());
+				
+				String chemin = chooser.getSelectedFile().getAbsolutePath();
 				
 		    	Restart.setEnabled(true);
 		    	Run.setEnabled(false);
 		    	Step.setEnabled(false);
-				controller.restart();
+				controller.changement(chemin);
 			}
 		});
 		
