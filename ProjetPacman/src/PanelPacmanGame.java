@@ -100,7 +100,18 @@ public class PanelPacmanGame extends JPanel{
 			if(ghostsScarred) {
 				drawGhosts(g, pos.getX(), pos.getY(), ghostScarredColor);	
 			} else {
-				drawGhosts(g, pos.getX(), pos.getY(), ghostsColor);	
+				switch(i % 3){
+				case 0 :
+					drawGhosts(g, pos.getX(), pos.getY(), Color.blue);						
+					break;
+				case 1 :
+					drawGhosts(g, pos.getX(), pos.getY(), Color.red);	
+					break;
+				case 2 :
+					drawGhosts(g, pos.getX(), pos.getY(), Color.pink);	
+					break;
+				}
+				//drawGhosts(g, pos.getX(), pos.getY(), ghostsColor);	
 			}
 		}
 		

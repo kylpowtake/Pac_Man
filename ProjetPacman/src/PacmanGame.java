@@ -266,7 +266,7 @@ public class PacmanGame extends Game{
 			PositionAgent positionPacman = new PositionAgent(pacmans.get(i).getPosition());
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
-				PositionAgent positionFantome = new PositionAgent(fantomes.get(i).getPosition());
+				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
 				if(isAlivePacman == true && this.isInvincible == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
@@ -279,7 +279,7 @@ public class PacmanGame extends Game{
 				if(isAlivePacman = true && this.isInvincible == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
-						this.labyrinthe.getGhosts_start().remove(i);
+						this.labyrinthe.getGhosts_start().remove(j);
 						System.out.println("Un fantome est mort");
 						this.notifierObservateur(false, false);
 					}
