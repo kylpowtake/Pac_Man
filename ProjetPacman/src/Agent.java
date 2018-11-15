@@ -34,5 +34,5 @@ public class Agent {
 	public int getNextAction(){
 		return this.nextAction;
 	}
-
+	
 }

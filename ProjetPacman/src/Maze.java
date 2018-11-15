@@ -24,7 +24,7 @@ public class Maze implements Serializable{
 	 * Les elements du labyrinthe
 	 */
 	private boolean walls[][];
-	private boolean food[][];
+	protected boolean food[][];
 	private boolean capsules[][];
 
 	/** 

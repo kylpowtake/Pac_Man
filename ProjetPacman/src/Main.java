@@ -20,7 +20,7 @@ public class Main {
 	*/
 
 		try {
-			Maze laby = new Maze("layouts/testClassic.lay");
+			Maze laby = new Maze("layouts/capsuleClassic.lay");
 			PacmanGame game = new PacmanGame(laby);
 			game.setLabyrinthe(laby);
 			ControleurGame controleur = new ControleurGame(game);
