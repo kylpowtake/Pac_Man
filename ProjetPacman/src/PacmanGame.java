@@ -115,7 +115,7 @@ public class PacmanGame extends Game{
 			}
 		}
 		if(tourInvincible == this.NbTours){
-			this.isInvincible = false;
+			this.isInvincible = true;
 		}
 		if(finJeu() == true){
 			gameOver();
@@ -127,20 +127,20 @@ public class PacmanGame extends Game{
 	
 	//Méthode appelé quand le jeu est initialisé ou réinitialisé
 	void initializeGame(){
+		this.fantomes.clear();
+		this.pacmans.clear();
+		
 		for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
-			/*
-			PositionAgent p = new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir());
-			this.fantomes.get(i).setPosition(p);
-			*/
-			this.fantomes.get(i).setPosition(labyrinthe.getGhosts_start().get(i));
+			//Agent fantome_temp = new Agent(false,new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
+			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i));
+			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
-			/*
-			PositionAgent p = new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir());
-			this.fantomes.get(i).setPosition(p);
-			*/
-			this.pacmans.get(i).setPosition(labyrinthe.getPacman_start().get(i));
-			}
+			
+			//Agent pacman_temp = new Agent(false,new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
+			Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i));
+			this.pacmans.add(pacman_temp);
+		}
 		this.notifierObservateur(true, false);
 	}
 	
@@ -242,15 +242,15 @@ public class PacmanGame extends Game{
     			agent.setNextAction(newaction.getDirection());
     			break;
     		case Maze.SOUTH:
-    			newaction.setDirection(action.getDirection() - 1);
+    			newaction.setDirection(action.getDirection() + 1);
     			agent.setNextAction(newaction.getDirection());
     			break;
     		case Maze.EAST:
-    			newaction.setDirection(action.getDirection() - 1);
+    			newaction.setDirection(action.getDirection()  - 2);
     			agent.setNextAction(newaction.getDirection());
     			break;
     		case Maze.WEST:
-    			newaction.setDirection(action.getDirection() - 1);
+    			newaction.setDirection(action.getDirection() - 2);
     			agent.setNextAction(newaction.getDirection());
     			break; 
     		}
@@ -270,16 +270,18 @@ public class PacmanGame extends Game{
 				if(isAlivePacman == true && this.isInvincible == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
+						this.labyrinthe.getPacman_start().remove(i);
 						isAlivePacman = false;
 						System.out.println("Un Pacman est mort");
-						this.notifierObservateur(true);
+						this.notifierObservateur(false, false);
 					}
 				}
 				if(isAlivePacman = true && this.isInvincible == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
+						this.labyrinthe.getGhosts_start().remove(i);
 						System.out.println("Un fantome est mort");
-						this.notifierObservateur(true);
+						this.notifierObservateur(false, false);
 					}
 					
 				}

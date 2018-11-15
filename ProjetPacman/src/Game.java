@@ -5,7 +5,7 @@ public abstract class Game implements Runnable,Sujet{
 
 //attributs 
 	protected int NbTours;
-	protected int NbToursMax = 25;
+	protected int NbToursMax = 525;
     Thread thread; 
 	boolean isRunning;
 	long nombre_de_tours_par_secondes = 2;
