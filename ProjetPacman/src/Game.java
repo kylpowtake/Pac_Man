@@ -62,11 +62,13 @@ public abstract class Game implements Runnable,Sujet{
 	
     
  //méthodes abstraites
-	abstract void gameOver();
-	abstract void takeTurn();
-	abstract void initializeGame();
-	abstract void actualiser(String chemin);
+	abstract public void gameOver();
+	abstract public void takeTurn();
+	abstract public void initializeGame();
+	abstract public void actualiser(String chemin);
+    abstract public boolean isLegalMove(Agent agent, AgentAction action);
 
+	
 //observateur     
 	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
 	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
