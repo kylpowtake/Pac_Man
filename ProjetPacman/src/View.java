@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
@@ -24,15 +25,19 @@ public class View implements Observateur{
 	PacmanGame game;
 	InterfaceController controller;
 	private Maze labyrinthe;
+	private Touches panelTouches = new Touches();
 
 	String chemin = "";
 	
 	//panel de jeu et de commande 
+	JFrame Configuration;
 	JFrame Commandes;
 	JFrame Jeu;
 	
-	//label d'affichage du tour courant
-	JLabel Label_2;
+	//les label 
+	JLabel Label_2; //label pour afficher le nombre de tours
+	JLabel Label_3; //label pour afficher le nombre de poins 
+	JLabel Label_4; //label pour afficher le nombre de vies 
 	
 	public JButton Step;
 	public JButton Restart;
@@ -57,13 +62,16 @@ public class View implements Observateur{
 	public void actualiser(boolean testrestart, boolean testtransformation) {
 	
 		this.Label_2.setText("Turn : " + this.game.NbTours);
+		this.Label_3.setText("Nombres de points : " + this.game.NbPoints);
+		this.Label_4.setText("Nombres de vies : " + this.game.NbVies);
+		
 		if(this.game.NbTours >= this.game.NbToursMax){
 			this.Restart.setEnabled(true);
 			this.Pause.setEnabled(false);
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
 		}
-		Jeu.getContentPane().removeAll();
+		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
 		//Jeu.repaint();
 		
@@ -126,8 +134,24 @@ public class View implements Observateur{
 		Jeu.setSize(new Dimension(1200,700));
 		Jeu.setLocation(400,50);
 		
+		Configuration = new JFrame("Configuration");
+		Configuration.setSize(new Dimension(300,500));
+		Configuration.setLocation(30,50);
 		
-		JPanel controlPanelCommande = new JPanel(new GridLayout(2, 4));
+		String[] nbJoueurs = {"1","2","3","4"};
+		final JComboBox nbJoueursList = new JComboBox(nbJoueurs);
+		
+		JPanel configurationPanel = new JPanel(new GridLayout(2, 2));
+	    
+		JLabel Label_5 = new JLabel("Nombres de joueurs");
+	
+		configurationPanel.add(Label_5);
+		configurationPanel.add(nbJoueursList);
+		
+		Configuration.add(configurationPanel);
+		
+		
+		JPanel controlPanelCommande = new JPanel(new GridLayout(2, 1));
 		JPanel controlPanelHaut = new JPanel(new GridLayout(1, 4));
 		JPanel controlPanelBas = new JPanel(new GridLayout(1, 2));
 		JPanel controlPanelSlide = new JPanel(new GridLayout(2, 1));
@@ -162,6 +186,7 @@ public class View implements Observateur{
 		    	Run.setEnabled(true);
 		    	Step.setEnabled(true);
 		    	changeMaze.setEnabled(true);
+		    	Configuration.setVisible(true);
 			}
 		});
 		
@@ -175,6 +200,7 @@ public class View implements Observateur{
 		    	Pause.setEnabled(true);
 		    	Step.setEnabled(false);
 		    	changeMaze.setEnabled(false);
+		    	Configuration.setVisible(false);
 			}
 		});
 		
@@ -187,6 +213,7 @@ public class View implements Observateur{
 		    	Restart.setEnabled(true);
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
+		    	Configuration.setVisible(false);
 			}
 		});
 		
@@ -253,6 +280,11 @@ public class View implements Observateur{
 	    Label_2 = new JLabel("Turn : 8");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
 	    
+	    Label_3 = new JLabel("Nombres de points : " + this.game.NbPoints);
+	    Label_3.setHorizontalAlignment(JLabel.CENTER);
+	    
+	    Label_4 = new JLabel("Nombres de vies : " + this.game.NbVies);
+	    Label_1.setHorizontalAlignment(JLabel.CENTER);
 		
 		
 		controlPanelHaut.add(Restart);
@@ -263,6 +295,8 @@ public class View implements Observateur{
 		controlPanelSlide.add(Label_1);
 		controlPanelSlide.add(slide);
 		
+		controlPanelTurn.add(Label_3);
+		controlPanelTurn.add(Label_4);
 		controlPanelTurn.add(Label_2);
 		controlPanelTurn.add(changeMaze);
 
@@ -276,8 +310,10 @@ public class View implements Observateur{
 		Commandes.add(controlPanelCommande);
 		Commandes.setVisible(true);
 		
+		panelTouches.addKeyListener(panelTouches);
+		panelTouches.setFocusable(true);
 		
-		
+		Jeu.add(panelTouches,BorderLayout.CENTER);
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
 		Jeu.setVisible(true);
 
