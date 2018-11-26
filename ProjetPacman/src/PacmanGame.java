@@ -85,23 +85,23 @@ public class PacmanGame extends Game{
 	/**
 	 * Méthode appelé quand une des conditions de fin de partie est vérifiée
 	 */
-	void gameOver(){
+	public void gameOver(){
 		System.out.print("You Died");
 		this.notifierObservateur(false, false);
 	}
 	
 	//Méthode appelé quand un tour est lancé
-	void takeTurn(){
+	public void takeTurn(){
 		
 		AgentAction action = new AgentAction(0);
 		for(int i = 0; i < fantomes.size(); i++){
-			System.out.println("on est dans le mouvement : " + fantomes.get(i).getPosition().getX() + fantomes.get(i).getPosition().getY() + 
-					" et dans initial : " + this.labyrinthe.getGhosts_start().get(i).getX() + this.labyrinthe.getGhosts_start().get(i).getY() + ".\n\n");
+			ComportementFantome.comportement(fantomes.get(i), this);
 			action.setDirection(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
 		}
 		mortAgent();
 		for(int i = 0; i < pacmans.size(); i++){
+			ComportementPacman.comportement(pacmans.get(i), this);
 			action.setDirection(pacmans.get(i).getNextAction());
 			this.moveAgent(pacmans.get(i), action);
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
@@ -126,7 +126,7 @@ public class PacmanGame extends Game{
 	}
 	
 	//Méthode appelé quand le jeu est initialisé ou réinitialisé
-	void initializeGame(){
+	public void initializeGame(){
 		this.fantomes.clear();
 		this.pacmans.clear();
 		
@@ -266,7 +266,7 @@ public class PacmanGame extends Game{
 			PositionAgent positionPacman = new PositionAgent(pacmans.get(i).getPosition());
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
-				PositionAgent positionFantome = new PositionAgent(fantomes.get(i).getPosition());
+				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
 				if(isAlivePacman == true && this.isInvincible == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
@@ -279,7 +279,7 @@ public class PacmanGame extends Game{
 				if(isAlivePacman = true && this.isInvincible == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
-						this.labyrinthe.getGhosts_start().remove(i);
+						this.labyrinthe.getGhosts_start().remove(j);
 						System.out.println("Un fantome est mort");
 						this.notifierObservateur(false, false);
 					}
