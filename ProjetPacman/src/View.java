@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -135,19 +136,22 @@ public class View implements Observateur{
 		Jeu.setLocation(400,50);
 		
 		Configuration = new JFrame("Configuration");
-		Configuration.setSize(new Dimension(300,500));
-		Configuration.setLocation(30,50);
+		Configuration.setSize(new Dimension(500,100));
+		Configuration.setLocation(700,300);
 		
-		String[] nbJoueurs = {"1","2","3","4"};
-		final JComboBox nbJoueursList = new JComboBox(nbJoueurs);
+		final String[] nbJoueurs = {"0","1","2","3","4"};
+		final JComboBox nbJoueursPacman = new JComboBox(nbJoueurs);
+		final JComboBox nbJoueursFantome = new JComboBox(nbJoueurs);
 		
-		JPanel configurationPanel = new JPanel(new GridLayout(2, 2));
-	    
-		JLabel Label_5 = new JLabel("Nombres de joueurs");
+		final JPanel configurationPanel = new JPanel(new GridLayout(3, 2));
+		configurationPanel.add(new JLabel("Nombre de joueurs maximum : 4 "));
+		configurationPanel.add(new JLabel(""));
+		configurationPanel.add(new JLabel("Nombre de joueurs pacmans"));
+		configurationPanel.add(nbJoueursPacman);
+		configurationPanel.add(new JLabel("Nombre de joueurs fantome"));
+		configurationPanel.add(nbJoueursFantome);
+		
 	
-		configurationPanel.add(Label_5);
-		configurationPanel.add(nbJoueursList);
-		
 		Configuration.add(configurationPanel);
 		
 		
@@ -224,6 +228,7 @@ public class View implements Observateur{
 		    public void actionPerformed(ActionEvent evenement) {
 		    	controller.pause();
 		    	Restart.setEnabled(true);
+		    	Run.setEnabled(true);
 		    	Step.setEnabled(true);
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
@@ -246,6 +251,57 @@ public class View implements Observateur{
 				controller.changement(chemin);
 			}
 		});
+		
+		//nbJoueursPacman------------------------------------------
+		nbJoueursPacman.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Integer nbPacmans = nbJoueursPacman.getSelectedIndex();
+				switch(nbPacmans){
+				case 0:
+					game.nbJoueursPacmans = 0; 
+					break;
+				case 1:
+					game.nbJoueursPacmans = 1;
+					break;
+				case 2:
+					game.nbJoueursPacmans = 2; 
+					break;
+				case 3:
+					game.nbJoueursPacmans = 3; 
+					break;
+				case 4:
+					game.nbJoueursPacmans = 4; 
+					break;
+				}
+			}
+		});
+		
+		
+		//nbJoueursFantomes------------------------------------------
+		nbJoueursFantome.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Integer nbFantomes = nbJoueursFantome.getSelectedIndex();
+				switch(nbFantomes){
+				case 0:
+					game.nbJoueursFantome = 0; 
+					break;
+				case 1:
+					game.nbJoueursFantome = 1;
+					break;
+				case 2:
+					game.nbJoueursFantome = 2; 
+					break;
+				case 3:
+					game.nbJoueursFantome = 3; 
+					break;
+				case 4:
+					game.nbJoueursFantome = 4; 
+					break;
+				}
+				
+			}
+		});
+
 		
 		
 		

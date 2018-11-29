@@ -22,8 +22,8 @@ public class PacmanGame extends Game{
 	private boolean isInvincible;
 	private int tourInvincible;
 	private String chemin;
-	private int nbJoueursPacmans = 0;
-	private int nbJoueursFantome = 0;
+	protected int nbJoueursPacmans = 0;
+	protected int nbJoueursFantome = 0;
 	
 	/**
 	 * Constructeur de PacmanGame avec un labrinthe
