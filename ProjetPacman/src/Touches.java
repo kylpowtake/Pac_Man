@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 public class Touches extends JPanel implements KeyListener {
 
-	private int toucheClique = 2;
+	public int toucheClique = 0;
 
 	
 	@Override

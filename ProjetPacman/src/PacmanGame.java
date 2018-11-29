@@ -96,10 +96,13 @@ public class PacmanGame extends Game{
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
 		
+		setActionParTouche();
+		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
 			ComportementFantome.comportement(fantomes.get(i), this);
 		}
+		//deplacement des de tous les fantomes 
 		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
@@ -107,9 +110,12 @@ public class PacmanGame extends Game{
 		}
 		
 		mortAgent();
+		
+		//set action des pacmans qui ne sont pas controlés
 		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
 			ComportementPacman.comportement(pacmans.get(i), this);
 		}
+		//deplacement e tous les pacmans 
 		for(int i = 0; i < pacmans.size(); i++){
 			System.out.println("Direction de pacman : " + pacmans.get(i).getNextAction());
 			action.setDirection(pacmans.get(i).getNextAction());
@@ -334,6 +340,16 @@ public class PacmanGame extends Game{
     	}
     	return false;
     }
+
+	
+	public void setActionParTouche() {
+		if(this.nbJoueursFantome >0){
+			this.fantomes.get(0).setNextAction(this.panelTouches.toucheClique);
+		}
+		if(this.nbJoueursPacmans >0){
+			this.pacmans.get(0).setNextAction(this.panelTouches.toucheClique);
+		}
+	}
 	
 }
 

@@ -4,6 +4,7 @@ import java.util.List;
 public abstract class Game implements Runnable,Sujet{
 
 //attributs 
+	public Touches panelTouches = new Touches();
 	protected int NbTours;
 	protected int NbToursMax = 525;
 	protected int NbPoints = 0;
@@ -65,12 +66,14 @@ public abstract class Game implements Runnable,Sujet{
 	
     
     //méthodes abstraites
+    abstract public void setActionParTouche();
 	abstract public void gameOver();
 	abstract public void takeTurn();
 	abstract public void initializeGame();
 	abstract public void actualiser(String chemin);
     abstract public boolean isLegalMove(Agent agent, AgentAction action);
     abstract public boolean isLegalMoveInt(Agent agent, int action);
+    
 
 	
     //observateur     
