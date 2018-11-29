@@ -99,12 +99,17 @@ public class PacmanGame extends Game{
 		AgentAction action = new AgentAction(0);
 		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
 			ComportementFantome.comportement(fantomes.get(i), this);
+		}
+		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
 		}
 		mortAgent();
 		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
 			ComportementPacman.comportement(pacmans.get(i), this);
+		}
+		for(int i = 0; i < pacmans.size(); i++){
+			System.out.println("Direction de pacman : " + pacmans.get(i).getNextAction());
 			action.setDirection(pacmans.get(i).getNextAction());
 			this.moveAgent(pacmans.get(i), action);
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
@@ -261,8 +266,6 @@ public class PacmanGame extends Game{
     			break;
     		case Maze.WEST:
     			agent.getPosition().setY(agent.getPosition().getY() - 1);
-    			break;
-    		case Maze.STOP:
     			break;
     		default:
     			break;
