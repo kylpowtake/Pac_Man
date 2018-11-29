@@ -20,6 +20,9 @@ public class Maze implements Serializable{
 	private int size_x;
 	private int size_y;
 	
+	public boolean estInvinsible = false;
+
+	
 	/** 
 	 * Les elements du labyrinthe
 	 */

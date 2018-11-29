@@ -2,6 +2,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
+
+
+//a redefinir par un partern fabrique pour le mode multi
+
+
 public class Touches extends JPanel implements KeyListener {
 
 	public int toucheClique = 4;

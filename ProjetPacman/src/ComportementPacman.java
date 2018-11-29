@@ -1,9 +1,9 @@
 import java.util.Random;
 
 
-public abstract class ComportementPacman {
+public class ComportementPacman extends ComportementAgent{
 	
-	public static void comportement(Agent agent, Game game){
+	public void comportement(Agent agent, Game game){
 		
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
@@ -18,4 +18,6 @@ public abstract class ComportementPacman {
 		}
 			agent.setNextAction(action.getDirection());
 	}
+
+
 }

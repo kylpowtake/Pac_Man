@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class PanelPacmanGame extends JPanel{
-
-
+	
 	private Color wallColor=Color.BLUE;
 	private Color wallColor2=Color.CYAN;
 
@@ -134,7 +133,11 @@ public class PanelPacmanGame extends JPanel{
 		double posx=px*stepx;
 		double posy=py*stepy;
 
+		if(!m.estInvinsible){
 		g.setColor(color);
+		} else {
+			g.setColor(Color.blue);
+		}
 		double nsx=stepx*sizePacman;
 		double nsy=stepy*sizePacman;
 		double npx=(stepx-nsx)/2.0;

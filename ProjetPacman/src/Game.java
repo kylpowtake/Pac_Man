@@ -9,6 +9,7 @@ public abstract class Game implements Runnable,Sujet{
 	protected int NbToursMax = 525;
 	protected int NbPoints = 0;
 	protected int NbVies = 3;
+	protected boolean isInvincible;
 	
     Thread thread; 
 	boolean isRunning;

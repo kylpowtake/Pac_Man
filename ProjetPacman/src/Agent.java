@@ -2,12 +2,14 @@ public class Agent {
 	private boolean typeAgent;
 	private PositionAgent position;
 	private int nextAction;
+	private ComportementAgent Comportementagent;
 	
-	public Agent(boolean typeAgent,PositionAgent p){
+	public Agent(boolean typeAgent,PositionAgent p,ComportementAgent c){
 		if(p.getDir()<5 && p.getDir()>-1){
 			this.typeAgent = typeAgent;
 			this.position = p;
 			this.nextAction = p.getDir();
+			this.Comportementagent = c;
 		}
 	}
 	
@@ -33,6 +35,10 @@ public class Agent {
 	
 	public int getNextAction(){
 		return this.nextAction;
+	}
+	
+	public ComportementAgent getComportement(){
+		return this.Comportementagent;
 	}
 	
 }
