@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * 
  * Classe héritant de Game et composé des méthodes pour gérer une partie
  * 
- * labyrinthe de type Maze, contient différentes méthodes liées à l'orientation, déplacement, direction et initialisation d'un labyrinthe
+ * getLabyrinthe() de type Maze, contient différentes méthodes liées à l'orientation, déplacement, direction et initialisation d'un getLabyrinthe()
  * 
  * fantomes de type ArrayList<Agent> contient tout les fantomes de a partie
  * 
@@ -16,56 +16,34 @@ import java.util.ArrayList;
 
 public class PacmanGame extends Game{
 
-	private Maze labyrinthe;
 	private ArrayList<Agent> fantomes;
 	private ArrayList<Agent> pacmans;
 	private boolean isInvincible;
 	private int tourInvincible;
-	private String chemin;
-	protected int nbJoueursPacmans = 0;
-	protected int nbJoueursFantome = 0;
 	
 	/**
 	 * Constructeur de PacmanGame avec un labrinthe
 	 */
-	public PacmanGame(Maze labyrinthe, String chemin){
-		super();
+	public PacmanGame(Maze labyrinthe ,String chemin){
+		super(labyrinthe, chemin);
 		
-		this.chemin = chemin;
 		
 		fantomes = new ArrayList<Agent>();
 		pacmans = new ArrayList<Agent>();
 		
-		this.labyrinthe = labyrinthe;
-		for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
-			//Agent fantome_temp = new Agent(false,new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
-			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i));
+		this.setLabyrinthe(labyrinthe);
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
+			//Agent fantome_temp = new Agent(false,new PositionAgent(getLabyrinthe().getGhosts_start().get(i).getX(), getLabyrinthe().getGhosts_start().get(i).getY(), getLabyrinthe().getGhosts_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
+			Agent fantome_temp = new Agent(false, getLabyrinthe().getGhosts_start().get(i));
 			this.fantomes.add(fantome_temp);
 		}
-		for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
 			
-			//Agent pacman_temp = new Agent(false,new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
-			Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i));
+			//Agent pacman_temp = new Agent(false,new PositionAgent(getLabyrinthe().getPacman_start().get(i).getX(), getLabyrinthe().getPacman_start().get(i).getY(), getLabyrinthe().getPacman_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
+			Agent pacman_temp = new Agent(true, getLabyrinthe().getPacman_start().get(i));
 			this.pacmans.add(pacman_temp);
 		}
 	}		
-	
-	public String getChemin(){
-		return this.chemin;
-	}
-	
-	public void setChemin(String chemin){
-		this.chemin = chemin;
-	}
-	
-	public void setLabyrinthe(Maze labyrinthe){
-		System.out.println("Dans le set de labyrinthe : ");
-		this.labyrinthe = labyrinthe;
-	}
-	
-	public Maze getLabyrinthe(){
-		return this.labyrinthe;
-	}
 	
 	public void setFantomes(ArrayList<Agent> fantomes){
 		System.out.println("Dans le set de fantomes : ");
@@ -90,7 +68,7 @@ public class PacmanGame extends Game{
 	 */
 	public void gameOver(){
 		System.out.print("You Died");
-		this.notifierObservateur(false, false);
+		this.notifierObservateur(false, false, true);
 	}
 	
 	//Méthode appelé quand un tour est lancé
@@ -134,7 +112,7 @@ public class PacmanGame extends Game{
 		}
 		mortAgent();
 		NbTours++;
-		this.notifierObservateur(false, false);
+		this.notifierObservateur(false, false, false);
 	}
 	
 	//Méthode appelé quand le jeu est initialisé ou réinitialisé
@@ -142,40 +120,40 @@ public class PacmanGame extends Game{
 		this.fantomes.clear();
 		this.pacmans.clear();
 		
-		for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
-			//Agent fantome_temp = new Agent(false,new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
-			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i));
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
+			//Agent fantome_temp = new Agent(false,new PositionAgent(getLabyrinthe().getGhosts_start().get(i).getX(), getLabyrinthe().getGhosts_start().get(i).getY(), getLabyrinthe().getGhosts_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
+			Agent fantome_temp = new Agent(false, getLabyrinthe().getGhosts_start().get(i));
 			this.fantomes.add(fantome_temp);
 		}
-		for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
 			
-			//Agent pacman_temp = new Agent(false,new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
-			Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i));
+			//Agent pacman_temp = new Agent(false,new PositionAgent(getLabyrinthe().getPacman_start().get(i).getX(), getLabyrinthe().getPacman_start().get(i).getY(), getLabyrinthe().getPacman_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
+			Agent pacman_temp = new Agent(true, getLabyrinthe().getPacman_start().get(i));
 			this.pacmans.add(pacman_temp);
 		}
-		this.notifierObservateur(true, false);
+		this.notifierObservateur(true, false, false);
 	}
 	
 	
 	//Méthode prenant en paramètre un chemin vers un layout et actualisant les valeurs
 	public void actualiser(String chemin){
-		this.chemin = chemin;
+		this.setChemin(chemin);
 		try {
 			System.out.println("On est dans actualiser : ");
-			this.labyrinthe = new Maze(chemin);
+			this.setLabyrinthe(new Maze(chemin));
 			
 			this.fantomes.clear();
 			this.pacmans.clear();
 			
-			for(int i = 0; i < labyrinthe.getInitNumberOfGhosts(); i++){
-				//Agent fantome_temp = new Agent(false,new PositionAgent(labyrinthe.getGhosts_start().get(i).getX(), labyrinthe.getGhosts_start().get(i).getY(), labyrinthe.getGhosts_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
-				Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i));
+			for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
+				//Agent fantome_temp = new Agent(false,new PositionAgent(getLabyrinthe().getGhosts_start().get(i).getX(), getLabyrinthe().getGhosts_start().get(i).getY(), getLabyrinthe().getGhosts_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
+				Agent fantome_temp = new Agent(false, getLabyrinthe().getGhosts_start().get(i));
 				this.fantomes.add(fantome_temp);
 			}
-			for(int i = 0; i < labyrinthe.getInitNumberOfPacmans(); i++){
+			for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
 				
-				//Agent pacman_temp = new Agent(false,new PositionAgent(labyrinthe.getPacman_start().get(i).getX(), labyrinthe.getPacman_start().get(i).getY(), labyrinthe.getPacman_start().get(i).getDir()));//labyrinthe.getGhosts_start().get(i));
-				Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i));
+				//Agent pacman_temp = new Agent(false,new PositionAgent(getLabyrinthe().getPacman_start().get(i).getX(), getLabyrinthe().getPacman_start().get(i).getY(), getLabyrinthe().getPacman_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
+				Agent pacman_temp = new Agent(true, getLabyrinthe().getPacman_start().get(i));
 				this.pacmans.add(pacman_temp);
 			}
 		} catch (Exception e) {
@@ -183,7 +161,7 @@ public class PacmanGame extends Game{
 			e.printStackTrace();
 		}
 		
-		this.notifierObservateur(false, true);
+		this.notifierObservateur(false, true, false);
 		
 	}
 	
@@ -210,7 +188,7 @@ public class PacmanGame extends Game{
     		default:
     			break;
     	}	
-    	if(!this.labyrinthe.isWall(XPosition,YPosition)){
+    	if(!this.getLabyrinthe().isWall(XPosition,YPosition)){
     		return true;
     	} else {
     		return false;
@@ -240,7 +218,7 @@ public class PacmanGame extends Game{
         	}    	
     	
     	
-    	if(!this.labyrinthe.isWall(XPosition,YPosition)){
+    	if(!this.getLabyrinthe().isWall(XPosition,YPosition)){
     		return true;
     	} else {
     		return false;
@@ -288,19 +266,17 @@ public class PacmanGame extends Game{
 				if(isAlivePacman == true && this.isInvincible == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
-						this.labyrinthe.getPacman_start().remove(i);
+						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
 						System.out.println("Un Pacman est mort");
-						this.notifierObservateur(false, false);
 						this.NbVies -= 1;
 					}
 				}
 				if(isAlivePacman = true && this.isInvincible == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
-						this.labyrinthe.getGhosts_start().remove(j);
+						this.getLabyrinthe().getGhosts_start().remove(j);
 						System.out.println("Un fantome est mort");
-						this.notifierObservateur(false, false);
 						this.NbPoints += 30; //si un pacman mange une pacgomme il a 30 point
 					}
 					
@@ -317,23 +293,99 @@ public class PacmanGame extends Game{
      */
     public boolean finJeu(){
     	if(pacmans.isEmpty()){
-    		System.out.println("Tous les pacmans sont morts fin du jeu");
+    		System.out.println("Tous les pacmans sont morts, fin du jeu.");
     		return true ;
     	}
     	boolean noCapsuleFound = true;
-    	for(int i = 0; i< this.labyrinthe.getSizeX(); i++){
-    		for(int j = 0; j < this.labyrinthe.getSizeY(); j++){
-    			if(this.labyrinthe.food[i][j] == true){
+    	for(int i = 0; i< this.getLabyrinthe().getSizeX(); i++){
+    		for(int j = 0; j < this.getLabyrinthe().getSizeY(); j++){
+    			if(this.getLabyrinthe().food[i][j] == true){
     				noCapsuleFound = false;
     			}
     		}
     	}
     	if(noCapsuleFound == true){
-    		System.out.println("Plus de capsules fin du Jeu");
+    		System.out.println("Plus de capsules, fin du Jeu.");
     		return true;
     	}
     	return false;
     }
-	
+    
+    /**
+     * @author etudiant_pas_moi.
+     * @param TypeAgent : le type de l'agent.
+     * @param agent : agent cherchant où son ses ennemis.
+     * @return : la distance entre l'agent et son ennemi, si il n'y en a pas, le mur le plusproche.
+     */
+    public int ChercheAgentEst(boolean TypeAgent, Agent agent){
+    	int valeur_distance = 0;
+		PositionAgent position_agent = agent.getPosition();
+    	if(TypeAgent){
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	} else {
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	}
+    	return valeur_distance;
+    }
+    
+    public int ChercheAgentOuest(boolean TypeAgent, Agent agent){
+    	int valeur_distance = 0;
+		PositionAgent position_agent = agent.getPosition();
+    	if(TypeAgent){
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	} else {
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	}
+    	return valeur_distance;
+    }
+    public int ChercheAgentSud(boolean TypeAgent, Agent agent){
+    	int valeur_distance = 0;
+		PositionAgent position_agent = agent.getPosition();
+    	if(TypeAgent){
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	} else {
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	}
+    	return valeur_distance;
+    }
+    public int ChercheAgentNord(boolean TypeAgent, Agent agent){
+    	int valeur_distance = 0;
+		PositionAgent position_agent = agent.getPosition();
+    	if(TypeAgent){
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	} else {
+    		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
+    			position_agent.setX(position_agent.getX()+1);
+    			valeur_distance++;
+    		}
+    	}
+    	return valeur_distance;
+    }
+    
+    
+    
+    
+    
 }
 

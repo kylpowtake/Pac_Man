@@ -3,6 +3,6 @@ public interface Sujet {
 
     public void enregistrerObservateur(Observateur observateur);
     public void supprimerObservateur(Observateur observer);
-    public void notifierObservateur(boolean testrestart, boolean testransformation);
+    public void notifierObservateur(boolean testrestart, boolean testransformation, boolean GameOver);
     
 }

@@ -22,7 +22,7 @@ public class View implements Observateur{
 	
 	
 	//attributs 
-	PacmanGame game;
+	Game game;
 	InterfaceController controller;
 	private Maze labyrinthe;
 	private Touches panelTouches = new Touches();
@@ -59,17 +59,19 @@ public class View implements Observateur{
 		}	
 
 	
-	public void actualiser(boolean testrestart, boolean testtransformation) {
+	public void actualiser(boolean testrestart, boolean testtransformation, boolean GameOver) {
 	
 		this.Label_2.setText("Turn : " + this.game.NbTours);
 		this.Label_3.setText("Nombres de points : " + this.game.NbPoints);
 		this.Label_4.setText("Nombres de vies : " + this.game.NbVies);
 		
-		if(this.game.NbTours >= this.game.NbToursMax){
+		if(GameOver){
 			this.Restart.setEnabled(true);
 			this.Pause.setEnabled(false);
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
+			this.changeMaze.setEnabled(true);
+			game.isRunning = false;
 		}
 		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
@@ -77,7 +79,6 @@ public class View implements Observateur{
 		
 		if(testrestart){
 			try {
-				System.out.println("Dans le test de testBool : ");
 				this.labyrinthe = new Maze(this.game.getChemin());
 				game.actualiser(this.game.getChemin());
 				controller.SetView(this);

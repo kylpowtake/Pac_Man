@@ -122,6 +122,45 @@ public class Maze implements Serializable{
 		return(walls[x][y]);
 	}
 	
+	
+	
+	/**
+	 * Test si l'agent donné est bien aux coordonnées x et y données.
+	 */
+	public boolean TestPresenceAgent(PositionAgent position_agent, int x, int y){
+		if(position_agent.getX() == x && position_agent.getY() == y){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Permet de savoir si il y a un fantôme au coordonnées x et y données.
+	 */
+	public boolean isFantome(int x, int y){
+		for(int i = 0; i < this.getGhosts_start().size(); i++){
+			if(TestPresenceAgent(this.getGhosts_start().get(i),x, y)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Permet de savoir si il y a un pacman.
+	 */
+	public boolean isPacman(int x, int y){
+		for(int i = 0; i < this.getPacman_start().size(); i++){
+			if(TestPresenceAgent(this.getPacman_start().get(i),x, y)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * Permet de savoir si il y a de la nourriture
 	 */
