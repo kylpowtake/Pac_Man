@@ -74,10 +74,13 @@ public class PacmanGame extends Game{
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
 		
+		setActionParTouche();
+		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
 			ComportementFantome.comportement(fantomes.get(i), this);
 		}
+		//deplacement des de tous les fantomes 
 		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
 			fantomes.get(i).getPosition().setDir(fantomes.get(i).getNextAction());
@@ -85,9 +88,13 @@ public class PacmanGame extends Game{
 		}
 		
 		mortAgent();
+		
+		System.out.println(this.nbJoueursPacmans);
+		//set action des pacmans qui ne sont pas controlés
 		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
 			ComportementPacman.comportement(pacmans.get(i), this);
 		}
+		//deplacement e tous les pacmans 
 		for(int i = 0; i < pacmans.size(); i++){
 			action.setDirection(pacmans.get(i).getNextAction());
 			pacmans.get(i).getPosition().setDir(pacmans.get(i).getNextAction());
@@ -101,11 +108,11 @@ public class PacmanGame extends Game{
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.NbPoints += 10; //si un pacman mange une pacgomme il a 10 point 
 				this.isInvincible = true;
-				tourInvincible = this.NbTours + 10;
+				tourInvincible = this.NbTours + 30;
 			}
 		}
 		if(tourInvincible == this.NbTours){
-			this.isInvincible = true; // /!\ a changer rend les pacmans invincibles des le premier tour 
+			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
 		}
 		if(finJeu() == true){
 			gameOver();
@@ -387,5 +394,16 @@ public class PacmanGame extends Game{
     
     
     
+
+	
+	public void setActionParTouche() {
+		if(this.nbJoueursFantome > 0){
+			this.fantomes.get(0).setNextAction(this.panelTouches.toucheClique);
+		}
+		if(this.nbJoueursPacmans > 0){
+			this.pacmans.get(0).setNextAction(this.panelTouches.toucheClique);
+		}
+	}
+	
 }
 
