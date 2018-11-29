@@ -102,8 +102,8 @@ public class PacmanGame extends Game{
 		}
 		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
+			fantomes.get(i).getPosition().setDir(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
-			
 		}
 		
 		mortAgent();
@@ -111,8 +111,8 @@ public class PacmanGame extends Game{
 			ComportementPacman.comportement(pacmans.get(i), this);
 		}
 		for(int i = 0; i < pacmans.size(); i++){
-			System.out.println("Direction de pacman : " + pacmans.get(i).getNextAction());
 			action.setDirection(pacmans.get(i).getNextAction());
+			pacmans.get(i).getPosition().setDir(pacmans.get(i).getNextAction());
 			this.moveAgent(pacmans.get(i), action);
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
@@ -196,16 +196,16 @@ public class PacmanGame extends Game{
     	
     	switch (action.getDirection()){
     		case Maze.NORTH:
-    			XPosition++;
+    			YPosition--;
     			break;
     		case Maze.SOUTH:
-    			XPosition--;
-    			break;
-    		case Maze.EAST:
     			YPosition++;
     			break;
+    		case Maze.EAST:
+    			XPosition++;
+    			break;
     		case Maze.WEST:
-    			YPosition--;
+    			XPosition--;
     			break;
     		default:
     			break;
@@ -224,16 +224,16 @@ public class PacmanGame extends Game{
         	
         	switch (action){
         		case Maze.NORTH:
-        			XPosition++;
+        			YPosition--;
         			break;
         		case Maze.SOUTH:
-        			XPosition--;
-        			break;
-        		case Maze.EAST:
         			YPosition++;
         			break;
+        		case Maze.EAST:
+        			XPosition++;
+        			break;
         		case Maze.WEST:
-        			YPosition--;
+        			XPosition--;
         			break;
         		case Maze.STOP:
         			break;
@@ -258,16 +258,16 @@ public class PacmanGame extends Game{
     	if(isLegalMove(agent, action)){
         	switch (action.getDirection()){
     		case Maze.NORTH:
-    			agent.getPosition().setX(agent.getPosition().getX() + 1);
+    			agent.getPosition().setY(agent.getPosition().getY() - 1);
     			break;
     		case Maze.SOUTH:
-    			agent.getPosition().setX(agent.getPosition().getX() - 1);
-    			break;
-    		case Maze.EAST:
     			agent.getPosition().setY(agent.getPosition().getY() + 1);
     			break;
+    		case Maze.EAST:
+    			agent.getPosition().setX(agent.getPosition().getX() + 1);
+    			break;
     		case Maze.WEST:
-    			agent.getPosition().setY(agent.getPosition().getY() - 1);
+    			agent.getPosition().setX(agent.getPosition().getX() - 1);
     			break;
     		default:
     			break;
