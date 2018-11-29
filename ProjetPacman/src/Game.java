@@ -9,8 +9,11 @@ public abstract class Game implements Runnable,Sujet{
 	protected int NbToursMax = 525;
 	protected int NbPoints = 0;
 	protected int NbVies = 3;
-	protected boolean isInvincible;
-	
+	protected int nbJoueursPacmans = 0;
+	protected int nbJoueursFantome = 0;
+	private String chemin;
+	private Maze labyrinthe;
+
     Thread thread; 
 	boolean isRunning;
 	long nombre_de_tours_par_secondes = 2;
@@ -19,8 +22,9 @@ public abstract class Game implements Runnable,Sujet{
 	
 //methodes concrètes
 	
-	public Game(){
+	public Game(Maze labyrinthe, String chemin){
 		this.NbTours = 0;
+		this.chemin = chemin;
 	}
 	
 	public void init(){
@@ -29,17 +33,16 @@ public abstract class Game implements Runnable,Sujet{
 	}
 	
 	public void step(){
-		if(NbTours < NbToursMax){
+		if(NbTours <= NbToursMax){
 			takeTurn();
 		}
-		else{gameOver();}
+		else{
+			gameOver();
+		}
 		try {
 			Thread.sleep(1000/this.nombre_de_tours_par_secondes);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-		if(this.NbTours == this.NbToursMax){
-			gameOver();
 		}
 	}
 	
@@ -47,13 +50,14 @@ public abstract class Game implements Runnable,Sujet{
 		while(isRunning == true && NbTours < NbToursMax){
 			step();
 		}
-		stop();
 		if(NbTours >= NbToursMax){
 			System.out.println("fin du jeu");
 		}
 	}
 	
-	public void stop(){isRunning = false;}
+	public void stop(){
+		isRunning = false;
+	}
 	
     public void launch(){ 
         thread = new Thread(this);    
@@ -64,8 +68,24 @@ public abstract class Game implements Runnable,Sujet{
     public void changement(String chemin){
     	actualiser(chemin);
     }
-	
     
+	public String getChemin(){
+		return this.chemin;
+	}
+	
+	public void setChemin(String chemin){
+		this.chemin = chemin;
+	}
+	
+	public void setLabyrinthe(Maze labyrinthe){
+		System.out.println("Dans le set de labyrinthe : ");
+		this.labyrinthe = labyrinthe;
+	}
+	
+	public Maze getLabyrinthe(){
+		return this.labyrinthe;
+	}
+	
     //méthodes abstraites
     abstract public void setActionParTouche();
 	abstract public void gameOver();
@@ -80,9 +100,9 @@ public abstract class Game implements Runnable,Sujet{
     //observateur     
 	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
 	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
-	public void notifierObservateur(boolean testrestart, boolean testtransformation) {
+	public void notifierObservateur(boolean testrestart, boolean testtransformation, boolean GameOver) {
 		for(int i = 0; i< observateurs.size(); i++) {
-			observateurs.get(i).actualiser(testrestart, testtransformation);
+			observateurs.get(i).actualiser(testrestart, testtransformation, GameOver);
 		}
 	}
 }
