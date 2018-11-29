@@ -18,6 +18,7 @@ public class PacmanGame extends Game{
 
 	private ArrayList<Agent> fantomes;
 	private ArrayList<Agent> pacmans;
+	private boolean isInvincible;
 	
 	private int tourInvincible;
 	
@@ -108,13 +109,13 @@ public class PacmanGame extends Game{
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.NbPoints += 10; //si un pacman mange une pacgomme il a 10 point 
 				this.isInvincible = true;
-				this.labyrinthe.estInvinsible = true;
+				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.NbTours + 20;
 			}
 		}
 		if(tourInvincible == this.NbTours){
 			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
-			this.labyrinthe.estInvinsible = false;
+			this.getLabyrinthe().estInvinsible = false;
 		}
 		if(finJeu() == true){
 			gameOver();
@@ -130,12 +131,12 @@ public class PacmanGame extends Game{
 		this.pacmans.clear();
 		
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantome());
+			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantome());
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
 			
-			Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i),new ComportementPacman());
+			Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacman());
 			this.pacmans.add(pacman_temp);
 		}
 		this.notifierObservateur(true, false, false);
@@ -153,12 +154,12 @@ public class PacmanGame extends Game{
 			this.pacmans.clear();
 			
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-				Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantome());
+				Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantome());
 				this.fantomes.add(fantome_temp);
 			}
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
 				
-				Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i),new ComportementPacman());
+				Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacman());
 				this.pacmans.add(pacman_temp);
 			}
 		} catch (Exception e) {
