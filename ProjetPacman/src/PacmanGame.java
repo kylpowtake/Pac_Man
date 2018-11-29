@@ -195,9 +195,37 @@ public class PacmanGame extends Game{
     		case Maze.WEST:
     			YPosition--;
     			break;
-    		case Maze.STOP:
+    		default:
     			break;
+    	}	
+    	if(!this.labyrinthe.isWall(XPosition,YPosition)){
+    		return true;
+    	} else {
+    		return false;
     	}
+    }
+    	//Retourne vrai si l'agent peut faire l'action, retourne faux sinon
+        public boolean isLegalMoveInt(Agent agent, int action){
+        	PositionAgent agentPosition = agent.getPosition();
+        	int XPosition = agentPosition.getX();
+        	int YPosition = agentPosition.getY();
+        	
+        	switch (action){
+        		case Maze.NORTH:
+        			XPosition++;
+        			break;
+        		case Maze.SOUTH:
+        			XPosition--;
+        			break;
+        		case Maze.EAST:
+        			YPosition++;
+        			break;
+        		case Maze.WEST:
+        			YPosition--;
+        			break;
+        		case Maze.STOP:
+        			break;
+        	}    	
     	
     	
     	if(!this.labyrinthe.isWall(XPosition,YPosition)){
@@ -234,26 +262,6 @@ public class PacmanGame extends Game{
     		default:
     			break;
         	}
-    	} else {
-    		AgentAction newaction = new AgentAction(0);
-    		switch(action.getDirection()){
-    		case Maze.NORTH:
-    			newaction.setDirection(action.getDirection() + 3);
-    			agent.setNextAction(newaction.getDirection());
-    			break;
-    		case Maze.SOUTH:
-    			newaction.setDirection(action.getDirection() + 1);
-    			agent.setNextAction(newaction.getDirection());
-    			break;
-    		case Maze.EAST:
-    			newaction.setDirection(action.getDirection()  - 2);
-    			agent.setNextAction(newaction.getDirection());
-    			break;
-    		case Maze.WEST:
-    			newaction.setDirection(action.getDirection() - 2);
-    			agent.setNextAction(newaction.getDirection());
-    			break; 
-    		}
     	}
     }
     

@@ -198,6 +198,7 @@ public class View implements Observateur{
 		    	controller.pause();
 		    	Restart.setEnabled(true);
 		    	Step.setEnabled(true);
+		    	Run.setEnabled(true);
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
 			}
