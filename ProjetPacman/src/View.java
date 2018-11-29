@@ -230,6 +230,7 @@ public class View implements Observateur{
 		    	Restart.setEnabled(true);
 		    	Run.setEnabled(true);
 		    	Step.setEnabled(true);
+		    	Run.setEnabled(true);
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
 			}

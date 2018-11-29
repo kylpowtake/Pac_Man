@@ -97,7 +97,6 @@ public class PacmanGame extends Game{
 	public void takeTurn(){
 		
 		AgentAction action = new AgentAction(0);
-		
 		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
 			ComportementFantome.comportement(fantomes.get(i), this);
 		}
@@ -108,9 +107,11 @@ public class PacmanGame extends Game{
 		}
 		
 		mortAgent();
-		
 		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
 			ComportementPacman.comportement(pacmans.get(i), this);
+		}
+		for(int i = 0; i < pacmans.size(); i++){
+			System.out.println("Direction de pacman : " + pacmans.get(i).getNextAction());
 			action.setDirection(pacmans.get(i).getNextAction());
 			this.moveAgent(pacmans.get(i), action);
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
@@ -208,7 +209,35 @@ public class PacmanGame extends Game{
     			break;
     		default:
     			break;
+    	}	
+    	if(!this.labyrinthe.isWall(XPosition,YPosition)){
+    		return true;
+    	} else {
+    		return false;
     	}
+    }
+    	//Retourne vrai si l'agent peut faire l'action, retourne faux sinon
+        public boolean isLegalMoveInt(Agent agent, int action){
+        	PositionAgent agentPosition = agent.getPosition();
+        	int XPosition = agentPosition.getX();
+        	int YPosition = agentPosition.getY();
+        	
+        	switch (action){
+        		case Maze.NORTH:
+        			XPosition++;
+        			break;
+        		case Maze.SOUTH:
+        			XPosition--;
+        			break;
+        		case Maze.EAST:
+        			YPosition++;
+        			break;
+        		case Maze.WEST:
+        			YPosition--;
+        			break;
+        		case Maze.STOP:
+        			break;
+        	}    	
     	
     	
     	if(!this.labyrinthe.isWall(XPosition,YPosition)){
@@ -239,8 +268,6 @@ public class PacmanGame extends Game{
     			break;
     		case Maze.WEST:
     			agent.getPosition().setY(agent.getPosition().getY() - 1);
-    			break;
-    		case Maze.STOP:
     			break;
     		default:
     			break;

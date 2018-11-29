@@ -70,6 +70,7 @@ public abstract class Game implements Runnable,Sujet{
 	abstract public void initializeGame();
 	abstract public void actualiser(String chemin);
     abstract public boolean isLegalMove(Agent agent, AgentAction action);
+    abstract public boolean isLegalMoveInt(Agent agent, int action);
 
 	
     //observateur     
