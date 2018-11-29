@@ -111,6 +111,7 @@ public class PacmanGame extends Game{
 		
 		mortAgent();
 		
+		System.out.println(this.nbJoueursPacmans);
 		//set action des pacmans qui ne sont pas controlés
 		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
 			ComportementPacman.comportement(pacmans.get(i), this);
@@ -129,11 +130,11 @@ public class PacmanGame extends Game{
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.NbPoints += 10; //si un pacman mange une pacgomme il a 10 point 
 				this.isInvincible = true;
-				tourInvincible = this.NbTours + 10;
+				tourInvincible = this.NbTours + 30;
 			}
 		}
 		if(tourInvincible == this.NbTours){
-			this.isInvincible = true; // /!\ a changer rend les pacmans invincibles des le premier tour 
+			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
 		}
 		if(finJeu() == true){
 			gameOver();
@@ -343,10 +344,10 @@ public class PacmanGame extends Game{
 
 	
 	public void setActionParTouche() {
-		if(this.nbJoueursFantome >0){
+		if(this.nbJoueursFantome > 0){
 			this.fantomes.get(0).setNextAction(this.panelTouches.toucheClique);
 		}
-		if(this.nbJoueursPacmans >0){
+		if(this.nbJoueursPacmans > 0){
 			this.pacmans.get(0).setNextAction(this.panelTouches.toucheClique);
 		}
 	}
