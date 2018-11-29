@@ -22,6 +22,9 @@ public class PacmanGame extends Game{
 	private boolean isInvincible;
 	private int tourInvincible;
 	private String chemin;
+	protected int nbJoueursPacmans = 0;
+	protected int nbJoueursFantome = 0;
+	
 	/**
 	 * Constructeur de PacmanGame avec un labrinthe
 	 */
@@ -85,37 +88,45 @@ public class PacmanGame extends Game{
 	/**
 	 * Méthode appelé quand une des conditions de fin de partie est vérifiée
 	 */
-	void gameOver(){
+	public void gameOver(){
 		System.out.print("You Died");
 		this.notifierObservateur(false, false);
 	}
 	
 	//Méthode appelé quand un tour est lancé
-	void takeTurn(){
+	public void takeTurn(){
 		
 		AgentAction action = new AgentAction(0);
+		
+		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
+			ComportementFantome.comportement(fantomes.get(i), this);
+		}
 		for(int i = 0; i < fantomes.size(); i++){
-			System.out.println("on est dans le mouvement : " + fantomes.get(i).getPosition().getX() + fantomes.get(i).getPosition().getY() + 
-					" et dans initial : " + this.labyrinthe.getGhosts_start().get(i).getX() + this.labyrinthe.getGhosts_start().get(i).getY() + ".\n\n");
 			action.setDirection(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
+			
 		}
+		
 		mortAgent();
-		for(int i = 0; i < pacmans.size(); i++){
+		
+		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
+			ComportementPacman.comportement(pacmans.get(i), this);
 			action.setDirection(pacmans.get(i).getNextAction());
 			this.moveAgent(pacmans.get(i), action);
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
+				this.NbPoints += 1; 
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
+				this.NbPoints += 10; //si un pacman mange une pacgomme il a 10 point 
 				this.isInvincible = true;
 				tourInvincible = this.NbTours + 10;
 			}
 		}
 		if(tourInvincible == this.NbTours){
-			this.isInvincible = true;
+			this.isInvincible = true; // /!\ a changer rend les pacmans invincibles des le premier tour 
 		}
 		if(finJeu() == true){
 			gameOver();
@@ -126,7 +137,7 @@ public class PacmanGame extends Game{
 	}
 	
 	//Méthode appelé quand le jeu est initialisé ou réinitialisé
-	void initializeGame(){
+	public void initializeGame(){
 		this.fantomes.clear();
 		this.pacmans.clear();
 		
@@ -195,7 +206,7 @@ public class PacmanGame extends Game{
     		case Maze.WEST:
     			YPosition--;
     			break;
-    		case Maze.STOP:
+    		default:
     			break;
     	}
     	
@@ -234,26 +245,6 @@ public class PacmanGame extends Game{
     		default:
     			break;
         	}
-    	} else {
-    		AgentAction newaction = new AgentAction(0);
-    		switch(action.getDirection()){
-    		case Maze.NORTH:
-    			newaction.setDirection(action.getDirection() + 3);
-    			agent.setNextAction(newaction.getDirection());
-    			break;
-    		case Maze.SOUTH:
-    			newaction.setDirection(action.getDirection() + 1);
-    			agent.setNextAction(newaction.getDirection());
-    			break;
-    		case Maze.EAST:
-    			newaction.setDirection(action.getDirection()  - 2);
-    			agent.setNextAction(newaction.getDirection());
-    			break;
-    		case Maze.WEST:
-    			newaction.setDirection(action.getDirection() - 2);
-    			agent.setNextAction(newaction.getDirection());
-    			break; 
-    		}
     	}
     }
     
@@ -266,7 +257,7 @@ public class PacmanGame extends Game{
 			PositionAgent positionPacman = new PositionAgent(pacmans.get(i).getPosition());
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
-				PositionAgent positionFantome = new PositionAgent(fantomes.get(i).getPosition());
+				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
 				if(isAlivePacman == true && this.isInvincible == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
@@ -274,14 +265,16 @@ public class PacmanGame extends Game{
 						isAlivePacman = false;
 						System.out.println("Un Pacman est mort");
 						this.notifierObservateur(false, false);
+						this.NbVies -= 1;
 					}
 				}
 				if(isAlivePacman = true && this.isInvincible == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
-						this.labyrinthe.getGhosts_start().remove(i);
+						this.labyrinthe.getGhosts_start().remove(j);
 						System.out.println("Un fantome est mort");
 						this.notifierObservateur(false, false);
+						this.NbPoints += 30; //si un pacman mange une pacgomme il a 30 point
 					}
 					
 				}
@@ -293,7 +286,7 @@ public class PacmanGame extends Game{
      * Fin du jeu si
      * - Tous les pacmans sont morts 
      * - Toutes les pacgommes sont mangées 
-     * @return
+     * @return true si fin endGame false sinon
      */
     public boolean finJeu(){
     	if(pacmans.isEmpty()){

@@ -6,6 +6,9 @@ public abstract class Game implements Runnable,Sujet{
 //attributs 
 	protected int NbTours;
 	protected int NbToursMax = 525;
+	protected int NbPoints = 0;
+	protected int NbVies = 3;
+	
     Thread thread; 
 	boolean isRunning;
 	long nombre_de_tours_par_secondes = 2;
@@ -61,13 +64,15 @@ public abstract class Game implements Runnable,Sujet{
     }
 	
     
- //méthodes abstraites
-	abstract void gameOver();
-	abstract void takeTurn();
-	abstract void initializeGame();
-	abstract void actualiser(String chemin);
+    //méthodes abstraites
+	abstract public void gameOver();
+	abstract public void takeTurn();
+	abstract public void initializeGame();
+	abstract public void actualiser(String chemin);
+    abstract public boolean isLegalMove(Agent agent, AgentAction action);
 
-//observateur     
+	
+    //observateur     
 	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
 	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
 	public void notifierObservateur(boolean testrestart, boolean testtransformation) {

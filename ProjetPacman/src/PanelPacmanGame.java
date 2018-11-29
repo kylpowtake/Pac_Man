@@ -100,7 +100,18 @@ public class PanelPacmanGame extends JPanel{
 			if(ghostsScarred) {
 				drawGhosts(g, pos.getX(), pos.getY(), ghostScarredColor);	
 			} else {
-				drawGhosts(g, pos.getX(), pos.getY(), ghostsColor);	
+				switch(i % 3){
+				case 0 :
+					drawGhosts(g, pos.getX(), pos.getY(), Color.blue);						
+					break;
+				case 1 :
+					drawGhosts(g, pos.getX(), pos.getY(), Color.red);	
+					break;
+				case 2 :
+					drawGhosts(g, pos.getX(), pos.getY(), Color.pink);	
+					break;
+				}
+				//drawGhosts(g, pos.getX(), pos.getY(), ghostsColor);	
 			}
 		}
 		
@@ -153,6 +164,12 @@ public class PanelPacmanGame extends JPanel{
 			sa=160; fa=-320;
 			temp1 = sa/30;
 			temp2 = fa/30;
+		}
+		if (pacmanDirection==Maze.STOP)
+		{
+			sa=70; fa=-320;
+			temp1 = fa/100;
+			temp2 = sa/10000;
 		}
 		
 		g.fillArc((int)(npx+posx),(int)(npy+posy),(int)(nsx+10),(int)nsy,sa,fa);
