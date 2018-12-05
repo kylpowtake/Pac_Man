@@ -11,8 +11,10 @@
  */
 public class AgentAction {
 	
+	//attributs 
 	private int direction;
 	
+	//constrcuteur 
 	public AgentAction(){}
 	
 	public AgentAction(int direction){
@@ -21,6 +23,7 @@ public class AgentAction {
 		}
 	}
 	
+	//méthodes 
 	public void setDirection(int direction){
 		if(direction > -1 && direction < 5){
 		this.direction = direction;

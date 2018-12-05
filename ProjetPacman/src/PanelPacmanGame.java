@@ -147,6 +147,10 @@ public class PanelPacmanGame extends JPanel{
 		double temp1 = 0;
 		double temp2 = 0;
 		
+		//sa orientation de la bouche
+		//fa largeur de la bouche 
+		//temp1 decalage vers la droite 
+		//temp2
 		if (pacmanDirection==Maze.NORTH)
 		{
 			sa=70; fa=-320;
@@ -156,8 +160,8 @@ public class PanelPacmanGame extends JPanel{
 		if (pacmanDirection==Maze.SOUTH)
 		{
 			sa=250; fa=-320;
-			temp1 = -fa/20;
-			temp2 = sa/80;
+			temp1 = -fa/70;
+		//	temp2 = sa/80;
 		}
 		if (pacmanDirection==Maze.EAST)
 		{

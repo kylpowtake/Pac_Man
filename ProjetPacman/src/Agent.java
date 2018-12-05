@@ -1,9 +1,18 @@
+/**
+ * Classe permettant de définir un agent 
+ *
+ */
+
+
 public class Agent {
+	
+	//attributs 
 	private boolean typeAgent;
 	private PositionAgent position;
 	private int nextAction;
 	private ComportementAgent Comportementagent;
 	
+	//constructeur 
 	public Agent(boolean typeAgent,PositionAgent p,ComportementAgent c){
 		if(p.getDir()<5 && p.getDir()>-1){
 			this.typeAgent = typeAgent;
@@ -13,6 +22,7 @@ public class Agent {
 		}
 	}
 	
+	//méthodes 
 	boolean getTypeAgent(){
 		return this.typeAgent;
 	}

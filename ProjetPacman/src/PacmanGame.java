@@ -76,7 +76,7 @@ public class PacmanGame extends Game{
 		setActionParTouche();
 		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
-		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
+		for(int i = this.getNbJoueursFantome(); i < fantomes.size(); i++){
 			fantomes.get(i).getComportement().comportement(fantomes.get(i),this);
 			//ComportementFantome.comportement(fantomes.get(i), this);
 		}
@@ -89,9 +89,9 @@ public class PacmanGame extends Game{
 		
 		mortAgent();
 		
-		System.out.println(this.nbJoueursPacmans);
+		System.out.println(this.getNbJoueursPacman());
 		//set action des pacmans qui ne sont pas controlés
-		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
+		for(int i = this.getNbJoueursPacman(); i < pacmans.size(); i++){
 			pacmans.get(i).getComportement().comportement(pacmans.get(i),this);
 			//ComportementPacman.comportement(pacmans.get(i), this);
 		}
@@ -103,17 +103,17 @@ public class PacmanGame extends Game{
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
-				this.NbPoints += 1; 
+				this.setNbPoints(this.getNbPoints()+1);
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
-				this.NbPoints += 10; //si un pacman mange une pacgomme il a 10 point 
+				this.setNbPoints(this.getNbPoints()+10);
 				this.isInvincible = true;
 				this.getLabyrinthe().estInvinsible = true;
-				tourInvincible = this.NbTours + 20;
+				tourInvincible = this.getNbTours() + 20;
 			}
 		}
-		if(tourInvincible == this.NbTours){
+		if(tourInvincible == this.getNbTours()){
 			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
 			this.getLabyrinthe().estInvinsible = false;
 		}
@@ -121,7 +121,7 @@ public class PacmanGame extends Game{
 			gameOver();
 		}
 		mortAgent();
-		NbTours++;
+		this.setNbTours(this.getNbTours()+1);
 		this.notifierObservateur(false, false, false);
 	}
 	
@@ -275,7 +275,7 @@ public class PacmanGame extends Game{
 						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
 						System.out.println("Un Pacman est mort");
-						this.NbVies -= 1;
+						this.setNbies(this.getNbVies()-1);
 					}
 				}
 				if(isAlivePacman = true && this.isInvincible == true){
@@ -283,7 +283,7 @@ public class PacmanGame extends Game{
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);
 						System.out.println("Un fantome est mort");
-						this.NbPoints += 30; //si un pacman mange une pacgomme il a 30 point
+						this.setNbPoints(this.getNbPoints()+30);
 					}
 					
 				}
@@ -396,10 +396,10 @@ public class PacmanGame extends Game{
 
 	
 	public void setActionParTouche() {
-		if(this.nbJoueursFantome > 0){
+		if(this.getNbJoueursFantome() > 0){
 			this.fantomes.get(0).setNextAction(this.panelTouches.toucheClique);
 		}
-		if(this.nbJoueursPacmans > 0){
+		if(this.getNbJoueursPacman() > 0){
 			this.pacmans.get(0).setNextAction(this.panelTouches.toucheClique);
 		}
 	}

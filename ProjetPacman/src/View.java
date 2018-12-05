@@ -61,9 +61,9 @@ public class View implements Observateur{
 	
 	public void actualiser(boolean testrestart, boolean testtransformation, boolean GameOver) {
 	
-		this.Label_2.setText("Turn : " + this.game.NbTours);
-		this.Label_3.setText("Nombres de points : " + this.game.NbPoints);
-		this.Label_4.setText("Nombres de vies : " + this.game.NbVies);
+		this.Label_2.setText("Turn : " + this.game.getNbTours());
+		this.Label_3.setText("Nombres de points : " + this.game.getNbPoints());
+		this.Label_4.setText("Nombres de vies : " + this.game.getNbVies());
 		
 		if(GameOver){
 			this.Restart.setEnabled(true);
@@ -71,7 +71,7 @@ public class View implements Observateur{
 			this.Step.setEnabled(false);
 			this.Run.setEnabled(false);
 			this.changeMaze.setEnabled(true);
-			game.isRunning = false;
+			game.setIsRunnin(false);
 		}
 		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
@@ -259,19 +259,19 @@ public class View implements Observateur{
 				Integer nbPacmans = nbJoueursPacman.getSelectedIndex();
 				switch(nbPacmans){
 				case 0:
-					game.nbJoueursPacmans = 0; 
+					game.setNbJoueursPacman(0); 
 					break;
 				case 1:
-					game.nbJoueursPacmans = 1;
+					game.setNbJoueursPacman(1);
 					break;
 				case 2:
-					game.nbJoueursPacmans = 2; 
+					game.setNbJoueursPacman(2); 
 					break;
 				case 3:
-					game.nbJoueursPacmans = 3; 
+					game.setNbJoueursPacman(3); 
 					break;
 				case 4:
-					game.nbJoueursPacmans = 4; 
+					game.setNbJoueursPacman(4); 
 					break;
 				}
 			}
@@ -284,19 +284,19 @@ public class View implements Observateur{
 				Integer nbFantomes = nbJoueursFantome.getSelectedIndex();
 				switch(nbFantomes){
 				case 0:
-					game.nbJoueursFantome = 0; 
+					game.setNbJoueursFantome(0);
 					break;
 				case 1:
-					game.nbJoueursFantome = 1;
+					game.setNbJoueursFantome(1);
 					break;
 				case 2:
-					game.nbJoueursFantome = 2; 
+					game.setNbJoueursFantome(2);
 					break;
 				case 3:
-					game.nbJoueursFantome = 3; 
+					game.setNbJoueursFantome(3);
 					break;
 				case 4:
-					game.nbJoueursFantome = 4; 
+					game.setNbJoueursFantome(4);
 					break;
 				}
 				
@@ -327,7 +327,7 @@ public class View implements Observateur{
 			@Override
 			public void stateChanged(ChangeEvent event) {
 				JSlider source = (JSlider) event.getSource();
-				game.nombre_de_tours_par_secondes = source.getValue();
+				game.setNbToursSecondes(source.getValue());
 			}
 			
 		});	  
@@ -337,10 +337,10 @@ public class View implements Observateur{
 	    Label_2 = new JLabel("Turn : 8");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_3 = new JLabel("Nombres de points : " + this.game.NbPoints);
+	    Label_3 = new JLabel("Nombres de points : " + this.game.getNbVies());
 	    Label_3.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_4 = new JLabel("Nombres de vies : " + this.game.NbVies);
+	    Label_4 = new JLabel("Nombres de vies : " + this.game.getNbVies());
 	    Label_1.setHorizontalAlignment(JLabel.CENTER);
 		
 		

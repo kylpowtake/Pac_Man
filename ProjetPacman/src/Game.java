@@ -3,30 +3,66 @@ import java.util.List;
 
 public abstract class Game implements Runnable,Sujet{
 
-//attributs 
+	//attributs 
 	public Touches panelTouches = new Touches();
-	protected int NbTours;
-	protected int NbToursMax = 525;
-	protected int NbPoints = 0;
-	protected int NbVies = 3;
-	protected int nbJoueursPacmans = 0;
-	protected int nbJoueursFantome = 0;
+	private Thread thread; 
+	private boolean isRunning;
+	private int NbToursSecondes = 2;
+	private int NbTours;
+	private int NbToursMax = 100000000;
+	private int NbPoints = 0;
+	private int NbVies = 3;
+	private int NbJoueursPacman = 0;
+	private int NbJoueursFantome = 0;
 	private String chemin;
 	private Maze labyrinthe;
-
-    Thread thread; 
-	boolean isRunning;
-	long nombre_de_tours_par_secondes = 2;
 	private List<Observateur> observateurs = new ArrayList<>();
 	
 	
-//methodes concrètes
-	
+	//contructeur
 	public Game(Maze labyrinthe, String chemin){
 		this.NbTours = 0;
 		this.chemin = chemin;
 	}
 	
+	
+	//getteurs/setteurs 
+	public boolean getIsRunning(){return this.isRunning;}
+	public void setIsRunnin(boolean etat){this.isRunning = etat;}
+	
+	public int getNbToursSecondes(){return this.NbToursSecondes;}
+	public void setNbToursSecondes(int nb){this.NbToursSecondes = nb;}
+	
+	public int getNbTours(){return this.NbTours;}
+	public void setNbTours(int nb){this.NbTours = nb;}
+	
+	public int getNbToursMax(){return this.NbToursMax;}
+	public void setNbToursMax(int nb){this.NbToursMax = nb;}
+	
+	public int getNbPoints(){return this.NbPoints;}
+	public void setNbPoints(int nb){this.NbPoints = nb;}
+	
+	public int getNbVies(){return this.NbVies;}
+	public void setNbies(int nb){this.NbVies = nb;}
+	
+	public int getNbJoueursPacman(){return this.NbJoueursPacman;}
+	public void setNbJoueursPacman(int nb){this.NbJoueursPacman = nb;}
+	
+	public int getNbJoueursFantome(){return this.NbJoueursFantome;}
+	public void setNbJoueursFantome(int nb){this.NbJoueursFantome = nb;}
+	
+	public String getChemin(){return this.chemin;}
+	public void setChemin(String chemin){this.chemin = chemin;}
+	
+	public Maze getLabyrinthe(){return this.labyrinthe;}
+	public void setLabyrinthe(Maze labyrinthe){
+		System.out.println("Dans le set de labyrinthe : ");
+		this.labyrinthe = labyrinthe;
+	}
+	
+	
+	
+	//méthodes concrètes 
 	public void init(){
 		NbTours = 0;
 		initializeGame();
@@ -40,7 +76,7 @@ public abstract class Game implements Runnable,Sujet{
 			gameOver();
 		}
 		try {
-			Thread.sleep(1000/this.nombre_de_tours_par_secondes);
+			Thread.sleep(1000/this.NbToursSecondes);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -69,22 +105,6 @@ public abstract class Game implements Runnable,Sujet{
     	actualiser(chemin);
     }
     
-	public String getChemin(){
-		return this.chemin;
-	}
-	
-	public void setChemin(String chemin){
-		this.chemin = chemin;
-	}
-	
-	public void setLabyrinthe(Maze labyrinthe){
-		System.out.println("Dans le set de labyrinthe : ");
-		this.labyrinthe = labyrinthe;
-	}
-	
-	public Maze getLabyrinthe(){
-		return this.labyrinthe;
-	}
 	
     //méthodes abstraites
     abstract public void setActionParTouche();
@@ -97,7 +117,7 @@ public abstract class Game implements Runnable,Sujet{
     
 
 	
-    //observateur     
+    //méthodes observateur     
 	public void enregistrerObservateur(Observateur observateur){observateurs.add(observateur);}
 	public void supprimerObservateur(Observateur observateur){observateurs.remove(observateur);}
 	public void notifierObservateur(boolean testrestart, boolean testtransformation, boolean GameOver) {
