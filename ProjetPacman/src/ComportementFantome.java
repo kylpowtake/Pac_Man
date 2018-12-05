@@ -1,12 +1,13 @@
 import java.util.Random;
 
 
-public abstract class ComportementFantome {
+public class ComportementFantome extends ComportementAgent {
 	
-	public static void comportement(Agent agent, Game game){
+	public void comportement(Agent agent, Game game){
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;
+		System.out.println("test");
 		
 		while(!game.isLegalMove(agent, action) || iteration < 1){
 			iteration++;

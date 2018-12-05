@@ -1,6 +1,6 @@
 
-public abstract interface ComportementAgent {
+public abstract class ComportementAgent {
 	
-	public void comportement(Agent agent, Game game);
+	public abstract void comportement(Agent agent, Game game);
 	
 }
