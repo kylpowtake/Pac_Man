@@ -13,7 +13,7 @@ public class PanelPacmanGame extends JPanel{
 	private Color pacmansColor = Color.yellow;
 	
 	private Color ghostsColor = Color.white;
-	private Color ghostScarredColor=Color.pink;
+	private Color ghostScarredColor=Color.blue;
 
 	private double sizeFood=0.3; 
 	private Color colorFood=Color.white; 
@@ -102,7 +102,7 @@ public class PanelPacmanGame extends JPanel{
 			} else {
 				switch(i % 3){
 				case 0 :
-					drawGhosts(g, pos.getX(), pos.getY(), Color.blue);						
+					drawGhosts(g, pos.getX(), pos.getY(), Color.green);						
 					break;
 				case 1 :
 					drawGhosts(g, pos.getX(), pos.getY(), Color.red);	

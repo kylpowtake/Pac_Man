@@ -16,13 +16,25 @@ import java.util.ArrayList;
 
 public class PacmanGame extends Game{
 
+	/**
+	 * Liste des fantômes.
+	 */
 	private ArrayList<Agent> fantomes;
+	/**
+	 * Liste des pacmans.
+	 */
 	private ArrayList<Agent> pacmans;
+	/**
+	 * Si les pacmans sont invincibles ou pas.
+	 */
 	private boolean isInvincible;
+	/**
+	 * Nombre de tours restant d'invincibilité pour les pacmans.
+	 */
 	private int tourInvincible;
 	
 	/**
-	 * Constructeur de PacmanGame avec un labrinthe
+	 * Constructeur de PacmanGame avec un labrinthe et un chemin vers le fichier contenant le labyrinthe.
 	 */
 	public PacmanGame(Maze labyrinthe ,String chemin){
 		super(labyrinthe, chemin);
@@ -45,19 +57,31 @@ public class PacmanGame extends Game{
 		}
 	}		
 	
+	/**
+	 * @param fantomes : La nouvelle liste de fantômes.
+	 */
 	public void setFantomes(ArrayList<Agent> fantomes){
 		System.out.println("Dans le set de fantomes : ");
 		this.fantomes = fantomes;
 	}
 	
+	/**
+	 * @return la liste des fantômes.
+	 */
 	public ArrayList<Agent> getFantomes(){
 		return this.fantomes;
 	}
 	
+	/**
+	 * @param pacmans : Nouvelle liste de pacmans.
+	 */
 	public void setPacmans(ArrayList<Agent> pacmans){
 		this.pacmans = pacmans;
 	}
 	
+	/**
+	 * @return la liste des pacmans.
+	 */
 	public ArrayList<Agent> getPacmans(){
 		return this.pacmans;
 	}
@@ -71,16 +95,16 @@ public class PacmanGame extends Game{
 		this.notifierObservateur(false, false, true);
 	}
 	
-	//Méthode appelé quand un tour est lancé
+
+	/**
+	 * Méthode appliquant le passage d'un tour.
+	 */
 	public void takeTurn(){
 		
-		setActionParTouche();
-		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = this.nbJoueursFantome; i < fantomes.size(); i++){
 			ComportementFantome.comportement(fantomes.get(i), this);
 		}
-		//deplacement des de tous les fantomes 
 		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
 			fantomes.get(i).getPosition().setDir(fantomes.get(i).getNextAction());
@@ -88,13 +112,9 @@ public class PacmanGame extends Game{
 		}
 		
 		mortAgent();
-		
-		System.out.println(this.nbJoueursPacmans);
-		//set action des pacmans qui ne sont pas controlés
 		for(int i = this.nbJoueursPacmans; i < pacmans.size(); i++){
 			ComportementPacman.comportement(pacmans.get(i), this);
 		}
-		//deplacement e tous les pacmans 
 		for(int i = 0; i < pacmans.size(); i++){
 			action.setDirection(pacmans.get(i).getNextAction());
 			pacmans.get(i).getPosition().setDir(pacmans.get(i).getNextAction());
@@ -108,11 +128,11 @@ public class PacmanGame extends Game{
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.NbPoints += 10; //si un pacman mange une pacgomme il a 10 point 
 				this.isInvincible = true;
-				tourInvincible = this.NbTours + 30;
+				tourInvincible = this.NbTours + 10;
 			}
 		}
 		if(tourInvincible == this.NbTours){
-			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
+			this.isInvincible = true; // /!\ a changer rend les pacmans invincibles des le premier tour 
 		}
 		if(finJeu() == true){
 			gameOver();
@@ -122,7 +142,10 @@ public class PacmanGame extends Game{
 		this.notifierObservateur(false, false, false);
 	}
 	
-	//Méthode appelé quand le jeu est initialisé ou réinitialisé
+
+	/**
+	 * Méthode appelée quand game doit être reinitialiser.
+	 */
 	public void initializeGame(){
 		this.fantomes.clear();
 		this.pacmans.clear();
@@ -142,24 +165,21 @@ public class PacmanGame extends Game{
 	}
 	
 	
-	//Méthode prenant en paramètre un chemin vers un layout et actualisant les valeurs
+	/**
+	 * Méthode prenant un chemin vers un layout et mettant à jour les valeurs des fantômes et des pacmans.
+	 */
 	public void actualiser(String chemin){
 		this.setChemin(chemin);
 		try {
 			System.out.println("On est dans actualiser : ");
 			this.setLabyrinthe(new Maze(chemin));
-			
 			this.fantomes.clear();
-			this.pacmans.clear();
-			
+			this.pacmans.clear();			
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-				//Agent fantome_temp = new Agent(false,new PositionAgent(getLabyrinthe().getGhosts_start().get(i).getX(), getLabyrinthe().getGhosts_start().get(i).getY(), getLabyrinthe().getGhosts_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
 				Agent fantome_temp = new Agent(false, getLabyrinthe().getGhosts_start().get(i));
 				this.fantomes.add(fantome_temp);
 			}
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
-				
-				//Agent pacman_temp = new Agent(false,new PositionAgent(getLabyrinthe().getPacman_start().get(i).getX(), getLabyrinthe().getPacman_start().get(i).getY(), getLabyrinthe().getPacman_start().get(i).getDir()));//getLabyrinthe().getGhosts_start().get(i));
 				Agent pacman_temp = new Agent(true, getLabyrinthe().getPacman_start().get(i));
 				this.pacmans.add(pacman_temp);
 			}
@@ -173,8 +193,11 @@ public class PacmanGame extends Game{
 	}
 	
 	
-	//Retourne vrai si l'agent peut faire l'action, retourne faux sinon
-    public boolean isLegalMove(Agent agent, AgentAction action){
+    /**
+     * Retourne vrai si l'agent peut faire l'action, sinon retourne faux.
+     * Il ne peut pas le faire si il y a un mur dans cette direction.
+     */
+	public boolean isLegalMove(Agent agent, AgentAction action){
     	PositionAgent agentPosition = agent.getPosition();
     	int XPosition = agentPosition.getX();
     	int YPosition = agentPosition.getY();
@@ -201,33 +224,36 @@ public class PacmanGame extends Game{
     		return false;
     	}
     }
-    	//Retourne vrai si l'agent peut faire l'action, retourne faux sinon
-        public boolean isLegalMoveInt(Agent agent, int action){
-        	PositionAgent agentPosition = agent.getPosition();
-        	int XPosition = agentPosition.getX();
-        	int YPosition = agentPosition.getY();
-        	
-        	switch (action){
-        		case Maze.NORTH:
-        			YPosition--;
-        			break;
-        		case Maze.SOUTH:
-        			YPosition++;
-        			break;
-        		case Maze.EAST:
-        			XPosition++;
-        			break;
-        		case Maze.WEST:
-        			XPosition--;
-        			break;
-        		case Maze.STOP:
-        			break;
-        	}    	
-    	
-    	
-    	if(!this.getLabyrinthe().isWall(XPosition,YPosition)){
-    		return true;
-    	} else {
+    
+    
+    
+    /**
+     * Retourne vrai si l'agent peut faire l'action, sinon retourne faux.
+     * Il ne peut pas le faire si il y a un mur dans cette direction.
+     */
+    public boolean isLegalMoveInt(Agent agent, int action){
+    	PositionAgent agentPosition = agent.getPosition();
+    	int XPosition = agentPosition.getX();
+    	int YPosition = agentPosition.getY();	
+    	switch (action){
+        	case Maze.NORTH:
+        		YPosition--;
+       			break;
+        	case Maze.SOUTH:
+        		YPosition++;
+        		break;
+        	case Maze.EAST:
+        		XPosition++;
+        		break;
+        	case Maze.WEST:
+        		XPosition--;
+        		break;
+        	case Maze.STOP:
+        		break;
+    	}    	
+ 		if(!this.getLabyrinthe().isWall(XPosition,YPosition)){
+ 			return true;
+ 		} else {
     		return false;
     	}
     }
@@ -320,6 +346,7 @@ public class PacmanGame extends Game{
     
     /**
      * @author etudiant_pas_moi.
+     * Cherche l'ennemi ou mur le plus proche dans la direction est de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
      * @return : la distance entre l'agent et son ennemi, si il n'y en a pas, le mur le plusproche.
@@ -340,50 +367,74 @@ public class PacmanGame extends Game{
     	}
     	return valeur_distance;
     }
+
     
+    /**
+     * @author etudiant_pas_moi.
+     * Cherche l'ennemi ou mur le plus proche dans la direction ouest de l'agent. 
+     * @param TypeAgent : le type de l'agent.
+     * @param agent : agent cherchant où son ses ennemis.
+     * @return : la distance entre l'agent et son ennemi, si il n'y en a pas, le mur le plusproche.
+     */
     public int ChercheAgentOuest(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
 		PositionAgent position_agent = agent.getPosition();
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
-    			position_agent.setX(position_agent.getX()+1);
+    			position_agent.setX(position_agent.getX()-1);
     			valeur_distance++;
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
-    			position_agent.setX(position_agent.getX()+1);
+    			position_agent.setX(position_agent.getX()-1);
     			valeur_distance++;
     		}
     	}
     	return valeur_distance;
     }
+    
+    /**
+     * @author etudiant_pas_moi.
+     * Cherche l'ennemi ou mur le plus proche dans la direction sud de l'agent. 
+     * @param TypeAgent : le type de l'agent.
+     * @param agent : agent cherchant où son ses ennemis.
+     * @return : la distance entre l'agent et son ennemi, si il n'y en a pas, le mur le plusproche.
+     */
     public int ChercheAgentSud(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
 		PositionAgent position_agent = agent.getPosition();
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
-    			position_agent.setX(position_agent.getX()+1);
+    			position_agent.setY(position_agent.getY()+1);
     			valeur_distance++;
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
-    			position_agent.setX(position_agent.getX()+1);
+    			position_agent.setY(position_agent.getY()+1);
     			valeur_distance++;
     		}
     	}
     	return valeur_distance;
     }
+    
+    /**
+     * @author etudiant_pas_moi.
+     * Cherche l'ennemi ou mur le plus proche dans la direction ouest de l'agent. 
+     * @param TypeAgent : le type de l'agent.
+     * @param agent : agent cherchant où son ses ennemis.
+     * @return : la distance entre l'agent et son ennemi, si il n'y en a pas, le mur le plusproche.
+     */
     public int ChercheAgentNord(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
 		PositionAgent position_agent = agent.getPosition();
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
-    			position_agent.setX(position_agent.getX()+1);
+    			position_agent.setY(position_agent.getY()-1);
     			valeur_distance++;
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
-    			position_agent.setX(position_agent.getX()+1);
+    			position_agent.setY(position_agent.getY()-1);
     			valeur_distance++;
     		}
     	}

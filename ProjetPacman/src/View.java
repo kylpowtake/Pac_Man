@@ -25,7 +25,7 @@ public class View implements Observateur{
 	Game game;
 	InterfaceController controller;
 	private Maze labyrinthe;
-	
+	private Touches panelTouches = new Touches();
 
 	String chemin = "";
 	
@@ -59,7 +59,7 @@ public class View implements Observateur{
 		}	
 
 	
-	public void actualiser(boolean testrestart, boolean testtransformation, boolean GameOver) {
+	public void actualiser(boolean booleanRestart, boolean testtransformation, boolean GameOver) {
 	
 		this.Label_2.setText("Turn : " + this.game.NbTours);
 		this.Label_3.setText("Nombres de points : " + this.game.NbPoints);
@@ -77,7 +77,7 @@ public class View implements Observateur{
 		Jeu.validate();
 		//Jeu.repaint();
 		
-		if(testrestart){
+		if(booleanRestart){
 			try {
 				this.labyrinthe = new Maze(this.game.getChemin());
 				game.actualiser(this.game.getChemin());
@@ -367,10 +367,10 @@ public class View implements Observateur{
 		Commandes.add(controlPanelCommande);
 		Commandes.setVisible(true);
 		
-		game.panelTouches.addKeyListener(game.panelTouches);
-		game.panelTouches.setFocusable(true);
+		panelTouches.addKeyListener(panelTouches);
+		panelTouches.setFocusable(true);
 		
-		Jeu.add(game.panelTouches,BorderLayout.CENTER);
+		Jeu.add(panelTouches,BorderLayout.CENTER);
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
 		Jeu.setVisible(true);
 

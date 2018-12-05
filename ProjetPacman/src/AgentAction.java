@@ -21,7 +21,7 @@ public class AgentAction {
 		}
 	}
 	
-	public void setDirection(int direction){
+	public void setDirection( int direction){
 		if(direction > -1 && direction < 5){
 		this.direction = direction;
 		}

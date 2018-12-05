@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 public class Touches extends JPanel implements KeyListener {
 
-	public int toucheClique = 4;
+	private int toucheClique = 2;
 
 	
 	@Override
@@ -21,15 +21,13 @@ public class Touches extends JPanel implements KeyListener {
 	   	  		System.out.println("DOWN key pressed  " + toucheClique);
 	   	  		break;
 	   	  	case KeyEvent.VK_LEFT:
-	   	  		this.toucheClique = 3;
+	   	  		this.toucheClique = 2;
 	   	  		System.out.println("LEFT key pressed  " + toucheClique);
 	   	  		break;
 	   	  	case KeyEvent.VK_RIGHT:
-	   	  		this.toucheClique = 2;
+	   	  		this.toucheClique = 3;
 	   	  		System.out.println("RIGHT key pressed  " + toucheClique);
 	   	  		break;
-	   	  	default:
-	   	  		this.toucheClique = 4;
 
 	   	  }
 
