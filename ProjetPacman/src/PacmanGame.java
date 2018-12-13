@@ -32,6 +32,9 @@ public class PacmanGame extends Game{
 	 * Nombre de tours restant d'invincibilité pour les pacmans.
 	 */
 	private int tourInvincible;
+	/**
+	 * Permet de savoir si on a gagné ou perdu en fin du jeu 
+	 */
 	
 	/**
 	 * Constructeur de PacmanGame avec un labrinthe et un chemin vers le fichier contenant le labyrinthe.
@@ -84,6 +87,10 @@ public class PacmanGame extends Game{
 		return this.pacmans;
 	}
 	
+	/**
+	 * @return le boolean de fin de jeu 
+	 */
+
 	
 	/**
 	 * Méthode appelé quand une des conditions de fin de partie est vérifiée
@@ -95,7 +102,6 @@ public class PacmanGame extends Game{
 	
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
-		System.out.println("test take turn");
 		setActionParTouches();
 		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
@@ -294,8 +300,8 @@ public class PacmanGame extends Game{
     }
     
     /**
-     * on regarde pour chaque pacman si il est sur un fantome 
-     * si c'est le cas et qu'il a l'invincibilite alors le fantome meurt sinon pacman meurt 
+     * on regarde pour chaque pacman si il est à la même position qu'un fantome 
+     * si c'est le cas et qu'il à l'invincibilite alors le fantome meurt sinon le pacman meurt 
      */
     public void mortAgent(){
 		for(int i = 0; i < pacmans.size(); i++){
@@ -308,7 +314,6 @@ public class PacmanGame extends Game{
 						pacmans.remove(i);
 						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
-						System.out.println("Un Pacman est mort");
 						this.setNbies(this.getNbVies()-1);
 					}
 				}
@@ -332,8 +337,9 @@ public class PacmanGame extends Game{
      * @return true si fin endGame false sinon
      */
     public boolean finJeu(){
+    	//cas ou tous les pacmans meurent
     	if(pacmans.isEmpty()){
-    		System.out.println("Tous les pacmans sont morts, fin du jeu.");
+    		this.setFinJeu(false);
     		return true ;
     	}
     	boolean noCapsuleFound = true;
@@ -344,8 +350,10 @@ public class PacmanGame extends Game{
     			}
     		}
     	}
+    	//cas ou il n'y a plus de capsules trouvées dans le labyrinthe 
     	if(noCapsuleFound == true){
     		System.out.println("Plus de capsules, fin du Jeu.");
+    		this.setFinJeu(true);
     		return true;
     	}
     	return false;
@@ -451,28 +459,23 @@ public class PacmanGame extends Game{
     
     
     
-    
-
-	
+    /**
+     * méthode pour attribuer les touches à chaque agent joueur 
+     */
 	public void setActionParTouches() {
 		int j = 0;
-		for(int i=0;i<this.getNbJoueursFantome();i++){
-			this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
-			j++;
+		if(fantomes.size()!=0){
+			for(int i=0;i<this.getNbJoueursFantome();i++){
+				this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
+				j++;
+			}
 		}
-		for(int i=0;i<this.getNbJoueursPacman();i++){
-			this.pacmans.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
-			j++;
+		if(pacmans.size()!=0){
+			for(int i=0;i<this.getNbJoueursPacman();i++){
+				this.pacmans.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
+				j++;
+			}
 		}
-		
-		/*
-		if(this.getNbJoueursFantome() > 0){
-		    
-			this.fantomes.get(0).setNextAction(this.panelTouches.touchesCliques[0]);
-		}
-		if(this.getNbJoueursPacman() > 0){
-			this.pacmans.get(0).setNextAction(this.panelTouches.touchesCliques[0]);
-		}*/
 	}
 	
 }

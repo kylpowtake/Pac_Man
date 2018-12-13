@@ -16,6 +16,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class View implements Observateur{
@@ -47,6 +49,9 @@ public class View implements Observateur{
 
 	public JPanel jPanelMaze;
 	public Maze maze;
+	//public File[] allMazes;
+	public ArrayList<String> allMazes = new ArrayList<>();
+
 	
     //méthodes
 	public View(InterfaceController controller,PacmanGame game) {	
@@ -55,7 +60,14 @@ public class View implements Observateur{
 		this.controller = controller;
 		game.enregistrerObservateur(this);
 		this.createUserFrame(labyrinthe);
-		}	
+		
+		File directory = new File("layouts");	
+		File[] files = directory.listFiles();
+		for ( File f : files) {
+			this.allMazes.add(f.getAbsolutePath());
+		}
+		
+	}	
 
 	
 	public void actualiser(boolean booleanRestart, boolean testtransformation, boolean GameOver) {
@@ -65,12 +77,50 @@ public class View implements Observateur{
 		this.Label_4.setText("Nombres de vies : " + this.game.getNbVies());
 		
 		if(GameOver){
-			this.Restart.setEnabled(true);
-			this.Pause.setEnabled(false);
-			this.Step.setEnabled(false);
-			this.Run.setEnabled(false);
-			this.changeMaze.setEnabled(true);
-			game.setIsRunnin(false);
+			if(this.game.getFinJeu()){
+				
+				int rnd = new Random().nextInt(this.allMazes.size());
+				try {
+					this.labyrinthe = new Maze(this.allMazes.get(rnd));
+					game.actualiser(this.allMazes.get(rnd));
+					this.allMazes.remove(rnd);
+					controller.SetView(this);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+				if(this.game.getNbVies()!=0){
+					
+					boolean savedFood[][] = this.game.getLabyrinthe().getFood();
+					try {
+						this.labyrinthe = new Maze(this.game.getChemin());
+						game.actualiser(this.game.getChemin());
+						this.game.getLabyrinthe().food = savedFood;
+						controller.SetView(this);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					this.Restart.setEnabled(false);
+					this.Pause.setEnabled(false);
+					this.Step.setEnabled(true);
+					this.Run.setEnabled(true);
+					this.changeMaze.setEnabled(true);
+					game.setIsRunnin(false);
+				}
+				else{
+					this.game.setNbies(3);
+					this.game.setNbPoints(0);
+					
+					this.Restart.setEnabled(true);
+					this.Pause.setEnabled(false);
+					this.Step.setEnabled(false);
+					this.Run.setEnabled(false);
+					this.changeMaze.setEnabled(true);
+					game.setIsRunnin(false);
+				}
+			}
+			
 		}
 		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
@@ -240,7 +290,7 @@ public class View implements Observateur{
 		changeMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evenement) {
 				JFileChooser chooser = new JFileChooser(); 
-				chooser.setCurrentDirectory(new File("/home/etudiant/workspace/ProjetPacman/layouts")); 
+				chooser.setCurrentDirectory(new File("layouts")); 
 				chooser.showOpenDialog(null);
 				
 				String chemin = chooser.getSelectedFile().getAbsolutePath();
@@ -249,6 +299,9 @@ public class View implements Observateur{
 		    	Run.setEnabled(false);
 		    	Step.setEnabled(false);
 				controller.changement(chemin);
+				
+				game.setNbies(3);
+				game.setNbPoints(0);
 			}
 		});
 		
