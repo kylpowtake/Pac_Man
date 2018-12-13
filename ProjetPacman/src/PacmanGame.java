@@ -451,10 +451,10 @@ public class PacmanGame extends Game{
 	
 	public void setActionParTouche() {
 		if(this.getNbJoueursFantome() > 0){
-			this.fantomes.get(0).setNextAction(this.panelTouches.toucheClique);
+			this.fantomes.get(0).setNextAction(this.panelTouches.getToucheClique());
 		}
 		if(this.getNbJoueursPacman() > 0){
-			this.pacmans.get(0).setNextAction(this.panelTouches.toucheClique);
+			this.pacmans.get(0).setNextAction(this.panelTouches.getToucheClique());
 		}
 	}
 	

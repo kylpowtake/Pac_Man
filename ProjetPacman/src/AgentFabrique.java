@@ -4,35 +4,43 @@ public class AgentFabrique {
 		
 		//agent pacman 
 		if(typeAgent == true){
+			return new Agent(typeAgent,p,c);
+			
+			/*
 			switch(c){
-			case :
+			case c:
 				return new Agent(typeAgent,p,c);
 				break;
-			case :
+			case c:
 				return new Agent(typeAgent,p,c);
 				break;
 			default :
 				return new Agent(typeAgent,p,c);
 				break;	
+			 */
 		}
 		//agent fantome 
 		else{
+			return new Agent(typeAgent,p,c);
+			
+			/*
 			switch(c){
-			case :
+			case c:
 				return new Agent(typeAgent,p,c);
 				break;
-			case :
+			case c:
 				return new Agent(typeAgent,p,c);
 				break;
 			default :
 				return new Agent(typeAgent,p,c);
 				break;
-				
+			*/	
 				
 		}
-		
+
+		/*
 		System.out.println("L'agent ne peut pas etre crée");
 		return null;
-		
+		*/
 	}
 }
