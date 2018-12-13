@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 
 public class Touches extends JPanel implements KeyListener {
 
-	private int toucheClique = 2;
+	public int[] touchesCliques = {4,4,4,4};
 
 	
 	@Override
@@ -18,28 +18,29 @@ public class Touches extends JPanel implements KeyListener {
 		switch (e.getKeyCode())
 	   	  {
 	   	  	case KeyEvent.VK_UP :
-	   	  		this.toucheClique = 0;
-	   	  		System.out.println("UP key pressed  " + toucheClique);
+	   	  		this.touchesCliques[0] = 0;
 	   	  		break;
 	   	  	case KeyEvent.VK_DOWN:
-	   	  		this.toucheClique = 1;
-	   	  		System.out.println("DOWN key pressed  " + toucheClique);
+	   	  		this.touchesCliques[0] = 1;
 	   	  		break;
 	   	  	case KeyEvent.VK_LEFT:
-	   	  		this.toucheClique = 2;
-	   	  		System.out.println("LEFT key pressed  " + toucheClique);
+	   	  		this.touchesCliques[0] = 3;
 	   	  		break;
 	   	  	case KeyEvent.VK_RIGHT:
-	   	  		this.toucheClique = 3;
-	   	  		System.out.println("RIGHT key pressed  " + toucheClique);
+	   	  		this.touchesCliques[0] = 2;
 	   	  		break;
-
+	   	  	default:
+	   	  		this.touchesCliques[0] = 4;
+	   	  		this.touchesCliques[1] = 4;
+	   	  		this.touchesCliques[2] = 4;
+	   	  		this.touchesCliques[3] = 4;
+	   	  		break;
 	   	  }
 
     }
 	
-	public int getToucheClique(){
-		return this.toucheClique;
+	public int[] getToucheClique(){
+		return touchesCliques;
 	}
 
 

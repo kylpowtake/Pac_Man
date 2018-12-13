@@ -25,7 +25,7 @@ public class View implements Observateur{
 	Game game;
 	InterfaceController controller;
 	private Maze labyrinthe;
-	private Touches panelTouches = new Touches();
+	
 
 	String chemin = "";
 	
@@ -366,10 +366,10 @@ public class View implements Observateur{
 		Commandes.add(controlPanelCommande);
 		Commandes.setVisible(true);
 		
-		panelTouches.addKeyListener(panelTouches);
-		panelTouches.setFocusable(true);
+		game.panelTouches.addKeyListener(game.panelTouches);
+		game.panelTouches.setFocusable(true);
 		
-		Jeu.add(panelTouches,BorderLayout.CENTER);
+		Jeu.add(game.panelTouches,BorderLayout.CENTER);
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
 		Jeu.setVisible(true);
 
