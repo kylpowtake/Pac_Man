@@ -51,7 +51,6 @@ public class View implements Observateur{
     //méthodes
 	public View(InterfaceController controller,PacmanGame game) {	
 		this.game = game;
-		System.out.println("test");
 		this.labyrinthe = game.getLabyrinthe();
 		this.controller = controller;
 		game.enregistrerObservateur(this);
