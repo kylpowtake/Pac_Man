@@ -93,17 +93,17 @@ public class PacmanGame extends Game{
 		this.notifierObservateur(false, false, true);
 	}
 	
-
-	/**
-	 * Méthode appliquant le passage d'un tour.
-	 */
+	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
 		
+		setActionParTouche();
+		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = this.getNbJoueursFantome(); i < fantomes.size(); i++){
 			fantomes.get(i).getComportement().comportement(fantomes.get(i),this);
 			//ComportementFantome.comportement(fantomes.get(i), this);
 		}
+		//deplacement des de tous les fantomes 
 		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
 			fantomes.get(i).getPosition().setDir(fantomes.get(i).getNextAction());
@@ -112,11 +112,13 @@ public class PacmanGame extends Game{
 		
 		mortAgent();
 		
+		System.out.println(this.getNbJoueursPacman());
 		//set action des pacmans qui ne sont pas controlés
 		for(int i = this.getNbJoueursPacman(); i < pacmans.size(); i++){
 			pacmans.get(i).getComportement().comportement(pacmans.get(i),this);
 			//ComportementPacman.comportement(pacmans.get(i), this);
 		}
+		//deplacement e tous les pacmans 
 		for(int i = 0; i < pacmans.size(); i++){
 			action.setDirection(pacmans.get(i).getNextAction());
 			pacmans.get(i).getPosition().setDir(pacmans.get(i).getNextAction());
@@ -450,12 +452,24 @@ public class PacmanGame extends Game{
 
 	
 	public void setActionParTouche() {
+		int j = 0;
+		for(int i=0;i<this.getNbJoueursFantome();i++){
+			this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
+			j++;
+		}
+		for(int i=0;i<this.getNbJoueursPacman();i++){
+			this.pacmans.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
+			j++;
+		}
+		
+		/*
 		if(this.getNbJoueursFantome() > 0){
-			this.fantomes.get(0).setNextAction(this.panelTouches.toucheClique);
+		    
+			this.fantomes.get(0).setNextAction(this.panelTouches.touchesCliques[0]);
 		}
 		if(this.getNbJoueursPacman() > 0){
-			this.pacmans.get(0).setNextAction(this.panelTouches.toucheClique);
-		}
+			this.pacmans.get(0).setNextAction(this.panelTouches.touchesCliques[0]);
+		}*/
 	}
 	
 }
