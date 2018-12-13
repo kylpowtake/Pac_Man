@@ -130,6 +130,7 @@ public abstract class Game implements Runnable,Sujet{
     
 	
     //méthodes abstraites
+    abstract public void setActionParTouches();
 	abstract public void gameOver();
 	abstract public void takeTurn();
 	abstract public void initializeGame();
