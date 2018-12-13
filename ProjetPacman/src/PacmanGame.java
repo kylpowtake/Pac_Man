@@ -95,8 +95,8 @@ public class PacmanGame extends Game{
 	
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
-		
-		setActionParTouche();
+		System.out.println("test take turn");
+		setActionParTouches();
 		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = this.getNbJoueursFantome(); i < fantomes.size(); i++){
@@ -136,6 +136,9 @@ public class PacmanGame extends Game{
 				tourInvincible = this.getNbTours() + 20;
 			}
 		}
+		
+		mortAgent();
+		
 		if(tourInvincible == this.getNbTours()){
 			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
 			this.getLabyrinthe().estInvinsible = false;
@@ -143,7 +146,7 @@ public class PacmanGame extends Game{
 		if(finJeu() == true){
 			gameOver();
 		}
-		mortAgent();
+		
 		this.setNbTours(this.getNbTours()+1);
 		this.notifierObservateur(false, false, false);
 	}
@@ -451,7 +454,7 @@ public class PacmanGame extends Game{
     
 
 	
-	public void setActionParTouche() {
+	public void setActionParTouches() {
 		int j = 0;
 		for(int i=0;i<this.getNbJoueursFantome();i++){
 			this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
