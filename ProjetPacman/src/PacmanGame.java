@@ -1,4 +1,15 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 
 
 /**
@@ -24,10 +35,6 @@ public class PacmanGame extends Game{
 	 * Liste des pacmans.
 	 */
 	private ArrayList<Agent> pacmans;
-	/**
-	 * Si les pacmans sont invincibles ou pas.
-	 */
-	private boolean isInvincible;
 	/**
 	 * Nombre de tours restant d'invincibilité pour les pacmans.
 	 */
@@ -133,20 +140,59 @@ public class PacmanGame extends Game{
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+1);
+				//play sound eat_pacgoms
+				/*
+				try {
+				    File yourFile = new File("sounds/pacman_chomp.wav");
+				    AudioInputStream stream;
+				    AudioFormat format;
+				    DataLine.Info info;
+				    Clip clip;
+
+				    stream = AudioSystem.getAudioInputStream(yourFile);
+				    format = stream.getFormat();
+				    info = new DataLine.Info(Clip.class, format);
+				    clip = (Clip) AudioSystem.getLine(info);
+				    clip.open(stream);
+				    clip.start();
+				}
+				catch (Exception e) {
+				    //whatevers
+				}
+				*/
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+10);
-				this.isInvincible = true;
+				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
+				
+				//play sound eat_capsule
+				try {
+				    File yourFile = new File("sounds/pacman_eatfruit.wav");
+				    AudioInputStream stream;
+				    AudioFormat format;
+				    DataLine.Info info;
+				    Clip clip;
+
+				    stream = AudioSystem.getAudioInputStream(yourFile);
+				    format = stream.getFormat();
+				    info = new DataLine.Info(Clip.class, format);
+				    clip = (Clip) AudioSystem.getLine(info);
+				    clip.open(stream);
+				    clip.start();
+				}
+				catch (Exception e) {
+				    //whatevers
+				}
 			}
 		}
 		
 		mortAgent();
 		
 		if(tourInvincible == this.getNbTours()){
-			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
+			this.setIsInvincible(false);
 			this.getLabyrinthe().estInvinsible = false;
 		}
 		if(finJeu() == true){
@@ -309,15 +355,34 @@ public class PacmanGame extends Game{
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
 				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
-				if(isAlivePacman == true && this.isInvincible == false){
+				if(isAlivePacman == true && this.getIsInvincible() == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
 						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
 						this.setNbies(this.getNbVies()-1);
+						
+						//play when pacman die
+						try {
+						    File yourFile = new File("sounds/pacman_death.wav");
+						    AudioInputStream stream;
+						    AudioFormat format;
+						    DataLine.Info info;
+						    Clip clip;
+
+						    stream = AudioSystem.getAudioInputStream(yourFile);
+						    format = stream.getFormat();
+						    info = new DataLine.Info(Clip.class, format);
+						    clip = (Clip) AudioSystem.getLine(info);
+						    clip.open(stream);
+						    clip.start();
+						}
+						catch (Exception e) {
+						    //whatevers
+						}
 					}
 				}
-				if(isAlivePacman = true && this.isInvincible == true){
+				if(isAlivePacman = true && this.getIsInvincible() == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);
