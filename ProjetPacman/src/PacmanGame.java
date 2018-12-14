@@ -109,24 +109,27 @@ public class PacmanGame extends Game{
 	
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
+	
+		System.out.println("\n\n tour suivant \n\n");
+		
 		setActionParTouches();
+	
 		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = this.getNbJoueursFantome(); i < fantomes.size(); i++){
 			fantomes.get(i).getComportement().comportement(fantomes.get(i),this);
 			//ComportementFantome.comportement(fantomes.get(i), this);
 		}
+
 		//deplacement de tous les fantomes 
 		for(int i = 0; i < fantomes.size(); i++){
 			action.setDirection(fantomes.get(i).getNextAction());
 			fantomes.get(i).getPosition().setDir(fantomes.get(i).getNextAction());
-			System.out.println("Sa prochaine action" + fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
-		}
+			}
 		
 		mortAgent();
 		
-		System.out.println(this.getNbJoueursPacman());
 		//set action des pacmans qui ne sont pas controlés
 		for(int i = this.getNbJoueursPacman(); i < pacmans.size(); i++){
 			pacmans.get(i).getComportement().comportement(pacmans.get(i),this);
@@ -329,20 +332,27 @@ public class PacmanGame extends Game{
     	if(isLegalMove(agent, action)){
         	switch (action.getDirection()){
     		case Maze.NORTH:
+    			System.out.println("On va au nord : " + action.getDirection());
     			agent.getPosition().setY(agent.getPosition().getY() - 1);
     			break;
     		case Maze.SOUTH:
+    			System.out.println("On va au sud : " + action.getDirection());
     			agent.getPosition().setY(agent.getPosition().getY() + 1);
     			break;
     		case Maze.EAST:
+    			System.out.println("On va a l'est : " + action.getDirection());
     			agent.getPosition().setX(agent.getPosition().getX() + 1);
     			break;
     		case Maze.WEST:
+    			System.out.println("On va à l'ouest : " + action.getDirection());
     			agent.getPosition().setX(agent.getPosition().getX() - 1);
     			break;
     		default:
+    			System.out.println("On défault : " + action.getDirection());
     			break;
         	}
+    	} else {
+    		System.out.println("On va dans un mur à : " + action.getDirection());
     	}
     }
     
@@ -434,14 +444,16 @@ public class PacmanGame extends Game{
      */
     public int ChercheAgentEst(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
-		PositionAgent position_agent = agent.getPosition();
+		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setX(position_agent.getX()+1);
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 2)){
+        				valeur_distance = -1;
+    			}
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
@@ -449,7 +461,9 @@ public class PacmanGame extends Game{
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 2)){
+    				valeur_distance = -1;
+    			}
     		}
     	}
     	return valeur_distance;
@@ -465,14 +479,16 @@ public class PacmanGame extends Game{
      */
     public int ChercheAgentOuest(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
-		PositionAgent position_agent = agent.getPosition();
+		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setX(position_agent.getX()-1);
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 3)){
+    				valeur_distance = -1;
+    			}
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
@@ -480,11 +496,15 @@ public class PacmanGame extends Game{
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 3)){
+    				valeur_distance = -1;
+    			}
     		}
     	}
     	return valeur_distance;
     }
+    
+    
     
     /**
      * @author etudiant_pas_moi.
@@ -495,14 +515,16 @@ public class PacmanGame extends Game{
      */
     public int ChercheAgentSud(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
-		PositionAgent position_agent = agent.getPosition();
+		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setY(position_agent.getY()+1);
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 1)){
+    				valeur_distance = -1;
+    			}
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
@@ -510,7 +532,9 @@ public class PacmanGame extends Game{
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 1)){
+    				valeur_distance = -1;
+    			}
     		}
     	}
     	return valeur_distance;
@@ -525,14 +549,16 @@ public class PacmanGame extends Game{
      */
     public int ChercheAgentNord(boolean TypeAgent, Agent agent){
     	int valeur_distance = 0;
-		PositionAgent position_agent = agent.getPosition();
+		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setY(position_agent.getY()-1);
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 0)){
+    				valeur_distance = -1;
+    			}
     		}
     	} else {
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
@@ -540,7 +566,9 @@ public class PacmanGame extends Game{
     			valeur_distance++;
     		}
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
-    			valeur_distance = -1;
+    			if(!this.testFinMur(agent, 0)){
+    				valeur_distance = -1;
+    			}
     		}
     	}
     	return valeur_distance;

@@ -276,6 +276,87 @@ public abstract class Game implements Runnable,Sujet{
     	}
     }
     
+   /*
+    * Test si il y a un passage avant le mur dans la direction donnée
+    */
+    public boolean testFinMur(Agent agent, int dir){
+    	PositionAgent pos = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
+    	switch(dir){
+    	case 0 :
+			pos.setY(pos.getY()-1);
+    		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
+    			if(!this.labyrinthe.isWall(pos.getX()+1, pos.getY())){
+    				return true;
+    			}
+    			if(!this.labyrinthe.isWall(pos.getX()-1, pos.getY())){
+    				return true;
+        		}
+    			pos.setY(pos.getY()-1);
+    		}
+    	case 1 :
+			pos.setY(pos.getY()+1);
+    		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
+    			if(!this.labyrinthe.isWall(pos.getX()-1, pos.getY())){
+    				return true;
+    			}
+    			if(!this.labyrinthe.isWall(pos.getX()+1, pos.getY())){
+    				return true;
+        		}
+    			pos.setY(pos.getY()+1);
+    		}
+    	case 2 :
+			pos.setX(pos.getX()-1);
+    		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
+    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()-1)){
+    				return true;
+    			}
+    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()+1)){
+    				return true;
+        		}
+    			pos.setX(pos.getX()-1);
+    		}
+    	case 3 :
+    		pos.setX(pos.getX()+1);
+    		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
+    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()-1)){
+    				return true;
+    			}
+    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()+1)){
+    				return true;
+        		}
+    			pos.setX(pos.getX()+1);
+    		}
+    		break;
+    	default :
+    		return false;
+    	}
+    	
+    	
+    	return false;
+    }
+    
+    /*
+    public boolean TestMurDir(PositionAgent pos, int dir){
+    	
+    	PositionAgent postest = new PositionAgent();
+    	
+    	switch(dir){
+    	case 0 :
+    		
+    		break;
+    	case 1 :
+    		break;
+    	case 2 :
+    		break;
+    	case 3 :
+    		break;
+    	default :
+    		break;
+    	}
+    	return false;   	
+    }*/
+    
+    
 	
     //méthodes abstraites
     abstract public void setActionParTouches();
