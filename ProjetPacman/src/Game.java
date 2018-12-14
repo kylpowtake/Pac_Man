@@ -144,7 +144,7 @@ public abstract class Game implements Runnable,Sujet{
     }
     
     
-<<<<<<< Updated upstream
+
     
     
     /*
@@ -282,7 +282,7 @@ public abstract class Game implements Runnable,Sujet{
         	}
         	return valeurRetour;
     	}
-=======
+    }
     /**
      * méthode pour rajouter de la musique au jeu 
      */
@@ -304,7 +304,6 @@ public abstract class Game implements Runnable,Sujet{
 		catch (Exception e) {
 		    //whatevers
 		}
->>>>>>> Stashed changes
     }
     
 	
