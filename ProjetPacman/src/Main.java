@@ -19,7 +19,7 @@ public class Main {
 	*/
 
 		try {
-			String chemin = "layouts/testClassic.lay";
+			String chemin = "layouts/capsuleClassic.lay";
 			Maze laby = new Maze(chemin);
 			PacmanGame game = new PacmanGame(laby, chemin);
 			game.setLabyrinthe(laby);

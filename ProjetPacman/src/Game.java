@@ -283,6 +283,7 @@ public abstract class Game implements Runnable,Sujet{
         	return valeurRetour;
     	}
     }
+    
     /**
      * méthode pour rajouter de la musique au jeu 
      */

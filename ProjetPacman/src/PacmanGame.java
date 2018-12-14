@@ -1,15 +1,4 @@
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 
 
 /**
@@ -55,7 +44,7 @@ public class PacmanGame extends Game{
 		
 		this.setLabyrinthe(labyrinthe);
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantomeFacile());
+			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantomeAlgo());
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
@@ -176,7 +165,7 @@ public class PacmanGame extends Game{
 		this.pacmans.clear();
 		
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeAlgo());
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
@@ -199,7 +188,7 @@ public class PacmanGame extends Game{
 			this.fantomes.clear();
 			this.pacmans.clear();			
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-				Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+				Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeAlgo());
 				this.fantomes.add(fantome_temp);
 			}
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
@@ -207,7 +196,6 @@ public class PacmanGame extends Game{
 				this.pacmans.add(pacman_temp);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -318,8 +306,8 @@ public class PacmanGame extends Game{
 			PositionAgent positionPacman = new PositionAgent(pacmans.get(i).getPosition());
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
-				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
-				if(isAlivePacman == true && this.getIsInvincible() == false){
+				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());	
+				if(isAlivePacman == true && this.getIsInvincible() == false){				
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
 						this.getLabyrinthe().getPacman_start().remove(i);
@@ -328,7 +316,7 @@ public class PacmanGame extends Game{
 						this.playSound("sounds/pacman_death.wav");
 					}
 				}
-				if(isAlivePacman = true && this.getIsInvincible() == true){
+				if(isAlivePacman == true && this.getIsInvincible() == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);

@@ -77,7 +77,7 @@ public class View implements Observateur{
 		
 		//label nombre de tours et nombre de points 
 		this.Label_2.setText("Turn : " + this.game.getNbTours());		
-		this.Label_3.setText("Nombres de points : " + this.game.getNbPoints());
+		this.Label_3.setText("Number of points : " + this.game.getNbPoints());
 		
 		
 		//image pacman nombre de vies 
@@ -420,10 +420,10 @@ public class View implements Observateur{
 		
 		
 	    
-	    Label_2 = new JLabel("Turn : 8");
+	    Label_2 = new JLabel("Turn : 0");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_3 = new JLabel("Nombres de points : " + this.game.getNbPoints());
+	    Label_3 = new JLabel("Number of points : " + this.game.getNbPoints());
 	    Label_3.setHorizontalAlignment(JLabel.CENTER);
 	    
 	    iconLife = new ImageIcon("img/pacman3lifes.png");
