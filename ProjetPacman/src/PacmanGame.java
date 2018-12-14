@@ -1,4 +1,15 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 
 
 /**
@@ -25,13 +36,12 @@ public class PacmanGame extends Game{
 	 */
 	private ArrayList<Agent> pacmans;
 	/**
-	 * Si les pacmans sont invincibles ou pas.
-	 */
-	private boolean isInvincible;
-	/**
 	 * Nombre de tours restant d'invincibilité pour les pacmans.
 	 */
 	private int tourInvincible;
+	/**
+	 * Permet de savoir si on a gagné ou perdu en fin du jeu 
+	 */
 	
 	/**
 	 * Constructeur de PacmanGame avec un labrinthe et un chemin vers le fichier contenant le labyrinthe.
@@ -84,6 +94,10 @@ public class PacmanGame extends Game{
 		return this.pacmans;
 	}
 	
+	/**
+	 * @return le boolean de fin de jeu 
+	 */
+
 	
 	/**
 	 * Méthode appelé quand une des conditions de fin de partie est vérifiée
@@ -95,7 +109,6 @@ public class PacmanGame extends Game{
 	
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
-		System.out.println("test take turn");
 		setActionParTouches();
 		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
@@ -128,20 +141,59 @@ public class PacmanGame extends Game{
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+1);
+				//play sound eat_pacgoms
+				/*
+				try {
+				    File yourFile = new File("sounds/pacman_chomp.wav");
+				    AudioInputStream stream;
+				    AudioFormat format;
+				    DataLine.Info info;
+				    Clip clip;
+
+				    stream = AudioSystem.getAudioInputStream(yourFile);
+				    format = stream.getFormat();
+				    info = new DataLine.Info(Clip.class, format);
+				    clip = (Clip) AudioSystem.getLine(info);
+				    clip.open(stream);
+				    clip.start();
+				}
+				catch (Exception e) {
+				    //whatevers
+				}
+				*/
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+10);
-				this.isInvincible = true;
+				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
+				
+				//play sound eat_capsule
+				try {
+				    File yourFile = new File("sounds/pacman_eatfruit.wav");
+				    AudioInputStream stream;
+				    AudioFormat format;
+				    DataLine.Info info;
+				    Clip clip;
+
+				    stream = AudioSystem.getAudioInputStream(yourFile);
+				    format = stream.getFormat();
+				    info = new DataLine.Info(Clip.class, format);
+				    clip = (Clip) AudioSystem.getLine(info);
+				    clip.open(stream);
+				    clip.start();
+				}
+				catch (Exception e) {
+				    //whatevers
+				}
 			}
 		}
 		
 		mortAgent();
 		
 		if(tourInvincible == this.getNbTours()){
-			this.isInvincible = false; // /!\ a changer rend les pacmans invincibles des le premier tour 
+			this.setIsInvincible(false);
 			this.getLabyrinthe().estInvinsible = false;
 		}
 		if(finJeu() == true){
@@ -295,8 +347,8 @@ public class PacmanGame extends Game{
     }
     
     /**
-     * on regarde pour chaque pacman si il est sur un fantome 
-     * si c'est le cas et qu'il a l'invincibilite alors le fantome meurt sinon pacman meurt 
+     * on regarde pour chaque pacman si il est à la même position qu'un fantome 
+     * si c'est le cas et qu'il à l'invincibilite alors le fantome meurt sinon le pacman meurt 
      */
     public void mortAgent(){
 		for(int i = 0; i < pacmans.size(); i++){
@@ -304,16 +356,34 @@ public class PacmanGame extends Game{
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
 				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
-				if(isAlivePacman == true && this.isInvincible == false){
+				if(isAlivePacman == true && this.getIsInvincible() == false){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
 						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
-						System.out.println("Un Pacman est mort");
 						this.setNbies(this.getNbVies()-1);
+						
+						//play when pacman die
+						try {
+						    File yourFile = new File("sounds/pacman_death.wav");
+						    AudioInputStream stream;
+						    AudioFormat format;
+						    DataLine.Info info;
+						    Clip clip;
+
+						    stream = AudioSystem.getAudioInputStream(yourFile);
+						    format = stream.getFormat();
+						    info = new DataLine.Info(Clip.class, format);
+						    clip = (Clip) AudioSystem.getLine(info);
+						    clip.open(stream);
+						    clip.start();
+						}
+						catch (Exception e) {
+						    //whatevers
+						}
 					}
 				}
-				if(isAlivePacman = true && this.isInvincible == true){
+				if(isAlivePacman = true && this.getIsInvincible() == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);
@@ -333,8 +403,9 @@ public class PacmanGame extends Game{
      * @return true si fin endGame false sinon
      */
     public boolean finJeu(){
+    	//cas ou tous les pacmans meurent
     	if(pacmans.isEmpty()){
-    		System.out.println("Tous les pacmans sont morts, fin du jeu.");
+    		this.setFinJeu(false);
     		return true ;
     	}
     	boolean noCapsuleFound = true;
@@ -345,8 +416,10 @@ public class PacmanGame extends Game{
     			}
     		}
     	}
+    	//cas ou il n'y a plus de capsules trouvées dans le labyrinthe 
     	if(noCapsuleFound == true){
     		System.out.println("Plus de capsules, fin du Jeu.");
+    		this.setFinJeu(true);
     		return true;
     	}
     	return false;
@@ -476,28 +549,23 @@ public class PacmanGame extends Game{
     
     
     
-    
-
-	
+    /**
+     * méthode pour attribuer les touches à chaque agent joueur 
+     */
 	public void setActionParTouches() {
 		int j = 0;
-		for(int i=0;i<this.getNbJoueursFantome();i++){
-			this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
-			j++;
+		if(fantomes.size()!=0){
+			for(int i=0;i<this.getNbJoueursFantome();i++){
+				this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
+				j++;
+			}
 		}
-		for(int i=0;i<this.getNbJoueursPacman();i++){
-			this.pacmans.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
-			j++;
+		if(pacmans.size()!=0){
+			for(int i=0;i<this.getNbJoueursPacman();i++){
+				this.pacmans.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
+				j++;
+			}
 		}
-		
-		/*
-		if(this.getNbJoueursFantome() > 0){
-		    
-			this.fantomes.get(0).setNextAction(this.panelTouches.touchesCliques[0]);
-		}
-		if(this.getNbJoueursPacman() > 0){
-			this.pacmans.get(0).setNextAction(this.panelTouches.touchesCliques[0]);
-		}*/
 	}
 	
 }

@@ -1,6 +1,6 @@
 
 public class AgentFabrique {
-	public Agent createAgent(boolean typeAgent,PositionAgent p,ComportementAgent c){
+	public Agent createAgent(boolean typeAgent,PositionAgent p,EnumComportement c){
 		
 		//agent pacman 
 		if(typeAgent == true){
@@ -38,10 +38,6 @@ public class AgentFabrique {
 			*/	
 				
 		}
-
-		/*
-		System.out.println("L'agent ne peut pas etre crée");
 		return null;
-		*/
 	}
 }

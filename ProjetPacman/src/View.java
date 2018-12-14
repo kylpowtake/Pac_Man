@@ -16,6 +16,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 public class View implements Observateur{
@@ -38,6 +40,7 @@ public class View implements Observateur{
 	JLabel Label_2; //label pour afficher le nombre de tours
 	JLabel Label_3; //label pour afficher le nombre de poins 
 	JLabel Label_4; //label pour afficher le nombre de vies 
+	JLabel Label_5; //label pour afficher l'invincibilité du pacman
 	
 	public JButton Step;
 	public JButton Restart;
@@ -47,6 +50,11 @@ public class View implements Observateur{
 
 	public JPanel jPanelMaze;
 	public Maze maze;
+	//public File[] allMazes;
+	public ArrayList<String> allMazes = new ArrayList<>();
+	public ImageIcon iconLife;
+	public ImageIcon iconInvincible;
+
 	
     //méthodes
 	public View(InterfaceController controller,PacmanGame game) {	
@@ -55,22 +63,95 @@ public class View implements Observateur{
 		this.controller = controller;
 		game.enregistrerObservateur(this);
 		this.createUserFrame(labyrinthe);
-		}	
+		
+		File directory = new File("layouts");	
+		File[] files = directory.listFiles();
+		for ( File f : files) {
+			this.allMazes.add(f.getAbsolutePath());
+		}
+		
+	}	
 
 	
 	public void actualiser(boolean booleanRestart, boolean testtransformation, boolean GameOver) {
-	
-		this.Label_2.setText("Turn : " + this.game.getNbTours());
-		this.Label_3.setText("Nombres de points : " + this.game.getNbPoints());
-		this.Label_4.setText("Nombres de vies : " + this.game.getNbVies());
 		
+		//label nombre de tours et nombre de points 
+		this.Label_2.setText("Turn : " + this.game.getNbTours());		
+		this.Label_3.setText("Nombres de points : " + this.game.getNbPoints());
+		
+		
+		//image pacman nombre de vies 
+		switch(this.game.getNbVies()){
+			case 1:
+				iconLife = new ImageIcon("img/pacman1life.png");
+				this.Label_4.setIcon(iconLife);
+				break;
+			case 2:
+				iconLife = new ImageIcon("img/pacman2lifes.png");
+				this.Label_4.setIcon(iconLife);
+				break;
+			case 3:
+				iconLife = new ImageIcon("img/pacman3lifes.png");
+				this.Label_4.setIcon(iconLife);
+				break;
+		}
+		
+		//l'image pacman invinsibilité 
+		if(game.getIsInvincible()){
+			iconLife = new ImageIcon("img/pacmanInvincible.png");
+			this.Label_5.setIcon(iconLife);
+		}
+		else{
+			iconLife = new ImageIcon("img/pacmanNormal.png");
+			this.Label_5.setIcon(iconLife);
+		}
+		
+	
 		if(GameOver){
-			this.Restart.setEnabled(true);
-			this.Pause.setEnabled(false);
-			this.Step.setEnabled(false);
-			this.Run.setEnabled(false);
-			this.changeMaze.setEnabled(true);
-			game.setIsRunnin(false);
+			if(this.game.getFinJeu()){
+				
+				int rnd = new Random().nextInt(this.allMazes.size());
+				try {
+					this.labyrinthe = new Maze(this.allMazes.get(rnd));
+					game.actualiser(this.allMazes.get(rnd));
+					this.allMazes.remove(rnd);
+					controller.SetView(this);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}else{
+				if(this.game.getNbVies()!=0){
+					
+					boolean savedFood[][] = this.game.getLabyrinthe().getFood();
+					try {
+						this.labyrinthe = new Maze(this.game.getChemin());
+						game.actualiser(this.game.getChemin());
+						this.game.getLabyrinthe().food = savedFood;
+						controller.SetView(this);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					this.Restart.setEnabled(false);
+					this.Pause.setEnabled(false);
+					this.Step.setEnabled(true);
+					this.Run.setEnabled(true);
+					this.changeMaze.setEnabled(true);
+					game.setIsRunnin(false);
+				}
+				else{
+					this.game.setNbies(3);
+					this.game.setNbPoints(0);
+					
+					this.Restart.setEnabled(true);
+					this.Pause.setEnabled(false);
+					this.Step.setEnabled(false);
+					this.Run.setEnabled(false);
+					this.changeMaze.setEnabled(true);
+					game.setIsRunnin(false);
+				}
+			}
+			
 		}
 		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
@@ -158,7 +239,8 @@ public class View implements Observateur{
 		JPanel controlPanelHaut = new JPanel(new GridLayout(1, 4));
 		JPanel controlPanelBas = new JPanel(new GridLayout(1, 2));
 		JPanel controlPanelSlide = new JPanel(new GridLayout(2, 1));
-		JPanel controlPanelTurn = new JPanel(new GridLayout(2, 1));				
+		JPanel controlPanelTurn = new JPanel(new GridLayout(2, 1));	
+		JPanel controlPanelPictures = new JPanel(new GridLayout(1,2));
 		
 		Icon icon_restart = new ImageIcon("img/icon_restart.png");
 		Restart = new JButton(icon_restart);
@@ -240,15 +322,20 @@ public class View implements Observateur{
 		changeMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evenement) {
 				JFileChooser chooser = new JFileChooser(); 
-				chooser.setCurrentDirectory(new File("/home/etudiant/workspace/ProjetPacman/layouts")); 
+				chooser.setCurrentDirectory(new File("layouts")); 
 				chooser.showOpenDialog(null);
 				
 				String chemin = chooser.getSelectedFile().getAbsolutePath();
+				
+				game.setNbies(3);
+				game.setNbPoints(0);
 				
 		    	Restart.setEnabled(true);
 		    	Run.setEnabled(false);
 		    	Step.setEnabled(false);
 				controller.changement(chemin);
+				
+				
 			}
 		});
 		
@@ -336,13 +423,24 @@ public class View implements Observateur{
 	    Label_2 = new JLabel("Turn : 8");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_3 = new JLabel("Nombres de points : " + this.game.getNbVies());
+	    Label_3 = new JLabel("Nombres de points : " + this.game.getNbPoints());
 	    Label_3.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_4 = new JLabel("Nombres de vies : " + this.game.getNbVies());
+	    iconLife = new ImageIcon("img/pacman3lifes.png");
+	    Label_4 = new JLabel();
+	    this.Label_4.setIcon(iconLife);
+	    
+	    iconInvincible = new ImageIcon("img/pacmanNormal.png");
+	    Label_5 = new JLabel();
+	    this.Label_5.setIcon(iconInvincible);
+	    Label_5.setHorizontalAlignment(JLabel.RIGHT);
+	    
 	    Label_1.setHorizontalAlignment(JLabel.CENTER);
-		
-		
+	    
+	    controlPanelPictures.add(Label_4);
+	    controlPanelPictures.add(Label_5);
+	    
+	    
 		controlPanelHaut.add(Restart);
 		controlPanelHaut.add(Run);
 		controlPanelHaut.add(Step);
@@ -352,7 +450,7 @@ public class View implements Observateur{
 		controlPanelSlide.add(slide);
 		
 		controlPanelTurn.add(Label_3);
-		controlPanelTurn.add(Label_4);
+		controlPanelTurn.add(controlPanelPictures);
 		controlPanelTurn.add(Label_2);
 		controlPanelTurn.add(changeMaze);
 

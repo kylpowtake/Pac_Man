@@ -126,6 +126,13 @@ public class Maze implements Serializable{
 	
 	
 	
+	
+	public boolean[][] getFood(){
+		return this.food;
+	}
+	
+	
+	
 	/**
 	 * Test si l'agent donné est bien aux coordonnées x et y données.
 	 */

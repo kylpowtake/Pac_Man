@@ -41,9 +41,37 @@ public class Touches extends JPanel implements KeyListener {
 	   	  	case KeyEvent.VK_D :
 		   	  	this.touchesCliques[1] = 2;
 	   	  		break;
+	   	  	case KeyEvent.VK_I :
+	   	  		this.touchesCliques[2] = 0;
+	   	  		break;
+	   	  	case KeyEvent.VK_J :
+	   	  		this.touchesCliques[2] = 3;
+	   	  		break;
+	   	  	case KeyEvent.VK_L :
+		   	  	this.touchesCliques[2] = 1;
+	   	  		break;
+	   	  	case KeyEvent.VK_K :
+		   	  	this.touchesCliques[2] = 2;
+	   	  		break;
+	   	  	case KeyEvent.VK_8 :
+	   	  		this.touchesCliques[3] = 0;
+	   	  		break;
+	   	  	case KeyEvent.VK_4 :
+	   	  		this.touchesCliques[3] = 3;
+	   	  		break;
+	   	  	case KeyEvent.VK_6 :
+		   	  	this.touchesCliques[3] = 1;
+	   	  		break;
+	   	  	case KeyEvent.VK_5 :
+		   	  	this.touchesCliques[3] = 2;
+	   	  		break;
+	   	  		
+	   	  	
 	   	  	default:
 	   	  		this.touchesCliques[0] = 4;
 	   	  		this.touchesCliques[1] = 4;
+		   	  	this.touchesCliques[2] = 4;
+	   	  		this.touchesCliques[3] = 4;
 	   	  		break;
 	   	  }
 

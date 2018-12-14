@@ -7,6 +7,8 @@ public abstract class Game implements Runnable,Sujet{
 	public Touches panelTouches = new Touches();
 	private Thread thread; 
 	private boolean isRunning;
+	private boolean isInvincible;
+	private boolean finJeu;
 	private int NbToursSecondes = 2;
 	private int NbTours;
 	private int NbToursMax = 100000000;
@@ -35,6 +37,12 @@ public abstract class Game implements Runnable,Sujet{
 	//getteurs/setteurs 
 	public boolean getIsRunning(){return this.isRunning;}
 	public void setIsRunnin(boolean etat){this.isRunning = etat;}
+	
+	public boolean getIsInvincible(){return this.isInvincible;}
+	public void setIsInvincible(boolean etat){this.isInvincible = etat;}
+	
+	public boolean getFinJeu(){return this.finJeu;}
+	public void setFinJeu(boolean etat){this.finJeu = etat;}
 	
 	public int getNbToursSecondes(){return this.NbToursSecondes;}
 	public void setNbToursSecondes(int nb){this.NbToursSecondes = nb;}
