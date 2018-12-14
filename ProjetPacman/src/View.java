@@ -57,7 +57,7 @@ public class View implements Observateur{
 
 	
     //méthodes
-	public View(InterfaceController controller,PacmanGame game) {	
+	public View(InterfaceController controller,PacmanGame game) {
 		this.game = game;
 		this.labyrinthe = game.getLabyrinthe();
 		this.controller = controller;
@@ -279,6 +279,7 @@ public class View implements Observateur{
 		
 		Run.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
+		    	
 		    	controller.start();
 		    	Run.setEnabled(false);
 		    	Restart.setEnabled(false);
@@ -286,6 +287,9 @@ public class View implements Observateur{
 		    	Step.setEnabled(false);
 		    	changeMaze.setEnabled(false);
 		    	Configuration.setVisible(false);
+		    	
+		    	//request focus from panel touches 
+		    	game.panelTouches.requestFocus();
 			}
 		});
 		
@@ -299,6 +303,9 @@ public class View implements Observateur{
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
 		    	Configuration.setVisible(false);
+		    	
+		    	//request focus from panel touches 
+		    	game.panelTouches.requestFocus();
 			}
 		});
 		
@@ -469,7 +476,9 @@ public class View implements Observateur{
 		
 		Jeu.add(game.panelTouches,BorderLayout.CENTER);
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
+		
 		Jeu.setVisible(true);
+		
 
 	}
 
