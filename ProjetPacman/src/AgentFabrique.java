@@ -4,7 +4,8 @@ public class AgentFabrique {
 		
 		//agent pacman 
 		if(typeAgent == true){
-			return new Agent(typeAgent,p,c);
+			ComportementFantomeFacile compo = new ComportementFantomeFacile();
+			return new Agent(typeAgent,p, compo);
 			
 			/*
 			switch(c){

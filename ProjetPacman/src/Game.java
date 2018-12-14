@@ -128,6 +128,146 @@ public abstract class Game implements Runnable,Sujet{
     	actualiser(chemin);
     }
     
+    
+    
+    
+    /*
+     * Cherche le nombre d'agents adverses qu'il y a dans la partie Nord Est du labyrinthe.
+     */
+    public int NombreAgentNordEst(boolean typeAgent, Agent agent){
+    	//Si l'agent est un fantôme
+    	int valeurRetour = 0;
+    	/*
+    	 * On cherche le nombre de pacmans
+    	 */
+    	if(typeAgent){
+    		for(int i=agent.getPosition().getX(); i < this.getLabyrinthe().getSizeX(); i++){
+    			for(int j=agent.getPosition().getY(); j > 0; j--){
+    				if(this.getLabyrinthe().isPacman(i,  j)){
+    					valeurRetour++;
+    				}
+    			}
+    		}
+    		return valeurRetour;
+    	} else {
+    		//Sinon c'est un pacman
+    		/*
+    		 * On cherche le nombre de fantomes
+    		 */
+        	for(int i=agent.getPosition().getX(); i > 0; i++){
+        		for(int j=agent.getPosition().getY(); j<this.getLabyrinthe().getSizeY(); j++){
+        			if(this.getLabyrinthe().isFantome(i,  j)){
+        				valeurRetour++;
+        			}
+        		}
+        	}
+        	return valeurRetour;
+    	}
+    }
+
+
+    /*
+     * Cherche le nombre d'agents adverses qu'il y a dans la partie Nord Ouest du labyrinthe.
+     */
+    public int NombreAgentNordOuest(boolean typeAgent, Agent agent){
+    	//Si l'agent est un fantôme
+    	int valeurRetour = 0;
+    	/*
+    	 * On cherche le nombre de pacmans
+    	 */
+    	if(typeAgent){
+    		for(int i=agent.getPosition().getX(); i > 0; i--){
+    			for(int j=agent.getPosition().getY(); j > 0; j--){
+    				if(this.getLabyrinthe().isPacman(i,  j)){
+    					valeurRetour++;
+    				}
+    			}
+    		}
+    		return valeurRetour;
+    	} else {
+    		//Sinon c'est un pacman
+    		/*
+    		 * On cherche le nombre de fantomes
+    		 */
+        	for(int i=agent.getPosition().getX(); i > 0; i--){
+        		for(int j=agent.getPosition().getY(); j > 0; j--){
+        			if(this.getLabyrinthe().isFantome(i,  j)){
+        				valeurRetour++;
+        			}
+        		}
+        	}
+        	return valeurRetour;
+    	}
+    }
+   
+    /*
+     * Cherche le nombre d'agents adverses qu'il y a dans la partie Sud Ouest du labyrinthe.
+     */
+    public int NombreAgentSudOuest(boolean typeAgent, Agent agent){
+    	//Si l'agent est un fantôme
+    	int valeurRetour = 0;
+    	/*
+    	 * On cherche le nombre de pacmans
+    	 */
+    	if(typeAgent){
+    		for(int i=agent.getPosition().getX(); i > 0; i--){
+    			for(int j=agent.getPosition().getY(); j<this.getLabyrinthe().getSizeY(); j++){
+    				if(this.getLabyrinthe().isPacman(i,  j)){
+    					valeurRetour++;
+    				}
+    			}
+    		}
+    		return valeurRetour;
+    	} else {
+    		//Sinon c'est un pacman
+    		/*
+    		 * On cherche le nombre de fantomes
+    		 */
+        	for(int i=agent.getPosition().getX(); i > 0; i--){
+        		for(int j=agent.getPosition().getY(); j<this.getLabyrinthe().getSizeY(); j++){
+        			if(this.getLabyrinthe().isFantome(i,  j)){
+        				valeurRetour++;
+        			}
+        		}
+        	}
+        	return valeurRetour;
+    	}
+    }
+    
+    /*
+     * Cherche le nombre d'agents adverses qu'il y a dans la partie Sud Est du labyrinthe.
+     */
+    public int NombreAgentSudEst(boolean typeAgent, Agent agent){
+    	//Si l'agent est un fantôme
+    	int valeurRetour = 0;
+    	if(typeAgent){
+    		/*
+    		 * On cherche le nombre de pacmans
+    		 */
+    		for(int i=agent.getPosition().getX(); i < this.getLabyrinthe().getSizeX(); i++){
+    			for(int j=agent.getPosition().getY(); j<this.getLabyrinthe().getSizeY(); j++){
+    				if(this.getLabyrinthe().isPacman(i,  j)){
+    					valeurRetour++;
+    				}
+    			}
+    		}
+    		return valeurRetour;
+    	} else {
+    		//Sinon c'est un pacman
+    		/*
+    		 * On cherche le nombre de fantomes
+    		 */
+        	for(int i=agent.getPosition().getX(); i<this.getLabyrinthe().getSizeX(); i++){
+        		for(int j=agent.getPosition().getY(); j<this.getLabyrinthe().getSizeY(); j++){
+        			if(this.getLabyrinthe().isFantome(i,  j)){
+        				valeurRetour++;
+        			}
+        		}
+        	}
+        	return valeurRetour;
+    	}
+    }
+    
 	
     //méthodes abstraites
     abstract public void setActionParTouches();
@@ -137,7 +277,10 @@ public abstract class Game implements Runnable,Sujet{
 	abstract public void actualiser(String chemin);
     abstract public boolean isLegalMove(Agent agent, AgentAction action);
     abstract public boolean isLegalMoveInt(Agent agent, int action);
-
+    abstract public int ChercheAgentOuest(boolean typeAgent, Agent agent);
+    abstract public int ChercheAgentEst(boolean typeAgent, Agent agent);
+    abstract public int ChercheAgentNord(boolean typeAgent, Agent agent);
+    abstract public int ChercheAgentSud(boolean typeAgent, Agent agent);
 	
     //observateur     
     /**
