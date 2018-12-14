@@ -1,15 +1,4 @@
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
 
 
 /**
@@ -55,7 +44,7 @@ public class PacmanGame extends Game{
 		
 		this.setLabyrinthe(labyrinthe);
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantomeFacile());
+			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantomeAlgo());
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
@@ -144,26 +133,7 @@ public class PacmanGame extends Game{
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+1);
-				//play sound eat_pacgoms
-				/*
-				try {
-				    File yourFile = new File("sounds/pacman_chomp.wav");
-				    AudioInputStream stream;
-				    AudioFormat format;
-				    DataLine.Info info;
-				    Clip clip;
-
-				    stream = AudioSystem.getAudioInputStream(yourFile);
-				    format = stream.getFormat();
-				    info = new DataLine.Info(Clip.class, format);
-				    clip = (Clip) AudioSystem.getLine(info);
-				    clip.open(stream);
-				    clip.start();
-				}
-				catch (Exception e) {
-				    //whatevers
-				}
-				*/
+				this.playSound("sounds/pacman_chomp.wav");
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
@@ -171,25 +141,7 @@ public class PacmanGame extends Game{
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
-				
-				//play sound eat_capsule
-				try {
-				    File yourFile = new File("sounds/pacman_eatfruit.wav");
-				    AudioInputStream stream;
-				    AudioFormat format;
-				    DataLine.Info info;
-				    Clip clip;
-
-				    stream = AudioSystem.getAudioInputStream(yourFile);
-				    format = stream.getFormat();
-				    info = new DataLine.Info(Clip.class, format);
-				    clip = (Clip) AudioSystem.getLine(info);
-				    clip.open(stream);
-				    clip.start();
-				}
-				catch (Exception e) {
-				    //whatevers
-				}
+				this.playSound("sounds/pacman_eatfruit.wav");
 			}
 		}
 		
@@ -216,7 +168,7 @@ public class PacmanGame extends Game{
 		this.pacmans.clear();
 		
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeAlgo());
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
@@ -239,7 +191,7 @@ public class PacmanGame extends Game{
 			this.fantomes.clear();
 			this.pacmans.clear();			
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-				Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+				Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeAlgo());
 				this.fantomes.add(fantome_temp);
 			}
 			for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
@@ -247,7 +199,6 @@ public class PacmanGame extends Game{
 				this.pacmans.add(pacman_temp);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -365,35 +316,17 @@ public class PacmanGame extends Game{
 			PositionAgent positionPacman = new PositionAgent(pacmans.get(i).getPosition());
 			boolean isAlivePacman = true;
 			for(int j=0; j< fantomes.size(); j++){
-				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());
-				if(isAlivePacman == true && this.getIsInvincible() == false){
+				PositionAgent positionFantome = new PositionAgent(fantomes.get(j).getPosition());	
+				if(isAlivePacman == true && this.getIsInvincible() == false){				
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
 						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
 						this.setNbies(this.getNbVies()-1);
-						
-						//play when pacman die
-						try {
-						    File yourFile = new File("sounds/pacman_death.wav");
-						    AudioInputStream stream;
-						    AudioFormat format;
-						    DataLine.Info info;
-						    Clip clip;
-
-						    stream = AudioSystem.getAudioInputStream(yourFile);
-						    format = stream.getFormat();
-						    info = new DataLine.Info(Clip.class, format);
-						    clip = (Clip) AudioSystem.getLine(info);
-						    clip.open(stream);
-						    clip.start();
-						}
-						catch (Exception e) {
-						    //whatevers
-						}
+						this.playSound("sounds/pacman_death.wav");
 					}
 				}
-				if(isAlivePacman = true && this.getIsInvincible() == true){
+				if(isAlivePacman == true && this.getIsInvincible() == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);

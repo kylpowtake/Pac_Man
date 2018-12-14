@@ -57,7 +57,7 @@ public class View implements Observateur{
 
 	
     //méthodes
-	public View(InterfaceController controller,PacmanGame game) {	
+	public View(InterfaceController controller,PacmanGame game) {
 		this.game = game;
 		this.labyrinthe = game.getLabyrinthe();
 		this.controller = controller;
@@ -77,7 +77,7 @@ public class View implements Observateur{
 		
 		//label nombre de tours et nombre de points 
 		this.Label_2.setText("Turn : " + this.game.getNbTours());		
-		this.Label_3.setText("Nombres de points : " + this.game.getNbPoints());
+		this.Label_3.setText("Number of points : " + this.game.getNbPoints());
 		
 		
 		//image pacman nombre de vies 
@@ -279,6 +279,7 @@ public class View implements Observateur{
 		
 		Run.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent evenement) {
+		    	
 		    	controller.start();
 		    	Run.setEnabled(false);
 		    	Restart.setEnabled(false);
@@ -286,6 +287,9 @@ public class View implements Observateur{
 		    	Step.setEnabled(false);
 		    	changeMaze.setEnabled(false);
 		    	Configuration.setVisible(false);
+		    	
+		    	//request focus from panel touches 
+		    	game.panelTouches.requestFocus();
 			}
 		});
 		
@@ -299,6 +303,9 @@ public class View implements Observateur{
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
 		    	Configuration.setVisible(false);
+		    	
+		    	//request focus from panel touches 
+		    	game.panelTouches.requestFocus();
 			}
 		});
 		
@@ -420,10 +427,10 @@ public class View implements Observateur{
 		
 		
 	    
-	    Label_2 = new JLabel("Turn : 8");
+	    Label_2 = new JLabel("Turn : 0");
 	    Label_2.setHorizontalAlignment(JLabel.CENTER);
 	    
-	    Label_3 = new JLabel("Nombres de points : " + this.game.getNbPoints());
+	    Label_3 = new JLabel("Number of points : " + this.game.getNbPoints());
 	    Label_3.setHorizontalAlignment(JLabel.CENTER);
 	    
 	    iconLife = new ImageIcon("img/pacman3lifes.png");
@@ -469,7 +476,9 @@ public class View implements Observateur{
 		
 		Jeu.add(game.panelTouches,BorderLayout.CENTER);
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
+		
 		Jeu.setVisible(true);
+		
 
 	}
 
