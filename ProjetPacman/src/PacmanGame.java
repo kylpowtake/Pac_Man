@@ -141,26 +141,7 @@ public class PacmanGame extends Game{
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+1);
-				//play sound eat_pacgoms
-				/*
-				try {
-				    File yourFile = new File("sounds/pacman_chomp.wav");
-				    AudioInputStream stream;
-				    AudioFormat format;
-				    DataLine.Info info;
-				    Clip clip;
-
-				    stream = AudioSystem.getAudioInputStream(yourFile);
-				    format = stream.getFormat();
-				    info = new DataLine.Info(Clip.class, format);
-				    clip = (Clip) AudioSystem.getLine(info);
-				    clip.open(stream);
-				    clip.start();
-				}
-				catch (Exception e) {
-				    //whatevers
-				}
-				*/
+				this.playSound("sounds/pacman_chomp.wav");
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
@@ -168,25 +149,7 @@ public class PacmanGame extends Game{
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
-				
-				//play sound eat_capsule
-				try {
-				    File yourFile = new File("sounds/pacman_eatfruit.wav");
-				    AudioInputStream stream;
-				    AudioFormat format;
-				    DataLine.Info info;
-				    Clip clip;
-
-				    stream = AudioSystem.getAudioInputStream(yourFile);
-				    format = stream.getFormat();
-				    info = new DataLine.Info(Clip.class, format);
-				    clip = (Clip) AudioSystem.getLine(info);
-				    clip.open(stream);
-				    clip.start();
-				}
-				catch (Exception e) {
-				    //whatevers
-				}
+				this.playSound("sounds/pacman_eatfruit.wav");
 			}
 		}
 		
@@ -362,25 +325,7 @@ public class PacmanGame extends Game{
 						this.getLabyrinthe().getPacman_start().remove(i);
 						isAlivePacman = false;
 						this.setNbies(this.getNbVies()-1);
-						
-						//play when pacman die
-						try {
-						    File yourFile = new File("sounds/pacman_death.wav");
-						    AudioInputStream stream;
-						    AudioFormat format;
-						    DataLine.Info info;
-						    Clip clip;
-
-						    stream = AudioSystem.getAudioInputStream(yourFile);
-						    format = stream.getFormat();
-						    info = new DataLine.Info(Clip.class, format);
-						    clip = (Clip) AudioSystem.getLine(info);
-						    clip.open(stream);
-						    clip.start();
-						}
-						catch (Exception e) {
-						    //whatevers
-						}
+						this.playSound("sounds/pacman_death.wav");
 					}
 				}
 				if(isAlivePacman = true && this.getIsInvincible() == true){

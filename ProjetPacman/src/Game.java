@@ -1,5 +1,12 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 
 public abstract class Game implements Runnable,Sujet{
 
@@ -137,6 +144,7 @@ public abstract class Game implements Runnable,Sujet{
     }
     
     
+<<<<<<< Updated upstream
     
     
     /*
@@ -274,6 +282,29 @@ public abstract class Game implements Runnable,Sujet{
         	}
         	return valeurRetour;
     	}
+=======
+    /**
+     * méthode pour rajouter de la musique au jeu 
+     */
+    public void playSound(String path){
+    	try {
+		    File yourFile = new File(path);
+		    AudioInputStream stream;
+		    AudioFormat format;
+		    DataLine.Info info;
+		    Clip clip;
+
+		    stream = AudioSystem.getAudioInputStream(yourFile);
+		    format = stream.getFormat();
+		    info = new DataLine.Info(Clip.class, format);
+		    clip = (Clip) AudioSystem.getLine(info);
+		    clip.open(stream);
+		    clip.start();
+		}
+		catch (Exception e) {
+		    //whatevers
+		}
+>>>>>>> Stashed changes
     }
     
 	
