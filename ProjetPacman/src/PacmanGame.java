@@ -17,6 +17,10 @@ import java.util.Map;
 
 public class PacmanGame extends Game{
 
+	/**
+	 * 
+	 */
+	private AgentFabrique agentFabrique = new AgentFabrique();
 	
 	/**
 	 * Nombre de tours restant d'invincibilité pour les pacmans.
@@ -123,6 +127,7 @@ public class PacmanGame extends Game{
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
+				this.setNbPoints(this.getNbPoints()+5);
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
@@ -151,12 +156,13 @@ public class PacmanGame extends Game{
 		this.pacmans.clear();
 		
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+			//Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+			Agent fantome_temp  = this.agentFabrique.createAgent(false, this.getLabyrinthe().getGhosts_start().get(i),EnumComportement.FANTOME_FACILE);
 			this.fantomes.add(fantome_temp);
 		}
-		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
-			
-			Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){		
+			//Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
+			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_FACILE);
 			this.pacmans.add(pacman_temp);
 		}
 	}
