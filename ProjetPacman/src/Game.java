@@ -301,6 +301,7 @@ public abstract class Game implements Runnable,Sujet{
         		}
     			pos.setY(pos.getY()-1);
     		}
+    		break;
     	case 1 :
 			pos.setY(pos.getY()+1);
     		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
@@ -312,19 +313,9 @@ public abstract class Game implements Runnable,Sujet{
         		}
     			pos.setY(pos.getY()+1);
     		}
+    		break;
     	case 2 :
-			pos.setX(pos.getX()-1);
-    		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
-    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()-1)){
-    				return true;
-    			}
-    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()+1)){
-    				return true;
-        		}
-    			pos.setX(pos.getX()-1);
-    		}
-    	case 3 :
-    		pos.setX(pos.getX()+1);
+			pos.setX(pos.getX()+1);
     		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
     			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()-1)){
     				return true;
@@ -335,11 +326,21 @@ public abstract class Game implements Runnable,Sujet{
     			pos.setX(pos.getX()+1);
     		}
     		break;
+    	case 3 :
+    		pos.setX(pos.getX()-1);
+    		while(!this.labyrinthe.isWall(pos.getX(), pos.getY())){
+    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()-1)){
+    				return true;
+    			}
+    			if(!this.labyrinthe.isWall(pos.getX(), pos.getY()+1)){
+    				return true;
+        		}
+    			pos.setX(pos.getX()-1);
+    		}
+    		break;
     	default :
     		return false;
     	}
-    	
-    	
     	return false;
     }
     

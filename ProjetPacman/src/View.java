@@ -22,6 +22,11 @@ import java.util.Random;
 
 public class View implements Observateur{
 	
+	/**
+	 * On mange
+	 * On meurt
+	 * Invincible
+	 */
 	
 	//attributs 
 	Game game;

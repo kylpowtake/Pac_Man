@@ -43,15 +43,7 @@ public class PacmanGame extends Game{
 		pacmans = new ArrayList<Agent>();
 		
 		this.setLabyrinthe(labyrinthe);
-		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, labyrinthe.getGhosts_start().get(i),new ComportementFantomeAlgo());
-			this.fantomes.add(fantome_temp);
-		}
-		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
-			
-			Agent pacman_temp = new Agent(true, labyrinthe.getPacman_start().get(i),new ComportementPacman());
-			this.pacmans.add(pacman_temp);
-		}
+		this.RechargementAgents();
 	}		
 	
 	/**
@@ -160,22 +152,27 @@ public class PacmanGame extends Game{
 	}
 	
 
-	/**
-	 * Méthode appelée quand game doit être reinitialiser.
-	 */
-	public void initializeGame(){
+	
+	public void RechargementAgents(){
 		this.fantomes.clear();
 		this.pacmans.clear();
 		
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeAlgo());
+			Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
 			this.fantomes.add(fantome_temp);
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
 			
-			Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacman());
+			Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
 			this.pacmans.add(pacman_temp);
 		}
+	}
+	
+	/**
+	 * Méthode appelée quand game doit être reinitialiser.
+	 */
+	public void initializeGame(){
+		RechargementAgents();
 		this.notifierObservateur(true, false, false);
 	}
 	
@@ -188,16 +185,7 @@ public class PacmanGame extends Game{
 		try {
 			System.out.println("On est dans actualiser : ");
 			this.setLabyrinthe(new Maze(chemin));
-			this.fantomes.clear();
-			this.pacmans.clear();			
-			for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-				Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeAlgo());
-				this.fantomes.add(fantome_temp);
-			}
-			for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){
-				Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacman());
-				this.pacmans.add(pacman_temp);
-			}
+			this.RechargementAgents();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -379,6 +367,7 @@ public class PacmanGame extends Game{
     	int valeur_distance = 0;
 		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
+			position_agent.setX(position_agent.getX()+1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setX(position_agent.getX()+1);
     			valeur_distance++;
@@ -386,9 +375,12 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 2)){
         				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	} else {
+			position_agent.setX(position_agent.getX()+1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
     			position_agent.setX(position_agent.getX()+1);
     			valeur_distance++;
@@ -396,6 +388,8 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 2)){
     				valeur_distance = -1;
+    			}else {
+    				valeur_distance += 10;
     			}
     		}
     	}
@@ -414,6 +408,7 @@ public class PacmanGame extends Game{
     	int valeur_distance = 0;
 		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
+			position_agent.setX(position_agent.getX()-1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setX(position_agent.getX()-1);
     			valeur_distance++;
@@ -421,9 +416,12 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 3)){
     				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	} else {
+			position_agent.setX(position_agent.getX()-1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
     			position_agent.setX(position_agent.getX()-1);
     			valeur_distance++;
@@ -431,6 +429,8 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 3)){
     				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	}
@@ -450,6 +450,7 @@ public class PacmanGame extends Game{
     	int valeur_distance = 0;
 		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
+			position_agent.setY(position_agent.getY()+1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setY(position_agent.getY()+1);
     			valeur_distance++;
@@ -457,9 +458,12 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 1)){
     				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	} else {
+			position_agent.setY(position_agent.getY()+1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
     			position_agent.setY(position_agent.getY()+1);
     			valeur_distance++;
@@ -467,6 +471,8 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 1)){
     				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	}
@@ -484,6 +490,7 @@ public class PacmanGame extends Game{
     	int valeur_distance = 0;
 		PositionAgent position_agent = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());
     	if(TypeAgent){
+			position_agent.setY(position_agent.getY()-1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isPacman(position_agent.getX(), position_agent.getY())){
     			position_agent.setY(position_agent.getY()-1);
     			valeur_distance++;
@@ -491,9 +498,12 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 0)){
     				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	} else {
+			position_agent.setY(position_agent.getY()-1);
     		while(!this.getLabyrinthe().isWall(position_agent.getX(), position_agent.getY()) && !this.getLabyrinthe().isFantome(position_agent.getX(), position_agent.getY())){
     			position_agent.setY(position_agent.getY()-1);
     			valeur_distance++;
@@ -501,6 +511,8 @@ public class PacmanGame extends Game{
     		if(this.getLabyrinthe().isWall(position_agent.getX(),  position_agent.getY())){
     			if(!this.testFinMur(agent, 0)){
     				valeur_distance = -1;
+    			} else {
+    				valeur_distance += 10;
     			}
     		}
     	}

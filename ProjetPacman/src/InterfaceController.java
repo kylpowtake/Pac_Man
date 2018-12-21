@@ -7,6 +7,4 @@ public interface InterfaceController {
     public void changement(String chemin);
     public void SetView(View view);
     public View GetView();
-    public void SetGame(Game game);
-    public Game GetGame();   
 }

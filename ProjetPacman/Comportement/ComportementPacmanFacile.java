@@ -1,27 +1,31 @@
 
-public class ComportementFantomeFacile extends ComportementFantome {
+public class ComportementPacmanFacile extends ComportementPacman {
 	
-	public void comportementSOS(Agent agent, Game game){
+	public void comportement(Agent agent, Game game){
 		
+		/*
 		if(!game.getIsInvincible()){
-		Agent agentTest = new Agent(true, agent.getPosition(), agent.getComportement());
+		Agent agentTest = new Agent(false, agent.getPosition(), agent.getComportement());
 		agentTest.setNextAction(agent.getNextAction());		
 		int[] TableauValeur = new int[4];
-		TableauValeur[0] = game.NombreAgentNordEst(true, agentTest);
-		TableauValeur[1] = game.NombreAgentNordOuest(true, agentTest);
-		TableauValeur[2] = game.NombreAgentSudEst(true, agentTest);
-		TableauValeur[3] = game.NombreAgentSudOuest(true, agentTest);
-		boolean changement_direction = false;
+		TableauValeur[0] = game.NombreAgentNordEst(false, agentTest);
+		TableauValeur[1] = game.NombreAgentNordOuest(false, agentTest);
+		TableauValeur[2] = game.NombreAgentSudEst(false, agentTest);
+		TableauValeur[3] = game.NombreAgentSudOuest(false, agentTest);
+		boolean changement_direction = true;
 		int[] ordre = this.getTableauOrdre(TableauValeur);
-		int distanceNord = game.ChercheAgentNord(true, agentTest);
-		int distanceSud = game.ChercheAgentSud(true, agentTest);
-		int distanceEst = game.ChercheAgentEst(true, agentTest);
-		int distanceOuest = game.ChercheAgentOuest(true, agentTest);
-
+		int distanceNord = game.ChercheAgentNord(false, agentTest);
+		int distanceSud = game.ChercheAgentSud(false, agentTest);
+		int distanceEst = game.ChercheAgentEst(false, agentTest);
+		int distanceOuest = game.ChercheAgentOuest(false, agentTest);
+*/
+		
+		
 		/*
 		 * Selon la valeur correspondant au NombreAgentZone le plus élevé,
 		 * On regarde si il y a un pacman plus près dans la ligne 1 ou dans la ligne 2
 		 */
+		/*
 		switch(ordre[0]){
 		case 0 :
 			System.out.println("distance nord : " + distanceNord + " et distance est : " + distanceEst);
@@ -84,11 +88,13 @@ public class ComportementFantomeFacile extends ComportementFantome {
 		/*
 		 * Si la valeur de direction n'a pas encore été changé
 		 */
+		/*
 		if(!changement_direction){
 			/*
 			 * Selon la valeur correspondant au NombreAgentZone le plus élevé,
 			 * On regarde si il y a un pacman plus près dans la ligne 1 ou dans la ligne 2
 			 */
+		/*
 			switch(ordre[1]){
 			case 0 :
 				System.out.println("distance nord : " + distanceNord + " et distance est : " + distanceEst);
@@ -151,33 +157,37 @@ public class ComportementFantomeFacile extends ComportementFantome {
 		/*
 		 * Si la valeur de direction n'a toujours pas changé
 		 */
+		/*
 		if(!changement_direction){
 			/*
 			 * On applique le choix par hasard
 			 */
+		/*
 			this.ComportementFinal(agent, game);
 		}
 		} else {
 			/*
 			 * Pacman est invincible
 			 */
-			Agent agentTest = new Agent(true, agent.getPosition(), agent.getComportement());
+		/*
+			Agent agentTest = new Agent(false, agent.getPosition(), agent.getComportement());
 			agentTest.setNextAction(agent.getNextAction());		
 			int[] TableauValeur = new int[4];
-			TableauValeur[0] = game.NombreAgentNordEst(true, agentTest);
-			TableauValeur[1] = game.NombreAgentNordOuest(true, agentTest);
-			TableauValeur[2] = game.NombreAgentSudEst(true, agentTest);
-			TableauValeur[3] = game.NombreAgentSudOuest(true, agentTest);
-			boolean changement_direction = false;
+			TableauValeur[0] = game.NombreAgentNordEst(false, agentTest);
+			TableauValeur[1] = game.NombreAgentNordOuest(false, agentTest);
+			TableauValeur[2] = game.NombreAgentSudEst(false, agentTest);
+			TableauValeur[3] = game.NombreAgentSudOuest(false, agentTest);
+			boolean changement_direction = true;
 			int[] ordre = this.getTableauOrdre(TableauValeur);
-			int distanceNord = game.ChercheAgentNord(true, agentTest);
-			int distanceSud = game.ChercheAgentSud(true, agentTest);
-			int distanceEst = game.ChercheAgentEst(true, agentTest);
-			int distanceOuest = game.ChercheAgentOuest(true, agentTest);
+			int distanceNord = game.ChercheAgentNord(false, agentTest);
+			int distanceSud = game.ChercheAgentSud(false, agentTest);
+			int distanceEst = game.ChercheAgentEst(false, agentTest);
+			int distanceOuest = game.ChercheAgentOuest(false, agentTest);
 			/*
 			 * Selon la valeur correspondant au NombreAgentZone le plus élevé,
 			 * On regarde si il y a un pacman plus près dans la ligne 1 ou dans la ligne 2
 			 */
+		/*
 			switch(ordre[3]){
 			case 0 :
 				if(distanceNord >= distanceEst && distanceNord > -1){
@@ -219,11 +229,13 @@ public class ComportementFantomeFacile extends ComportementFantome {
 			/*
 			 * Si la valeur de direction n'a pas encore été changé
 			 */
+		/*
 			if(!changement_direction){
 				/*
 				 * Selon la valeur correspondant au NombreAgentZone le plus élevé,
 				 * On regarde si il y a un pacman plus près dans la ligne 1 ou dans la ligne 2
 				 */
+		/*
 				switch(ordre[1]){
 				case 0 :
 					if(distanceNord >= distanceEst && distanceNord > -1){
@@ -266,12 +278,14 @@ public class ComportementFantomeFacile extends ComportementFantome {
 			/*
 			 * Si la valeur de direction n'a toujours pas changé
 			 */
+		/*
 			if(!changement_direction){
 				/*
 				 * On applique le choix par hasard
 				 */
+		/*
 				this.ComportementFinal(agent, game);
 			}
-		}
+		} */
 	}	
 }

@@ -1,43 +1,35 @@
 
 public class ControleurGame implements InterfaceController{
 	
-	private PacmanGame game;
 	private View view;
 	
 	public ControleurGame(PacmanGame game) { 	
-    	this.game = game; 	
         view = new View(this,game);
     }
 	
 	@Override
 	public void start(){
-		this.game.launch();
-		System.out.println("start");
+		this.view.game.launch();
     }
 	
 	@Override
     public void restart(){
-		this.game.init();
-		System.out.println("restart");
-    	
+		this.view.game.init();    	
     }
 	
 	@Override
     public void step(){
-		this.game.step();
-		System.out.println("step");
-    	
+		this.view.game.step();    	
     }
 	
 	@Override
     public void pause(){
-		this.game.stop();
-		System.out.println("stop");
+		this.view.game.stop();
     }
 	
 	@Override
 	public void changement(String chemin){
-		this.game.changement(chemin);
+		this. view.game.changement(chemin);
 	}
 	
 	public View GetView(){
@@ -46,16 +38,5 @@ public class ControleurGame implements InterfaceController{
 	
 	public void SetView(View view){
 		this.view = view;
-	}
-
-	@Override
-	public void SetGame(Game game) {
-		this.game = (PacmanGame) game;
-		
-	}
-
-	@Override
-	public Game GetGame() {
-		return this.game;
 	}
 }
