@@ -53,7 +53,7 @@ public abstract class ComportementFantome extends ComportementAgent {
 		case 2 :
 			//Il continue s'il n'y a pas de mur et qu'il n'est pas à l'arrêt, sinon on lance le comportement.
 			System.out.println("Deux murs");
-			if(this.TestPresenceMur(this.getPositionNextAction(agent, game), game) || posAgent.getDir() == 4 || game.getNbTours() % 4 == 3){
+			if(this.TestPresenceMur(this.getPositionNextAction(agent, game), game) || posAgent.getDir() == 4 || game.getNbTours() % 2 == 1){
 				this.ChoixComportement(agent, game);
 			}
 			break;

@@ -81,10 +81,27 @@ public class PacmanGame extends Game{
 		this.notifierObservateur(false, false, true);
 	}
 	
+	
+	public void RechargementAgents(){
+		this.fantomes.clear();
+		this.pacmans.clear();
+		
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
+			//Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
+			Agent fantome_temp  = this.agentFabrique.createAgent(false, this.getLabyrinthe().getGhosts_start().get(i),EnumComportement.FANTOME_ALGO);
+			this.fantomes.add(fantome_temp);
+		}
+		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){		
+			//Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
+			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_RANDOM);
+			this.pacmans.add(pacman_temp);
+		}
+	}
+	
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
 	
-		System.out.println("\n\n tour suivant \n\n");
+		System.out.println("\n\n\n\n tour suivant \n\n\n\n");
 		
 		setActionParTouches();
 	
@@ -143,23 +160,6 @@ public class PacmanGame extends Game{
 		this.notifierObservateur(false, false, false);
 	}
 	
-
-	
-	public void RechargementAgents(){
-		this.fantomes.clear();
-		this.pacmans.clear();
-		
-		for(int i = 0; i < getLabyrinthe().getInitNumberOfGhosts(); i++){
-			//Agent fantome_temp = new Agent(false, this.getLabyrinthe().getGhosts_start().get(i),new ComportementFantomeFacile());
-			Agent fantome_temp  = this.agentFabrique.createAgent(false, this.getLabyrinthe().getGhosts_start().get(i),EnumComportement.FANTOME_FACILE);
-			this.fantomes.add(fantome_temp);
-		}
-		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){		
-			//Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
-			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_FACILE);
-			this.pacmans.add(pacman_temp);
-		}
-	}
 	
 	/**
 	 * Méthode appelée quand game doit être reinitialiser.
@@ -520,14 +520,18 @@ public class PacmanGame extends Game{
 		int j = 0;
 		if(fantomes.size()!=0){
 			for(int i=0;i<this.getNbJoueursFantome();i++){
+				if(i < this.fantomes.size() && (this.getNbJoueursPacman() + j < 4)){
 				this.fantomes.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
 				j++;
+				}
 			}
 		}
 		if(pacmans.size()!=0){
 			for(int i=0;i<this.getNbJoueursPacman();i++){
+				if(i < this.pacmans.size() && (j < 4)){
 				this.pacmans.get(i).setNextAction(this.panelTouches.touchesCliques[j]);
 				j++;
+				}
 			}
 		}
 	}

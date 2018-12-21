@@ -205,22 +205,23 @@ public abstract class ComportementAgent {
 		PositionAgent nouvPos = new PositionAgent(pos);
 		nouvPos.setDir(0);
 		if(!game.getLabyrinthe().isWall(pos.getX()+1, pos.getY())){
-			nouvPos.setX(nouvPos.getX()+1);
+			nouvPos = new PositionAgent(pos);
+			nouvPos.setX(pos.getX()+1);
 			Voisins.add(nouvPos);
-			nouvPos.setX(nouvPos.getX()-1);
 		}
 		if(!game.getLabyrinthe().isWall(pos.getX()-1, pos.getY())){
-			nouvPos.setX(nouvPos.getX()-1);
+			nouvPos = new PositionAgent(pos);
+			nouvPos.setX(pos.getX()-1);
 			Voisins.add(nouvPos);
-			nouvPos.setX(nouvPos.getX()+1);
 		}
 		if(!game.getLabyrinthe().isWall(pos.getX(), pos.getY()+1)){
-			nouvPos.setY(nouvPos.getY()+1);
+			nouvPos = new PositionAgent(pos);
+			nouvPos.setY(pos.getY()+1);
 			Voisins.add(nouvPos);
-			nouvPos.setY(nouvPos.getY()-1);
 		}
 		if(!game.getLabyrinthe().isWall(pos.getX(), pos.getY()-1)){
-			nouvPos.setY(nouvPos.getY()-1);
+			nouvPos = new PositionAgent(pos);
+			nouvPos.setY(pos.getY()-1);
 			Voisins.add(nouvPos);
 		}
 		return Voisins;
@@ -256,7 +257,7 @@ public abstract class ComportementAgent {
 	public int CoutChemin(ArrayList<PositionAgent> Cases, PositionAgent caseDebut, PositionAgent caseFin){
 		int indice = caseFin.getDir();
 		int compteur_cout = 0;
-		while(caseFin.getDir() != -1){
+		while(indice != -1){
 			indice = Cases.get(indice).getDir();
 			compteur_cout++;
 		}
@@ -283,6 +284,7 @@ public abstract class ComportementAgent {
 	 * @param Case : La nouvelle case
 	 */
 	public void AjoutSiNonPresentInferieur(ArrayList<PositionAgent> Cases1, ArrayList<PositionAgent> Cases2,PositionAgent Case){
+		if(!DansArrayList(Cases1, Case)){
 			if(!DansArrayList(Cases2, Case)){
 				Cases2.add(Case);
 			} else {
@@ -295,6 +297,8 @@ public abstract class ComportementAgent {
 					}
 				}
 			}
+		} else {
+		}
 	}	
 	
 	
@@ -346,6 +350,33 @@ public abstract class ComportementAgent {
 	}
 	
 	
+	public PositionAgent PremiereCase(ArrayList<PositionAgent> cases, PositionAgent caseFin){
+		int indice = caseFin.getDir();
+		int cout = 1;
+		int temp = 0;
+		while(indice != 0){
+			cout++;
+			temp = indice;
+			indice = cases.get(indice).getDir();
+		}
+		PositionAgent pos = new PositionAgent(cases.get(temp));
+		pos.setDir(cout);
+		return pos;
+	}
+	
+	
+	/**
+	 * Affiche les éléments de la liste
+	 * @param list : La liste à afficher
+	 */
+	public void AffichageList(ArrayList<PositionAgent> list){
+		System.out.println("\n");
+		for(int i = 0; i < list.size(); i++ ){
+			System.out.println("Element x : " + list.get(i).getX() + ", y : " + list.get(i).getY() + " et dir : " + list.get(i).getDir());
+		}
+		System.out.println("\n");
+	}
+	
 	/**
 	 * Fonction appliquant l'A* entre agent et ennemie.
 	 * @param agent : La position de départ
@@ -353,7 +384,7 @@ public abstract class ComportementAgent {
 	 * @param game : le jeu avec des variables et méthodes
 	 * @return la case menant utilisant le cheminle plus rapide
 	 */
-	public int CheminAgentEnnemie(PositionAgent agent, PositionAgent ennemie, Game game){
+	public PositionAgent CheminAgentEnnemie(PositionAgent agent, PositionAgent ennemie, Game game){
 		//Contient toutes les cases visiées, direction montre la case précédante.
 		ArrayList<PositionAgent> casesVisite = new ArrayList<>();
 		//Contient les casesvoisines de celles déjà visiter.
@@ -363,17 +394,16 @@ public abstract class ComportementAgent {
 		int indice = 0;
 		
 		//Position de l'agent
-		PositionAgent posAgentDebut = new PositionAgent(ennemie);
+		PositionAgent posAgentDebut = new PositionAgent(agent);
 		posAgentDebut.setDir(-1);
 		casesVisite.add(posAgentDebut);
 		//Position de l'ennemie
-		PositionAgent posEnnemie = new PositionAgent(agent);
+		PositionAgent posEnnemie = new PositionAgent(ennemie);
 		//Position temporelle.
 		PositionAgent posTemp = new PositionAgent(posAgentDebut);		
 		
 		//On prend les cases voisines sans murs à côté de la case de début
 		ArrayList<PositionAgent> casesvoisines = this.CaseLibreAutourCase(posAgentDebut, game);
-		
 		//On les ajoutes à la liste en mettant leur directionà la valeur de la case initial.
 		for(int i = 0; i < casesvoisines.size(); i++){
 			casesvoisines.get(i).setDir(compteur_case);
@@ -389,33 +419,22 @@ public abstract class ComportementAgent {
 			
 			//On prend les cases voisines sans murs à côté de la case ajouter
 			casesvoisines = this.CaseLibreAutourCase(posTemp, game);
-			
-			//On les ajoutes à la liste en mettant leur direction à la valeur de la case initial.
 			for(int i = 0; i < casesvoisines.size(); i++){
 				casesvoisines.get(i).setDir(casesVisite.size()-1);
-				this.AjoutSiNonPresentInferieur(casesVisite, casesAVisiter,casesvoisines.get(i)); 
+			}
+			//On les ajoutes à la liste en mettant leur direction à la valeur de la case initial.
+			for(int i = 0; i < casesvoisines.size(); i++){
+				this.AjoutSiNonPresentInferieur(casesVisite, casesAVisiter,casesvoisines.get(i));
 			}
 		}
 		if(casesAVisiter.isEmpty()){
-			System.out.println("La liste de cases est vide");
-			return -1;
+			return null;
 		} else {
-			System.out.println("La valeur a été trouvé");
-			posTemp = new PositionAgent(casesVisite.get(casesVisite.size()));
-			//Test si c'est à l'est
-			if(posTemp.getX() == agent.getX()+1){
-				return 2;
-				//Test si c'est à l'ouest
-			} else if(posTemp.getX() == agent.getX()-1){
-				return 3;
-				//Test si c'est au sud
-			} else if(posTemp.getY() == agent.getY()+1){
-				return 1;
-				//C'est au nord
-			} else {
-				return 0;
-			} 
+			posTemp = casesVisite.get(casesVisite.size()-1);
+			this.AffichageList(casesVisite);
+			posTemp = new PositionAgent(this.PremiereCase(casesVisite, posTemp));
 		}
+		return posTemp;
 	}
 }
 
