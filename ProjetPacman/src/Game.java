@@ -26,6 +26,10 @@ public abstract class Game implements Runnable,Sujet{
 	private String chemin;
 	private Maze labyrinthe;
 	private List<Observateur> observateurs = new ArrayList<>();
+	/**
+	 * Nombre de tours restant d'invincibilité pour les pacmans.
+	 */
+	private int tourInvincible;
 
 	//liste des agents 
 	public ArrayList<Agent> fantomes;
@@ -84,6 +88,8 @@ public abstract class Game implements Runnable,Sujet{
 		System.out.println("Dans le set de labyrinthe : ");
 		this.labyrinthe = labyrinthe;
 	}
+	public int getTourInvincible(){return this.tourInvincible;}
+	public void setTourInvincible(int tourInvincible){this.tourInvincible = tourInvincible;}
 
 	/**
 	 * On initialise le jeu.

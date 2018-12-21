@@ -44,15 +44,19 @@ public abstract class ComportementPacman extends ComportementAgent{
 		int nombre_mur = getNombreMurAutourPosition(posAgent, game);
 		switch(nombre_mur){
 		case 0 :
+			System.out.println("Pas de mur");
+			//On applique Le comportement Normal ou Fuite
 			this.ChoixComportement(agent, game);
 			break;
 		case 1 :
-			this.ChoixComportement(agent, game);
+			System.out.println("Un mur");
+			//On applique Le comportement Normal ou Fuite
+			this.ChoixComportement(agent, game);			
 			break;
 		case 2 :
 			//Il continue s'il n'y a pas de mur et qu'il n'est pas à l'arrêt, sinon on lance le comportement.
 			System.out.println("Deux murs");
-			if(this.TestPresenceMur(this.getPositionNextAction(agent, game), game) || posAgent.getDir() == 4){
+			if(this.TestPresenceMur(this.getPositionNextAction(agent, game), game) || posAgent.getDir() == 4 || game.getNbTours() % 4 == 3){
 				this.ChoixComportement(agent, game);
 			}
 			break;

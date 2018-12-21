@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Map;
 
 
 /**
@@ -22,10 +21,6 @@ public class PacmanGame extends Game{
 	 */
 	private AgentFabrique agentFabrique = new AgentFabrique();
 	
-	/**
-	 * Nombre de tours restant d'invincibilité pour les pacmans.
-	 */
-	private int tourInvincible;
 	/**
 	 * Permet de savoir si on a gagné ou perdu en fin du jeu 
 	 */
@@ -130,14 +125,13 @@ public class PacmanGame extends Game{
 				this.setNbPoints(this.getNbPoints()+5);
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
-				tourInvincible = this.getNbTours() + 20;
 				this.playSound("sounds/ghost_buster.wav");
 			}
 		}
 		
 		mortAgent();
 		
-		if(tourInvincible == this.getNbTours()){
+		if(this.getTourInvincible() == this.getNbTours()){
 			this.setIsInvincible(false);
 			this.getLabyrinthe().estInvinsible = false;
 		}
