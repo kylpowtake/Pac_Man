@@ -26,6 +26,10 @@ public abstract class Game implements Runnable,Sujet{
 	private String chemin;
 	private Maze labyrinthe;
 	private List<Observateur> observateurs = new ArrayList<>();
+
+	//liste des agents 
+	public ArrayList<Agent> fantomes;
+	public ArrayList<Agent> pacmans;
 	
 	
 //methodes concrètes
@@ -343,27 +347,6 @@ public abstract class Game implements Runnable,Sujet{
     	}
     	return false;
     }
-    
-    /*
-    public boolean TestMurDir(PositionAgent pos, int dir){
-    	
-    	PositionAgent postest = new PositionAgent();
-    	
-    	switch(dir){
-    	case 0 :
-    		
-    		break;
-    	case 1 :
-    		break;
-    	case 2 :
-    		break;
-    	case 3 :
-    		break;
-    	default :
-    		break;
-    	}
-    	return false;   	
-    }*/
     
     
     /**

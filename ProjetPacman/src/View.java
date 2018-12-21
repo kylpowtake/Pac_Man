@@ -1,13 +1,16 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
@@ -32,36 +35,35 @@ public class View implements Observateur{
 	Game game;
 	InterfaceController controller;
 	private Maze labyrinthe;
-	
-
-	String chemin = "";
-	
-	//panel de jeu et de commande 
-	JFrame Configuration;
-	JFrame Commandes;
-	JFrame Jeu;
-	
-	//les label 
-	JLabel Label_2; //label pour afficher le nombre de tours
-	JLabel Label_3; //label pour afficher le nombre de poins 
-	JLabel Label_4; //label pour afficher le nombre de vies 
-	JLabel Label_5; //label pour afficher l'invincibilité du pacman
-	
-	public JButton Step;
-	public JButton Restart;
-	public JButton Run;
-	public JButton Pause;
-	public JButton changeMaze;
-
+	public String chemin = "";
 	public JPanel jPanelMaze;
 	public Maze maze;
-	//public File[] allMazes;
 	public ArrayList<String> allMazes = new ArrayList<>();
 	public ImageIcon iconLife;
 	public ImageIcon iconInvincible;
-
 	
-    //méthodes
+	//les fenêtres 
+	JFrame Configuration;	//fenêtre de configuration du nombre de joueurs
+	JFrame Commandes;		//fenêtre de commandes du jeu
+	JFrame Jeu;				//fenêtre du jeu 
+	
+	//les label 
+	JLabel Label_1; 		//label pour afficher du texte 
+	JLabel Label_2;			//label pour afficher le nombre de tours
+	JLabel Label_3; 		//label pour afficher le nombre de poins 
+	JLabel Label_4; 		//label pour afficher le nombre de vies 
+	JLabel Label_5; 		//label pour afficher l'invincibilité du pacman
+	
+	//les boutons 
+	JButton Step;
+	JButton Restart;
+	JButton Run;
+	JButton Pause;
+	JButton changeMaze;
+	
+	
+	
+    //contructeur
 	public View(InterfaceController controller,PacmanGame game) {
 		this.game = game;
 		this.labyrinthe = game.getLabyrinthe();
@@ -69,6 +71,7 @@ public class View implements Observateur{
 		game.enregistrerObservateur(this);
 		this.createUserFrame(labyrinthe);
 		
+		//récuperation de la liste des labyrinthes 
 		File directory = new File("layouts");	
 		File[] files = directory.listFiles();
 		for ( File f : files) {
@@ -78,14 +81,20 @@ public class View implements Observateur{
 	}	
 
 	
+	//méthodes 
+	/**
+	 * (non-Javadoc)
+	 * @see Observateur#actualiser(boolean, boolean, boolean)
+	 * la méthode actualise la fenêtre du jeu a chaque tour 
+	 */
 	public void actualiser(boolean booleanRestart, boolean testtransformation, boolean GameOver) {
 		
-		//label nombre de tours et nombre de points 
+		//update nombre de tours et nombre de points 
 		this.Label_2.setText("Turn : " + this.game.getNbTours());		
 		this.Label_3.setText("Number of points : " + this.game.getNbPoints());
 		
 		
-		//image pacman nombre de vies 
+		//update nombre de vies 
 		switch(this.game.getNbVies()){
 			case 1:
 				iconLife = new ImageIcon("img/pacman1life.png");
@@ -101,7 +110,7 @@ public class View implements Observateur{
 				break;
 		}
 		
-		//l'image pacman invinsibilité 
+		//update invinsibilité 
 		if(game.getIsInvincible()){
 			iconLife = new ImageIcon("img/pacmanInvincible.png");
 			this.Label_5.setIcon(iconLife);
@@ -111,10 +120,16 @@ public class View implements Observateur{
 			this.Label_5.setIcon(iconLife);
 		}
 		
-	
+		//si le jeu est terminé 
+			//si on a gagné 
+				//alors on charge un autre labyrinthe aléatoirement 
+			//sinon
+				//si le nombre de vies est supérieur à 0
+					//on sauvegarde l'état du labyrinthe et on peut recommencer le jeu acet état
+				//sinon 
+					//on doit recommencer avec l'état initial du labyrinthe le nombre de points à 0 et le nombre de vies à 3
 		if(GameOver){
-			if(this.game.getFinJeu()){
-				
+			if(this.game.getFinJeu()){	
 				int rnd = new Random().nextInt(this.allMazes.size());
 				try {
 					this.labyrinthe = new Maze(this.allMazes.get(rnd));
@@ -126,7 +141,6 @@ public class View implements Observateur{
 				}
 			}else{
 				if(this.game.getNbVies()!=0){
-					
 					boolean savedFood[][] = this.game.getLabyrinthe().getFood();
 					try {
 						this.labyrinthe = new Maze(this.game.getChemin());
@@ -136,7 +150,6 @@ public class View implements Observateur{
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
 					this.Restart.setEnabled(false);
 					this.Pause.setEnabled(false);
 					this.Step.setEnabled(true);
@@ -147,7 +160,6 @@ public class View implements Observateur{
 				else{
 					this.game.setNbies(3);
 					this.game.setNbPoints(0);
-					
 					this.Restart.setEnabled(true);
 					this.Pause.setEnabled(false);
 					this.Step.setEnabled(false);
@@ -158,10 +170,13 @@ public class View implements Observateur{
 			}
 			
 		}
+		
+	
+		//on supprime le composant qui contient l'état du labyrinthe  
 		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
-		//Jeu.repaint();
-		
+
+		//on le met à jour en fonction du chemin (nom du labyrinthe) reçu 
 		if(booleanRestart){
 			try {
 				this.labyrinthe = new Maze(this.game.getChemin());
@@ -184,33 +199,42 @@ public class View implements Observateur{
 				}
 			}
 		
+		//et on remet ce nouvel état dans le composant 
 		jPanelMaze = new PanelPacmanGame(this.game.getLabyrinthe());
-		
 		Jeu.add(jPanelMaze,BorderLayout.CENTER);
 		Jeu.validate();
-		//Jeu.repaint();
 	}
 	
 	
+	/**
+	 * méthode permettant de configurer un labyrinthe 
+	 */
 	void setLabyrinthe(Maze Labyrinthe){
 		this.labyrinthe = Labyrinthe;
 		game = new PacmanGame(Labyrinthe,this.game.getChemin());
 	}
 
 	
+	/**
+	 * méthode permettant de créer toutes les fenêtres 
+	 */
 	public void createUserFrame(Maze labyrinthe) {
 				
 		try {
-			System.out.println("test");
 			maze = game.getLabyrinthe();
-		} catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("test");
-
-		jPanelMaze = new PanelPacmanGame(maze);
 		
 		
+		//police d'écriture 
+		Font font = new Font("Serif",Font.BOLD,15);
+		
+		
+		//les 3 fenêtres 
+		Configuration = new JFrame("Configuration");
+		Configuration.setSize(new Dimension(500,100));
+		Configuration.setLocation(700,300);
 		
 		Commandes = new JFrame("Commandes");
 		Commandes.setSize(new Dimension(1200, 200));
@@ -220,10 +244,10 @@ public class View implements Observateur{
 		Jeu.setSize(new Dimension(1200,700));
 		Jeu.setLocation(400,50);
 		
-		Configuration = new JFrame("Configuration");
-		Configuration.setSize(new Dimension(500,100));
-		Configuration.setLocation(700,300);
+	
 		
+		
+		//les composants de la fenêtre de configuration 
 		final String[] nbJoueurs = {"0","1","2","3","4"};
 		final JComboBox nbJoueursPacman = new JComboBox(nbJoueurs);
 		final JComboBox nbJoueursFantome = new JComboBox(nbJoueurs);
@@ -231,15 +255,19 @@ public class View implements Observateur{
 		final JPanel configurationPanel = new JPanel(new GridLayout(3, 2));
 		configurationPanel.add(new JLabel("Nombre de joueurs maximum : 4 "));
 		configurationPanel.add(new JLabel(""));
-		configurationPanel.add(new JLabel("Nombre de joueurs pacmans"));
+		configurationPanel.add(new JLabel("Nombre de joueurs pacman"));
 		configurationPanel.add(nbJoueursPacman);
 		configurationPanel.add(new JLabel("Nombre de joueurs fantome"));
 		configurationPanel.add(nbJoueursFantome);
-		
 	
 		Configuration.add(configurationPanel);
 		
 		
+		
+	
+		
+		
+		//les composants de la fenêtre de commande 
 		JPanel controlPanelCommande = new JPanel(new GridLayout(2, 1));
 		JPanel controlPanelHaut = new JPanel(new GridLayout(1, 4));
 		JPanel controlPanelBas = new JPanel(new GridLayout(1, 2));
@@ -256,17 +284,97 @@ public class View implements Observateur{
 		Icon icon_pause = new ImageIcon("img/icon_pause.png");
 		Pause = new JButton(icon_pause);
 
-
-		changeMaze = new JButton("change Maze");
+		changeMaze = new JButton("Change Maze");
 		changeMaze.setPreferredSize(new Dimension(40, 40));
 		
+		//les etats par default des boutons de la fenêtre de commande 
 		Run.setEnabled(false);
 		Pause.setEnabled(false);
 		Step.setEnabled(false);
 		
 		
+		//le slide de la fenêtre de commande 
+		JSlider slide = new JSlider();
+		slide.setMaximum(10);
+	    slide.setMinimum(1);
+	    slide.setValue(2);
+	    slide.setPaintTicks(true);
+	    slide.setPaintLabels(true);
+	    slide.setMinorTickSpacing(1);
+	    slide.setMajorTickSpacing(1);
+	    
+		slide.addChangeListener(new ChangeListener(){
+			
+			@Override
+			public void stateChanged(ChangeEvent event) {
+				JSlider source = (JSlider) event.getSource();
+				game.setNbToursSecondes(source.getValue());
+			}
+			
+		});	  
 		
 		
+		//les labels de la fenêtre de commande 
+		JLabel Label_1 = new JLabel("Number of turns per second");
+		Label_1.setHorizontalAlignment(JLabel.CENTER);
+		Label_1.setFont(font);
+		 
+	    Label_2 = new JLabel("Turn : 0");
+	    Label_2.setHorizontalAlignment(JLabel.CENTER);
+	    Label_2.setFont(font);
+	    
+	    Label_3 = new JLabel("Number of points : " + this.game.getNbPoints());
+	    Label_3.setHorizontalAlignment(JLabel.CENTER);
+	    Label_3.setFont(font);
+	    
+	    iconLife = new ImageIcon("img/pacman3lifes.png");
+	    Label_4 = new JLabel();
+	    this.Label_4.setIcon(iconLife);
+	    
+	    iconInvincible = new ImageIcon("img/pacmanNormal.png");
+	    Label_5 = new JLabel();
+	    this.Label_5.setIcon(iconInvincible);
+	    Label_5.setHorizontalAlignment(JLabel.RIGHT);
+	    
+	    Label_1.setHorizontalAlignment(JLabel.CENTER);
+	    
+	    
+	    controlPanelPictures.add(Label_4);
+	    controlPanelPictures.add(Label_5);
+		controlPanelHaut.add(Restart);
+		controlPanelHaut.add(Run);
+		controlPanelHaut.add(Step);
+		controlPanelHaut.add(Pause);
+		controlPanelSlide.add(Label_1);
+		controlPanelSlide.add(slide);
+		controlPanelTurn.add(Label_3);
+		controlPanelTurn.add(controlPanelPictures);
+		controlPanelTurn.add(Label_2);
+		controlPanelTurn.add(changeMaze);
+		controlPanelBas.add(controlPanelSlide);
+		controlPanelBas.add(controlPanelTurn);
+		controlPanelCommande.add(controlPanelHaut);
+		controlPanelCommande.add(controlPanelBas);
+
+		Commandes.add(controlPanelCommande);
+		Commandes.setVisible(true);
+		
+		
+		
+		
+		
+		//les composants de la fenêtre du jeu 
+		jPanelMaze = new PanelPacmanGame(maze);
+		game.panelTouches.addKeyListener(game.panelTouches);
+		game.panelTouches.setFocusable(true);
+		
+		Jeu.add(game.panelTouches,BorderLayout.CENTER);
+		Jeu.add(jPanelMaze,BorderLayout.CENTER);		
+		Jeu.setVisible(true);
+		
+		
+		
+		//les action listener sur les composants 
 		//restart------------------------------------------
 		
 		Restart.addActionListener(new ActionListener() {
@@ -339,6 +447,8 @@ public class View implements Observateur{
 				
 				String chemin = chooser.getSelectedFile().getAbsolutePath();
 				
+				//changer de labyrinthe est equivalent à déclarer forfait le nombre de 
+				//points est donc remis à 0 et le nombre de vies à 3
 				game.setNbies(3);
 				game.setNbPoints(0);
 				
@@ -346,12 +456,11 @@ public class View implements Observateur{
 		    	Run.setEnabled(false);
 		    	Step.setEnabled(false);
 				controller.changement(chemin);
-				
-				
 			}
 		});
 		
 		//nbJoueursPacman------------------------------------------
+		
 		nbJoueursPacman.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				Integer nbPacmans = nbJoueursPacman.getSelectedIndex();
@@ -377,6 +486,7 @@ public class View implements Observateur{
 		
 		
 		//nbJoueursFantomes------------------------------------------
+		
 		nbJoueursFantome.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent arg0) {
 				Integer nbFantomes = nbJoueursFantome.getSelectedIndex();
@@ -400,91 +510,5 @@ public class View implements Observateur{
 				
 			}
 		});
-
-		
-		
-		
-		
-		
-		JLabel Label_1 = new JLabel("Number of turns per second");
-		Label_1.setHorizontalAlignment(JLabel.CENTER);
-		
-		
-		JSlider slide = new JSlider();
-		
-		slide.setMaximum(10);
-	    slide.setMinimum(1);
-	    slide.setValue(2);
-	    slide.setPaintTicks(true);
-	    slide.setPaintLabels(true);
-	    slide.setMinorTickSpacing(1);
-	    slide.setMajorTickSpacing(1);
-	    
-		slide.addChangeListener(new ChangeListener(){
-			
-			@Override
-			public void stateChanged(ChangeEvent event) {
-				JSlider source = (JSlider) event.getSource();
-				game.setNbToursSecondes(source.getValue());
-			}
-			
-		});	  
-		
-		
-	    
-	    Label_2 = new JLabel("Turn : 0");
-	    Label_2.setHorizontalAlignment(JLabel.CENTER);
-	    
-	    Label_3 = new JLabel("Number of points : " + this.game.getNbPoints());
-	    Label_3.setHorizontalAlignment(JLabel.CENTER);
-	    
-	    iconLife = new ImageIcon("img/pacman3lifes.png");
-	    Label_4 = new JLabel();
-	    this.Label_4.setIcon(iconLife);
-	    
-	    iconInvincible = new ImageIcon("img/pacmanNormal.png");
-	    Label_5 = new JLabel();
-	    this.Label_5.setIcon(iconInvincible);
-	    Label_5.setHorizontalAlignment(JLabel.RIGHT);
-	    
-	    Label_1.setHorizontalAlignment(JLabel.CENTER);
-	    
-	    controlPanelPictures.add(Label_4);
-	    controlPanelPictures.add(Label_5);
-	    
-	    
-		controlPanelHaut.add(Restart);
-		controlPanelHaut.add(Run);
-		controlPanelHaut.add(Step);
-		controlPanelHaut.add(Pause);
-		
-		controlPanelSlide.add(Label_1);
-		controlPanelSlide.add(slide);
-		
-		controlPanelTurn.add(Label_3);
-		controlPanelTurn.add(controlPanelPictures);
-		controlPanelTurn.add(Label_2);
-		controlPanelTurn.add(changeMaze);
-
-		
-		controlPanelBas.add(controlPanelSlide);
-		controlPanelBas.add(controlPanelTurn);
-		
-		controlPanelCommande.add(controlPanelHaut);
-		controlPanelCommande.add(controlPanelBas);
-		
-		Commandes.add(controlPanelCommande);
-		Commandes.setVisible(true);
-		
-		game.panelTouches.addKeyListener(game.panelTouches);
-		game.panelTouches.setFocusable(true);
-		
-		Jeu.add(game.panelTouches,BorderLayout.CENTER);
-		Jeu.add(jPanelMaze,BorderLayout.CENTER);
-		
-		Jeu.setVisible(true);
-		
-
 	}
-
 }

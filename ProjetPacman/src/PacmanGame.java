@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 
 
 /**
@@ -16,14 +17,7 @@ import java.util.ArrayList;
 
 public class PacmanGame extends Game{
 
-	/**
-	 * Liste des fantômes.
-	 */
-	private ArrayList<Agent> fantomes;
-	/**
-	 * Liste des pacmans.
-	 */
-	private ArrayList<Agent> pacmans;
+	
 	/**
 	 * Nombre de tours restant d'invincibilité pour les pacmans.
 	 */
@@ -107,7 +101,7 @@ public class PacmanGame extends Game{
 			action.setDirection(fantomes.get(i).getNextAction());
 			fantomes.get(i).getPosition().setDir(fantomes.get(i).getNextAction());
 			this.moveAgent(fantomes.get(i), action);
-			}
+		}
 		
 		mortAgent();
 		
@@ -129,7 +123,6 @@ public class PacmanGame extends Game{
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
-				this.setNbPoints(this.getNbPoints()+10);
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
@@ -319,7 +312,7 @@ public class PacmanGame extends Game{
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);
 						System.out.println("Un fantome est mort");
-						this.setNbPoints(this.getNbPoints()+30);
+						this.setNbPoints(this.getNbPoints()+10);
 					}
 					
 				}
@@ -518,8 +511,6 @@ public class PacmanGame extends Game{
     	}
     	return valeur_distance;
     }
-    
-    
     
     
     /**
