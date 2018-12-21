@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -7,10 +8,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
@@ -19,6 +18,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.JFileChooser;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -130,6 +130,7 @@ public class View implements Observateur{
 					//on doit recommencer avec l'état initial du labyrinthe le nombre de points à 0 et le nombre de vies à 3
 		if(GameOver){
 			if(this.game.getFinJeu()){	
+				game.playSound("sounds/next_level.wav");
 				int rnd = new Random().nextInt(this.allMazes.size());
 				try {
 					this.labyrinthe = new Maze(this.allMazes.get(rnd));
@@ -140,7 +141,7 @@ public class View implements Observateur{
 					e.printStackTrace();
 				}
 			}else{
-				if(this.game.getNbVies()!=0){
+				if(this.game.getNbVies()>0){
 					boolean savedFood[][] = this.game.getLabyrinthe().getFood();
 					try {
 						this.labyrinthe = new Maze(this.game.getChemin());
@@ -158,6 +159,23 @@ public class View implements Observateur{
 					game.setIsRunnin(false);
 				}
 				else{
+					game.playSound("sounds/you_died.wav");
+					ImageIcon icon2 = new ImageIcon("sounds/you_died.gif");
+					JFrame f = new JFrame();
+					JLabel l = new JLabel();
+					l.setIcon(icon2);
+					f.setSize(640,360);
+					f.setLocation(710,250);
+					f.add(l);
+					f.setVisible(true);
+					try {
+						Thread.sleep(8000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					f.setVisible(false);
+					
 					this.game.setNbies(3);
 					this.game.setNbPoints(0);
 					this.Restart.setEnabled(true);

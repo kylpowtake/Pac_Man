@@ -123,7 +123,7 @@ public class PacmanGame extends Game{
 			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
 				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
 				this.setNbPoints(this.getNbPoints()+1);
-				this.playSound("sounds/pacman_chomp.wav");
+				//this.playSound("sounds/pacman_chomp.wav");
 			}
 			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
@@ -131,7 +131,7 @@ public class PacmanGame extends Game{
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				tourInvincible = this.getNbTours() + 20;
-				this.playSound("sounds/pacman_eatfruit.wav");
+				this.playSound("sounds/ghost_buster.wav");
 			}
 		}
 		
@@ -162,7 +162,7 @@ public class PacmanGame extends Game{
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){		
 			//Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
-			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_RANDOM);
+			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_FACILE);
 			this.pacmans.add(pacman_temp);
 		}
 	}
@@ -317,8 +317,8 @@ public class PacmanGame extends Game{
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);
-						System.out.println("Un fantome est mort");
 						this.setNbPoints(this.getNbPoints()+10);
+						this.playSound("sounds/ghost_death.wav");
 					}
 					
 				}
@@ -334,7 +334,7 @@ public class PacmanGame extends Game{
      */
     public boolean finJeu(){
     	//cas ou tous les pacmans meurent
-    	if(pacmans.isEmpty()){
+    	if(pacmans.isEmpty()||getNbVies()<=0){
     		this.setFinJeu(false);
     		return true ;
     	}

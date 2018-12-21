@@ -10,13 +10,10 @@ public class AgentFabrique {
 				return new Agent(typeAgent,p,new ComportementPacmanFacile());
 			case FANTOME_FACILE :
 				return new Agent(typeAgent,p,new ComportementFantomeFacile());	
-			
-				/* à implémenter 
 			case PACMAN_ALGO :
-				return new Agent(typeAgent,p,new ComportementPacman());
+				return new Agent(typeAgent,p,new ComportementPacmanAlgo());
 			case FANTOME_ALGO:
-				return new Agent(typeAgent,p,new ComportementPacman());	
-				*/
+				return new Agent(typeAgent,p,new ComportementFantomeAlgo());	
 		}
 		return null;
 	}
