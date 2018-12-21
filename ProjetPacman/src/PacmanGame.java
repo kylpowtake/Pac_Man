@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Map;
 
 
 /**
@@ -18,10 +17,6 @@ import java.util.Map;
 public class PacmanGame extends Game{
 
 	
-	/**
-	 * Nombre de tours restant d'invincibilité pour les pacmans.
-	 */
-	private int tourInvincible;
 	/**
 	 * Permet de savoir si on a gagné ou perdu en fin du jeu 
 	 */
@@ -125,14 +120,14 @@ public class PacmanGame extends Game{
 				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
-				tourInvincible = this.getNbTours() + 20;
+				this.setTourInvincible(this.getNbTours() + 20);
 				this.playSound("sounds/pacman_eatfruit.wav");
 			}
 		}
 		
 		mortAgent();
 		
-		if(tourInvincible == this.getNbTours()){
+		if(this.getTourInvincible() == this.getNbTours()){
 			this.setIsInvincible(false);
 			this.getLabyrinthe().estInvinsible = false;
 		}

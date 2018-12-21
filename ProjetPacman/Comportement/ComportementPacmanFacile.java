@@ -1,6 +1,40 @@
 
 public class ComportementPacmanFacile extends ComportementPacman {
 	
+	
+	
+	public void comportementNormal(Agent agent, Game game){
+		
+	}
+	
+	
+	public void comportementFuite(Agent agent, Game game){
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//Pas utilisé normalement
 	public void comportement(Agent agent, Game game){
 		
 		/*

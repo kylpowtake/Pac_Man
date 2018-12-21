@@ -27,9 +27,9 @@ public class ComportementFantome extends ComportementAgent {
 	 */
 	public void ChoixComportement(Agent agent,Game game){
 		if(game.getIsInvincible()){
-			this.comportementSOSFuite(agent, game);
+			this.comportementFuite(agent, game);
 		} else {
-			this.comportementSOSNormal(agent, game);
+			this.comportementNormal(agent, game);
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class ComportementFantome extends ComportementAgent {
 		System.out.println("Fin compo");
 	}
 	
-	public void comportementSOSNormal(Agent agent, Game game){
+	public void comportementNormal(Agent agent, Game game){
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;
@@ -87,7 +87,7 @@ public class ComportementFantome extends ComportementAgent {
 			agent.setNextAction(action.getDirection());
 	}
 	
-	public void comportementSOSFuite(Agent agent, Game game){
+	public void comportementFuite(Agent agent, Game game){
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;

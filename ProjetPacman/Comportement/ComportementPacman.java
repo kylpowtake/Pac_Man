@@ -30,9 +30,9 @@ public class ComportementPacman extends ComportementAgent{
 	 */
 	public void ChoixComportement(Agent agent,Game game){
 		if(!game.getIsInvincible()){
-			this.comportementSOSFuite(agent, game);
+			this.comportementFuite(agent, game);
 		} else {
-			this.comportementSOSNormal(agent, game);
+			this.comportementNormal(agent, game);
 		}
 	}
 	
@@ -44,15 +44,19 @@ public class ComportementPacman extends ComportementAgent{
 		int nombre_mur = getNombreMurAutourPosition(posAgent, game);
 		switch(nombre_mur){
 		case 0 :
+			System.out.println("Pas de mur");
+			//On applique Le comportement Normal ou Fuite
 			this.ChoixComportement(agent, game);
 			break;
 		case 1 :
-			this.ChoixComportement(agent, game);
+			System.out.println("Un mur");
+			//On applique Le comportement Normal ou Fuite
+			this.ChoixComportement(agent, game);			
 			break;
 		case 2 :
 			//Il continue s'il n'y a pas de mur et qu'il n'est pas à l'arrêt, sinon on lance le comportement.
 			System.out.println("Deux murs");
-			if(this.TestPresenceMur(this.getPositionNextAction(agent, game), game) || posAgent.getDir() == 4){
+			if(this.TestPresenceMur(this.getPositionNextAction(agent, game), game) || posAgent.getDir() == 4 || game.getNbTours() % 4 == 3){
 				this.ChoixComportement(agent, game);
 			}
 			break;
@@ -70,7 +74,7 @@ public class ComportementPacman extends ComportementAgent{
 		System.out.println("Fin compo");
 	}
 
-	public void comportementSOSFuite(Agent agent, Game game){
+	public void comportementFuite(Agent agent, Game game){
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;
@@ -85,6 +89,6 @@ public class ComportementPacman extends ComportementAgent{
 			agent.setNextAction(action.getDirection());
 	}
 	
-	public void comportementSOSNormal(Agent agent, Game game){
+	public void comportementNormal(Agent agent, Game game){
 	}
 }
