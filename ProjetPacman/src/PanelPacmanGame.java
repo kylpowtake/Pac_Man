@@ -12,7 +12,7 @@ public class PanelPacmanGame extends JPanel{
 	private Color pacmansColor = Color.yellow;
 	
 	private Color ghostsColor = Color.white;
-	private Color ghostScarredColor=Color.blue;
+	private Color ghostScarredColor=Color.white;
 
 	private double sizeFood=0.3; 
 	private Color colorFood=Color.white; 
@@ -96,12 +96,12 @@ public class PanelPacmanGame extends JPanel{
 
 		for(int i = 0; i < ghosts_pos.size(); i++){
 			PositionAgent pos = ghosts_pos.get(i);
-			if(ghostsScarred) {
+			if(m.estInvinsible) {
 				drawGhosts(g, pos.getX(), pos.getY(), ghostScarredColor);	
 			} else {
-				switch(i % 3){
+				switch(i % 4){
 				case 0 :
-					drawGhosts(g, pos.getX(), pos.getY(), Color.green);						
+					drawGhosts(g, pos.getX(), pos.getY(), Color.orange);						
 					break;
 				case 1 :
 					drawGhosts(g, pos.getX(), pos.getY(), Color.red);	
@@ -110,7 +110,7 @@ public class PanelPacmanGame extends JPanel{
 					drawGhosts(g, pos.getX(), pos.getY(), Color.pink);	
 					break;
 				default :
-					drawGhosts(g, pos.getX(), pos.getY(), ghostsColor);	
+					drawGhosts(g, pos.getX(), pos.getY(), Color.cyan);	
 				break;
 				}
 				

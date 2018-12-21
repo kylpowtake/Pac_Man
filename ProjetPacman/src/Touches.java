@@ -3,10 +3,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JPanel;
 
 
-
-//a redefinir par un partern fabrique pour le mode multi
-
-
 public class Touches extends JPanel implements KeyListener {
 
 	public int[] touchesCliques = {4,4,4,4};
@@ -48,10 +44,10 @@ public class Touches extends JPanel implements KeyListener {
 	   	  		this.touchesCliques[2] = 3;
 	   	  		break;
 	   	  	case KeyEvent.VK_L :
-		   	  	this.touchesCliques[2] = 1;
+		   	  	this.touchesCliques[2] = 2;
 	   	  		break;
 	   	  	case KeyEvent.VK_K :
-		   	  	this.touchesCliques[2] = 2;
+		   	  	this.touchesCliques[2] = 1;
 	   	  		break;
 	   	  	case KeyEvent.VK_8 :
 	   	  		this.touchesCliques[3] = 0;
