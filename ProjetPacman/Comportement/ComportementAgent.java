@@ -354,6 +354,9 @@ public abstract class ComportementAgent {
 		int indice = caseFin.getDir();
 		int cout = 1;
 		int temp = 0;
+		if(indice == -1){
+			return caseFin;
+		}
 		while(indice != 0){
 			cout++;
 			temp = indice;
@@ -431,7 +434,6 @@ public abstract class ComportementAgent {
 			return null;
 		} else {
 			posTemp = casesVisite.get(casesVisite.size()-1);
-			this.AffichageList(casesVisite);
 			posTemp = new PositionAgent(this.PremiereCase(casesVisite, posTemp));
 		}
 		return posTemp;
