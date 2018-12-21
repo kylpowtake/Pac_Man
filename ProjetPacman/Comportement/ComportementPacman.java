@@ -1,7 +1,7 @@
 import java.util.Random;
 
 
-public class ComportementPacman extends ComportementAgent{
+public abstract class ComportementPacman extends ComportementAgent{
 	
 	/*
 	 * - Si deux murs : Utiliser le comportement tous les n tours avec un nb tours mod n
@@ -74,21 +74,6 @@ public class ComportementPacman extends ComportementAgent{
 		System.out.println("Fin compo");
 	}
 
-	public void comportementFuite(Agent agent, Game game){
-		AgentAction action = new AgentAction(agent.getNextAction());
-		
-		int iteration = 0;
-		
-		while(!game.isLegalMove(agent, action) || iteration < 1){
-			iteration++;
-			Random rand = new Random(); 
-			int nombreAleatoire = rand.nextInt(4523 - 3154) + 2483;
-			
-			action.setDirection(nombreAleatoire % 4);	
-		}
-			agent.setNextAction(action.getDirection());
-	}
-	
-	public void comportementNormal(Agent agent, Game game){
-	}
+	public abstract void comportementFuite(Agent agent, Game game);
+	public abstract void comportementNormal(Agent agent, Game game);
 }

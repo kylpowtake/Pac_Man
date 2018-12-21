@@ -52,7 +52,7 @@ public class ComportementPacmanFacile extends ComportementPacman {
 		int distanceSud = game.ChercheAgentSud(false, agentTest);
 		int distanceEst = game.ChercheAgentEst(false, agentTest);
 		int distanceOuest = game.ChercheAgentOuest(false, agentTest);
-*/
+		 */
 		
 		
 		/*
@@ -321,5 +321,17 @@ public class ComportementPacmanFacile extends ComportementPacman {
 				this.ComportementFinal(agent, game);
 			}
 		} */
+	}
+
+	@Override
+	public void comportementFuite(Agent agent, Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void comportementNormal(Agent agent, Game game) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
