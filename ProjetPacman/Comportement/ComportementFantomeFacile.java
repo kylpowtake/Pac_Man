@@ -273,5 +273,17 @@ public class ComportementFantomeFacile extends ComportementFantome {
 				this.ComportementFinal(agent, game);
 			}
 		}
-	}	
+	}
+
+	@Override
+	public void comportementNormal(Agent agent, Game game) {
+		comportementSOS(agent,game);
+		
+	}
+
+	@Override
+	public void comportementFuite(Agent agent, Game game) {
+		comportementSOS(agent,game);
+		
+	}
 }

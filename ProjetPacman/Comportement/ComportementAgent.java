@@ -3,9 +3,8 @@ public abstract class ComportementAgent {
 	
 	public abstract void comportement(Agent agent, Game game);
 	
-	public abstract void comportementSOSNormal(Agent agent, Game game);
-
-	public abstract void comportementSOSFuite(Agent agent, Game game);
+	public abstract void comportementNormal(Agent agent, Game game);
+	public abstract void comportementFuite(Agent agent, Game game);
 	
 	public void ComportementFinal(Agent agent, Game game){
 		agent.setNextAction(1);

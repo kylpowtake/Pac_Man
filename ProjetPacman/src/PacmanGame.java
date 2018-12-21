@@ -162,7 +162,7 @@ public class PacmanGame extends Game{
 		}
 		for(int i = 0; i < getLabyrinthe().getInitNumberOfPacmans(); i++){		
 			//Agent pacman_temp = new Agent(true, this.getLabyrinthe().getPacman_start().get(i),new ComportementPacmanFacile());
-			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_FACILE);
+			Agent pacman_temp = this.agentFabrique.createAgent(true, this.getLabyrinthe().getPacman_start().get(i), EnumComportement.PACMAN_RANDOM);
 			this.pacmans.add(pacman_temp);
 		}
 	}

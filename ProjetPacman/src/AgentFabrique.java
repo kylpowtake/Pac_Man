@@ -3,9 +3,9 @@ public class AgentFabrique {
 	public Agent createAgent(boolean typeAgent,PositionAgent p,EnumComportement c){		
 			switch (c){
 			case PACMAN_RANDOM :
-				return new Agent(typeAgent,p,new ComportementPacman());
+				return new Agent(typeAgent,p,new ComportementPacmanRandom());
 			case FANTOME_RANDOM :
-				return new Agent(typeAgent,p,new ComportementPacman());
+				return new Agent(typeAgent,p,new ComportementFantomeRandom());
 			case PACMAN_FACILE :
 				return new Agent(typeAgent,p,new ComportementPacmanFacile());
 			case FANTOME_FACILE :

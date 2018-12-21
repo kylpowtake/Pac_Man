@@ -52,4 +52,16 @@ public class ComportementFantomeAlgo extends ComportementFantome{
 		}
 		
 	}
+
+	@Override
+	public void comportementNormal(Agent agent, Game game) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void comportementFuite(Agent agent, Game game) {
+		// TODO Auto-generated method stub
+		
+	}
 }
