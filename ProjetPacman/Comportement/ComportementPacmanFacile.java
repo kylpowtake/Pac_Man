@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Random;
-
 
 public class ComportementPacmanFacile extends ComportementPacman {
 	
@@ -14,8 +12,6 @@ public class ComportementPacmanFacile extends ComportementPacman {
 		int x = 0;
 		int y = 0;
 		int min = 5000;
-		boolean hautBas = true;
-		boolean gaucheDroite = true;
 		
 		for(int i = 0; i< game.getLabyrinthe().getSizeX(); i++){
     		for(int j = 0; j < game.getLabyrinthe().getSizeY(); j++){

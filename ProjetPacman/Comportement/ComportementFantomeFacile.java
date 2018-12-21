@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-
-
 public class ComportementFantomeFacile extends ComportementFantome {
 	
 	
@@ -153,60 +150,44 @@ public class ComportementFantomeFacile extends ComportementFantome {
 		 */
 		switch(ordre[0]){
 		case 0 :
-			System.out.println("distance nord : " + distanceNord + " et distance est : " + distanceEst);
 			if((distanceNord <= distanceEst && distanceNord > -1) || (distanceNord > distanceEst && distanceEst == -1) ){
-					System.out.println("On est dans le compo facile, switch 1, case 0, vers nord");
 					agent.setNextAction(0);
 					changement_direction = true;
 			} else if(distanceEst > -1){
-				System.out.println("On est dans le compo facile, switch 1, case 0, vers est");
 					agent.setNextAction(2);
 					changement_direction = true;
 			} else {
-				System.out.println("On est dans le compo facile, switch 1, case 0, vers rien");
 			}
 			
 			break;
 		case 1 :
-			System.out.println("distance nord : " + distanceNord + " et distance ouest : " + distanceOuest);
 			if((distanceNord <= distanceOuest && distanceNord > -1)|| (distanceNord > distanceOuest && distanceOuest == -1)){
-				System.out.println("On est dans le compo facile, switch 1, case 1, vers nord");
 				agent.setNextAction(0);
 				changement_direction = true;
 			} else if(distanceOuest > -1){
-				System.out.println("On est dans le compo facile, switch 1, case 1, vers ouest");
 				agent.setNextAction(3);
 				changement_direction = true;
 			} else {
-				System.out.println("On est dans le compo facile, switch 1, case 1, vers rien");
 			}
 			break;
 		case 2 :
-			System.out.println("distance sud : " + distanceSud + " et distance est : " + distanceEst);
 			if((distanceSud <= distanceEst && distanceSud > -1) || (distanceSud > distanceEst && distanceEst == -1) ){
-				System.out.println("On est dans le compo facile, switch 1, case 2, vers sud");
 				agent.setNextAction(1);
 				changement_direction = true;
 		} else if(distanceEst > -1){
-				System.out.println("On est dans le compo facile, switch 1, case 2, vers est");
 				agent.setNextAction(2);
 				changement_direction = true;
 		} else {
-			System.out.println("On est dans le compo facile, switch 1, case 2, vers rien");
 		}
 			break;
 		case 3 :
-			System.out.println("distance sud : " + distanceSud + " et distance Ouest : " + distanceOuest);
 			if((distanceSud <= distanceOuest && distanceSud > -1) || (distanceSud > distanceOuest && distanceOuest == -1)){
-				System.out.println("On est dans le compo facile, switch 1, case 3, vers sud");
 				agent.setNextAction(1);
 				changement_direction = true;
 		} else if(distanceOuest > -1){
-			System.out.println("On est dans le compo facile, switch 1, case 3, vers ouest");
 				agent.setNextAction(3);
 				changement_direction = true;
 		} else {
-			System.out.println("On est dans le compo facile, switch 1, case 3, vers rien");	
 		}
 			break;
 		}
@@ -220,59 +201,43 @@ public class ComportementFantomeFacile extends ComportementFantome {
 			 */
 			switch(ordre[1]){
 			case 0 :
-				System.out.println("distance nord : " + distanceNord + " et distance est : " + distanceEst);
 				if((distanceNord >= distanceEst && distanceNord > -1) || (distanceNord > distanceEst && distanceEst == -1)){
-					System.out.println("On est dans le compo facile, switch 2, case 0, vers nord");
 						agent.setNextAction(0);
 						changement_direction = true;
 				} else if(distanceEst > -1){
-					System.out.println("On est dans le compo facile, switch 2, case 0, vers est");
 						agent.setNextAction(2);
 						changement_direction = true;
 				} else {
-					System.out.println("On est dans le compo facile, switch 2, case 0, vers rien");
 				}
 				break;
 			case 1 :
-				System.out.println("distance nord : " + distanceNord + " et distance ouest : " + distanceOuest);
 				if((distanceNord >= distanceOuest && distanceNord > -1) || (distanceNord > distanceOuest && distanceOuest == -1)){
-					System.out.println("On est dans le compo facile, switch 2, case 1, vers nord");
 					agent.setNextAction(0);
 					changement_direction = true;
 			} else if(distanceOuest > -1){
-				System.out.println("On est dans le compo facile, switch 2, case 1, vers ouest");
 					agent.setNextAction(3);
 					changement_direction = true;
 			} else {
-				System.out.println("On est dans le compo facile, switch 2, case 1, vers rien");
 			}
 				break;
 			case 2 :
-				System.out.println("distance sud : " + distanceSud + " et distance est : " + distanceEst);
 				if((distanceSud >= distanceEst && distanceSud > -1) || (distanceSud > distanceEst && distanceEst == -1)){
-					System.out.println("On est dans le compo facile, switch 2, case 2, vers sud");
 					agent.setNextAction(1);
 					changement_direction = true;
 			} else if(distanceEst > -1){
-				System.out.println("On est dans le compo facile, switch 2, case 2, vers est");
 					agent.setNextAction(2);
 					changement_direction = true;
 			} else {
-				System.out.println("On est dans le compo facile, switch 2, case 2, vers rien");
 			}
 				break;
 			case 3 :
-				System.out.println("distance sud : " + distanceSud + " et distance ouest : " + distanceOuest);
 				if((distanceSud >= distanceOuest && distanceSud > -1) || (distanceSud > distanceOuest && distanceOuest == -1)){
-					System.out.println("On est dans le compo facile, switch 2, case 3, vers sud");
 					agent.setNextAction(1);
 					changement_direction = true;
 			} else if(distanceOuest > -1){
-				System.out.println("On est dans le compo facile, switch 2, case 3, vers ouest");
 					agent.setNextAction(3);
 					changement_direction = true;
 			} else {
-				System.out.println("On est dans le compo facile, switch 2, case 3, vers rien");
 			}
 				break;
 			}

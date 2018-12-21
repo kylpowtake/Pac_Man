@@ -1,6 +1,3 @@
-import java.util.Random;
-
-
 public abstract class ComportementFantome extends ComportementAgent {
 	
 	/**

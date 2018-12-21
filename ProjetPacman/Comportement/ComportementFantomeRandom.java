@@ -8,7 +8,6 @@ public class ComportementFantomeRandom extends ComportementFantome{
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;
-		System.out.println("test");
 		
 		while(!game.isLegalMove(agent, action) || iteration < 1){
 			iteration++;
@@ -25,7 +24,6 @@ public class ComportementFantomeRandom extends ComportementFantome{
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;
-		System.out.println("test");
 		
 		while(!game.isLegalMove(agent, action) || iteration < 1){
 			iteration++;
