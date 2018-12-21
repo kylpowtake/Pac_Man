@@ -303,6 +303,7 @@ public class PacmanGame extends Game{
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						pacmans.remove(i);
 						this.getLabyrinthe().getPacman_start().remove(i);
+						i--;
 						isAlivePacman = false;
 						this.setNbies(this.getNbVies()-1);
 						this.playSound("sounds/pacman_death.wav");
@@ -312,6 +313,7 @@ public class PacmanGame extends Game{
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
 						this.getLabyrinthe().getGhosts_start().remove(j);
+						j--;
 						this.setNbPoints(this.getNbPoints()+10);
 						this.playSound("sounds/ghost_death.wav");
 					}
