@@ -251,7 +251,7 @@ public class View implements Observateur{
 		
 		//les 3 fenêtres 
 		Configuration = new JFrame("Configuration");
-		Configuration.setSize(new Dimension(500,100));
+		Configuration.setSize(new Dimension(500,150));
 		Configuration.setLocation(700,300);
 		
 		Commandes = new JFrame("Commandes");
@@ -267,22 +267,32 @@ public class View implements Observateur{
 		
 		//les composants de la fenêtre de configuration 
 		final String[] nbJoueurs = {"0","1","2","3","4"};
+		final String[] strategie = {"Random","Facile","A*"};
 		final JComboBox nbJoueursPacman = new JComboBox(nbJoueurs);
 		final JComboBox nbJoueursFantome = new JComboBox(nbJoueurs);
+		final JComboBox choixStrategiePacman = new JComboBox(strategie);
+		final JComboBox choixStrategieFantome = new JComboBox(strategie);
 		
-		final JPanel configurationPanel = new JPanel(new GridLayout(3, 2));
+		final JPanel configurationPanel = new JPanel(new GridLayout(7, 2));
 		configurationPanel.add(new JLabel("Nombre de joueurs maximum : 4 "));
 		configurationPanel.add(new JLabel(""));
 		configurationPanel.add(new JLabel("Nombre de joueurs pacman"));
 		configurationPanel.add(nbJoueursPacman);
 		configurationPanel.add(new JLabel("Nombre de joueurs fantome"));
 		configurationPanel.add(nbJoueursFantome);
+		configurationPanel.add(new JLabel(""));
+		configurationPanel.add(new JLabel(""));
+		configurationPanel.add(new JLabel("Stratégies adoptées"));
+		configurationPanel.add(new JLabel(""));
+		configurationPanel.add(new JLabel("Stratégie Pacman"));
+		configurationPanel.add(choixStrategiePacman);
+		configurationPanel.add(new JLabel("Stratégie Fantome"));
+		configurationPanel.add(choixStrategieFantome);
 	
 		Configuration.add(configurationPanel);
 		
 		
 		
-	
 		
 		
 		//les composants de la fenêtre de commande 
@@ -528,5 +538,47 @@ public class View implements Observateur{
 				
 			}
 		});
+		
+		//choixStrategiePacman------------------------------------------
+		
+		choixStrategiePacman.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent arg0) {
+				Integer choixStrategie = choixStrategiePacman.getSelectedIndex();
+				switch(choixStrategie){
+				case 0:
+					game.comportementPacman = EnumComportement.PACMAN_RANDOM;
+					break;
+				case 1:
+					game.comportementPacman = EnumComportement.PACMAN_FACILE;
+					break;
+				case 2:
+					game.comportementPacman = EnumComportement.PACMAN_ALGO;
+					break;
+				}
+				controller.restart();
+			}	
+		});
+		
+		
+		//choixStrategieFantome------------------------------------------
+		
+			choixStrategieFantome.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					Integer choixStrategie = choixStrategieFantome.getSelectedIndex();
+					switch(choixStrategie){
+					case 0:
+						game.comportementFantome = EnumComportement.FANTOME_RANDOM;
+						break;
+					case 1:
+						game.comportementFantome = EnumComportement.FANTOME_FACILE;
+						break;
+					case 2:
+						game.comportementFantome = EnumComportement.FANTOME_ALGO;
+						break;
+					}
+					controller.restart();
+				}	
+			});
+		
 	}
 }

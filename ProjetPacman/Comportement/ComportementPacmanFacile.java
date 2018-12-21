@@ -8,6 +8,7 @@ public class ComportementPacmanFacile extends ComportementPacman {
 	
 	@Override
 	public void comportementFuite(Agent agent, Game game) {
+		System.out.println("comportement pacman facile");
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int x = 0;
@@ -69,6 +70,7 @@ public class ComportementPacmanFacile extends ComportementPacman {
 
 	@Override
 	public void comportementNormal(Agent agent, Game game) {
+		System.out.println("comportement pacman facile");
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int x = 0;

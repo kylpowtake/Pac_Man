@@ -5,6 +5,7 @@ public class ComportementFantomeFacile extends ComportementFantome {
 	
 	
 	public void comportementFuite(Agent agent, Game game){
+		System.out.println("comportement fantome Facile");
 		/*
 		 * Pacman est invincible
 		 */
@@ -131,6 +132,7 @@ public class ComportementFantomeFacile extends ComportementFantome {
 	
 	
 	public void comportementNormal(Agent agent, Game game){
+		System.out.println("comportement fantome Facile ");
 		Agent agentTest = new Agent(true, agent.getPosition(), agent.getComportement());
 		agentTest.setNextAction(agent.getNextAction());		
 		int[] TableauValeur = new int[4];
