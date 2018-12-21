@@ -4,6 +4,7 @@ import java.util.Random;
 public class ComportementFantomeRandom extends ComportementFantome{
 	
 	public void comportementNormal(Agent agent, Game game){
+		System.out.println("comportement fantome Random");
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;
@@ -20,6 +21,7 @@ public class ComportementFantomeRandom extends ComportementFantome{
 	}
 	
 	public void comportementFuite(Agent agent, Game game){
+		System.out.println("comportement fantome Random");
 		AgentAction action = new AgentAction(agent.getNextAction());
 		
 		int iteration = 0;

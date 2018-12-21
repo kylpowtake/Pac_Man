@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class PacmanGame extends Game{
 
 	/**
-	 * 
+	 * permet de créer des agent
 	 */
 	private AgentFabrique agentFabrique = new AgentFabrique();
 	
@@ -43,7 +43,6 @@ public class PacmanGame extends Game{
 	 * @param fantomes : La nouvelle liste de fantômes.
 	 */
 	public void setFantomes(ArrayList<Agent> fantomes){
-		System.out.println("Dans le set de fantomes : ");
 		this.fantomes = fantomes;
 	}
 	
@@ -142,11 +141,13 @@ public class PacmanGame extends Game{
 				this.setNbPoints(this.getNbPoints()+5);
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
+				this.setTourInvincible(this.getNbTours() + 20);
 				this.playSound("sounds/ghost_buster.wav");
 			}
 		}
 		
 		mortAgent();
+		
 		
 		if(this.getTourInvincible() == this.getNbTours()){
 			this.setIsInvincible(false);

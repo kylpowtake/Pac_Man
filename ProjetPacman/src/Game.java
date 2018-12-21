@@ -12,6 +12,8 @@ public abstract class Game implements Runnable,Sujet{
 
 	//attributs 
 	public Touches panelTouches = new Touches();
+	public EnumComportement comportementPacman = EnumComportement.PACMAN_RANDOM;
+	public EnumComportement comportementFantome = EnumComportement.FANTOME_RANDOM;
 	private Thread thread; 
 	private boolean isRunning;
 	private boolean isInvincible;
