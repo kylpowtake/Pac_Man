@@ -74,6 +74,41 @@ public abstract class Game implements Runnable{
 	}
 	
 	
+	
+	/**
+	 * Methode pour formater les informations à envoyer au client
+	 *  
+	 */
+	public String toString(){
+		String chaine = "update;food:";
+		for(int i = 0; i< this.getLabyrinthe().getSizeX(); i++){
+    		for(int j = 0; j < this.getLabyrinthe().getSizeY(); j++){
+    			if(this.getLabyrinthe().food[i][j] == true){
+    				chaine += i + " " + j + ","; 
+    			}
+    		}
+    	}
+		if(chaine.endsWith(","))
+		{
+		  chaine = chaine.substring(0,chaine.length() - 1);
+		  chaine += ";";
+		}
+		chaine += "agent :";
+		for(int i = 0; i < fantomes.size(); i++){
+			chaine += fantomes.get(i).getTypeAgent() + " " + fantomes.get(i).getPosition() + ",";
+		}
+		for(int i = 0; i < pacmans.size(); i++){
+			chaine += pacmans.get(i).getTypeAgent() + " " + pacmans.get(i).getPosition() + ",";
+		}
+		chaine += "invincible : " + this.isInvincible +";";
+		chaine += "score : " + this.getNbPoints() + ";";
+		chaine += "vie : " + this.getNbTours() + ";";
+		chaine += "etat : " + this.etatJeu + ";";
+		
+		return chaine;	
+	}
+	
+	
 	/**
 	 * Initialisation du jeu.
 	 * chargement de tous les labyrinthes dans un tableau

@@ -1,9 +1,11 @@
 package model;
 import java.util.ArrayList;
 
+import java.net.*;
+import java.io.*;
+
 
 /**
- * @author Pizza-Man
  * 
  * Classe héritant de Game et composé des méthodes pour gérer une partie
  * 
@@ -147,6 +149,8 @@ public class PacmanGame extends Game{
 		}
 		
 		this.NbTours += 1 ;
+		
+		
 	}
 	
 	
