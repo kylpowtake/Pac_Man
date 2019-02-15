@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import Comportement.EnumComportement;
 
-public abstract class Game implements Runnable{
+public abstract class Game{
 
 	public ArrayList<String> allMazes = new ArrayList<>();
 	public Thread thread; 
@@ -93,17 +93,17 @@ public abstract class Game implements Runnable{
 		  chaine = chaine.substring(0,chaine.length() - 1);
 		  chaine += ";";
 		}
-		chaine += "agent :";
+		chaine += "agent:";
 		for(int i = 0; i < fantomes.size(); i++){
 			chaine += fantomes.get(i).getTypeAgent() + " " + fantomes.get(i).getPosition() + ",";
 		}
 		for(int i = 0; i < pacmans.size(); i++){
 			chaine += pacmans.get(i).getTypeAgent() + " " + pacmans.get(i).getPosition() + ",";
 		}
-		chaine += "invincible : " + this.isInvincible +";";
-		chaine += "score : " + this.getNbPoints() + ";";
-		chaine += "vie : " + this.getNbTours() + ";";
-		chaine += "etat : " + this.etatJeu + ";";
+		chaine += "invincible:" + this.isInvincible +";";
+		chaine += "score:" + this.getNbPoints() + ";";
+		chaine += "vie:" + this.getNbTours() + ";";
+		chaine += "etat:" + this.etatJeu + ";";
 		
 		return chaine;	
 	}
@@ -142,30 +142,16 @@ public abstract class Game implements Runnable{
 	}
 	
 	/**
-	 * Tant que le jeu n'est pas finit on fait des steps. 
-	 */
-	public void run(){
-		while(isRunning == true && NbTours < NbToursMax){
-			step();
-		}
-		if(NbTours >= NbToursMax){
-			System.out.println("fin du jeu");
-		}
-	}
-	
-	/**
-	 * Méthode arrêtant la boucle du run.
+	 * Méthode arrêtant la boucle du run (ServeurEmetteur).
 	 */
 	public void stop(){
 		isRunning = false;
 	}
 	
 	/**
-	 * Lance le run.
+	 * Méthode relançant la boucle du run (ServeurEmetteur)
 	 */
-    public void launch(){ 
-        thread = new Thread(this);    
-        thread.start();    //lance la methode run avec l'implementation de Runnable
+    public void play(){ 
         isRunning = true;
     }
     
@@ -176,9 +162,6 @@ public abstract class Game implements Runnable{
     public void changement(String chemin){
     	actualiser(chemin);
     }
-    
-    
-
     
     
  

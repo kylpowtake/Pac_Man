@@ -1,9 +1,6 @@
 package model;
 import java.util.ArrayList;
 
-import java.net.*;
-import java.io.*;
-
 
 /**
  * 
@@ -149,6 +146,7 @@ public class PacmanGame extends Game{
 		}
 		
 		this.NbTours += 1 ;
+		ServeurEmetteur.test(this.toString());
 		
 		
 	}
@@ -504,5 +502,6 @@ public class PacmanGame extends Game{
     	}
     	return valeur_distance;
     }
+
 }
 

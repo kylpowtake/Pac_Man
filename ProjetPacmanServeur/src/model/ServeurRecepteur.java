@@ -5,22 +5,70 @@ import java.io.*;
 
 public class ServeurRecepteur extends Thread {
 	Socket clientSocket;
+	static ControleurGame controleur;
 	
 	//constructeur 
 	public ServeurRecepteur(Socket so){
 		this.clientSocket = so;
 	}
 	
+	/**
+	 * @param chaine
+	 * traite la chaine envoyée par le client 
+	 * en fonction de si c'est une direction ou une commande 
+	 */
+	static public void traiter(String chaine){
+		String[] parts = chaine.split(":");
+		
+		//la direction que le joueur envoi(haut,bas,gauche,droite)
+		if(parts[0].equals("direction")){	
+			switch(parts[2]){
+			case "0" :
+				controleur.getGame().pacmans.get(0).setNextAction(0);
+				break;
+			case "1" :
+				controleur.getGame().pacmans.get(0).setNextAction(1);
+				break;
+			case "2" :
+				controleur.getGame().pacmans.get(0).setNextAction(2);
+				break;
+			case "3" :
+				controleur.getGame().pacmans.get(0).setNextAction(3);
+				break;
+			default :
+				controleur.getGame().pacmans.get(0).setNextAction(4);
+				break;
+			}
+		}
+		//la commande que le joueur envoi(init,play,step,pause,changement)
+		else{								
+			switch(parts[2]){
+			case "init" :
+				controleur.restart();
+				break;
+			case "play" :
+				controleur.start();
+				break;
+			case "step" :
+				controleur.step();
+				break;
+			case "pause" :
+				controleur.pause();
+				break;
+			default :
+				controleur.changement(parts[2]);
+				break;
+			}
+		}
+	}
+	
 	public void run(){
 		try {
 			String chaine;
 			BufferedReader entree = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-			PrintWriter sortie = new PrintWriter(clientSocket.getOutputStream(),true); 
-			
-			
 			while(true){
 				chaine = entree.readLine();
-
+				traiter(chaine);
 			 }	 
 		} catch(NullPointerException npe){
 			System.out.println("Pointeur null  : " + npe.getMessage());

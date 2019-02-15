@@ -5,31 +5,35 @@ import java.io.*;
 
 
 public class ServeurEmetteur extends Thread {
-	Socket clientSocket;
+	
+	static Socket clientSocket;
+	Game game;
 	
 	//constructeur 
 	public ServeurEmetteur(Socket so){
-		this.clientSocket = so;
+		clientSocket = so;
 	}
 	
-	public void run(){
+	public static void test(String chaine){
 		try {
-			String chaine;
-			BufferedReader entree = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			PrintWriter sortie = new PrintWriter(clientSocket.getOutputStream(),true); 
-			
-			
-			while(true){
-				chaine = entree.readLine();
-
-			 }	 
-			
+			sortie.println(chaine);
 		} catch(NullPointerException npe){
 			System.out.println("Pointeur null  : " + npe.getMessage());
 		} catch(SocketException se){
 			System.out.println("deconnexion d'un client " + se.getMessage());
 		} catch(IOException e){
 			System.out.println("Problème lors du run : " + e.getMessage());
+		}
+	}
+	
+	
+	public void run(){
+		while(game.isRunning == true && game.NbTours < game.NbToursMax){
+			game.step();
+		}
+		if(game.NbTours >= game.NbToursMax){
+			System.out.println("fin du jeu");
 		}
 	 } 
 }
