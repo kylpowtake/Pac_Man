@@ -4,6 +4,10 @@ public class ControleurGame implements InterfaceControleur{
 	
 	private Game game;
 	
+	public ControleurGame(PacmanGame game) { 
+		this.game = game;
+    }
+	
 	@Override
 	public void start(){
 		this.game.play();

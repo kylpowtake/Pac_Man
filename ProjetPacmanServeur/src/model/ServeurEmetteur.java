@@ -10,8 +10,9 @@ public class ServeurEmetteur extends Thread {
 	Game game;
 	
 	//constructeur 
-	public ServeurEmetteur(Socket so){
+	public ServeurEmetteur(Socket so,Game game){
 		clientSocket = so;
+		this.game = game;
 	}
 	
 	public static void test(String chaine){
@@ -29,7 +30,13 @@ public class ServeurEmetteur extends Thread {
 	
 	
 	public void run(){
+		
 		while(game.isRunning == true && game.NbTours < game.NbToursMax){
+			try {
+				Thread.sleep(1000/game.NbToursSecondes);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			game.step();
 		}
 		if(game.NbTours >= game.NbToursMax){

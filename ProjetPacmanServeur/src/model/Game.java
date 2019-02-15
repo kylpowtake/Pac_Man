@@ -3,16 +3,17 @@ package model;
 import java.io.File;
 import java.util.ArrayList;
 
+
 import Comportement.EnumComportement;
 
 public abstract class Game{
 
 	public ArrayList<String> allMazes = new ArrayList<>();
 	public Thread thread; 
-	public boolean isRunning;
+	public boolean isRunning = true;
 	public boolean isInvincible;
 	public int NbToursSecondes = 2;		
-	public int NbTours;						//tour actuel 
+	public int NbTours = 0;						//tour actuel 
 	public int NbToursMax = 100000000;		//nombre de tours max  
 	public int NbPoints = 0;
 	public int NbVies = 3;
@@ -93,20 +94,30 @@ public abstract class Game{
 		  chaine = chaine.substring(0,chaine.length() - 1);
 		  chaine += ";";
 		}
+		chaine += "invincible:" + this.isInvincible +";";
 		chaine += "agent:";
 		for(int i = 0; i < fantomes.size(); i++){
-			chaine += fantomes.get(i).getTypeAgent() + " " + fantomes.get(i).getPosition() + ",";
+			chaine += "0" + " " + fantomes.get(i).toString() + ",";
 		}
 		for(int i = 0; i < pacmans.size(); i++){
-			chaine += pacmans.get(i).getTypeAgent() + " " + pacmans.get(i).getPosition() + ",";
+			chaine += "1" + " " + pacmans.get(i).toString() + ",";
 		}
-		chaine += "invincible:" + this.isInvincible +";";
+		if(chaine.endsWith(","))
+		{
+		  chaine = chaine.substring(0,chaine.length() - 1);
+		  chaine += ";";
+		}
 		chaine += "score:" + this.getNbPoints() + ";";
-		chaine += "vie:" + this.getNbTours() + ";";
+		chaine += "vie:" + this.getNbVies() + ";";
+		chaine += "tour:" + this.getNbTours() + ";";
+		chaine += "chemin:" + this.chemin + ";"; 
 		chaine += "etat:" + this.etatJeu + ";";
 		
 		return chaine;	
 	}
+	
+	
+	
 	
 	
 	/**
@@ -133,11 +144,6 @@ public abstract class Game{
 		}
 		else{
 			//rien pour l'instant il y avait un gameOver();
-		}
-		try {
-			Thread.sleep(1000/this.NbToursSecondes);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 	

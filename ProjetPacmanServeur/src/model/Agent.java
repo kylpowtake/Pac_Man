@@ -36,6 +36,12 @@ public class Agent {
 		return this.typeAgent;
 	}
 	
+	
+	public String toString(){
+		return "" + this.position.getX() + " " +this.position.getY() + " " + this.position.getDir();
+	}
+	
+	
 	/**
 	 * @return la position de l'agent.
 	 */

@@ -1,5 +1,6 @@
 package model;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -66,10 +67,6 @@ public class PacmanGame extends Game{
 	public ArrayList<Agent> getPacmans(){
 		return this.pacmans;
 	}
-	
-	/**
-	 * @return le boolean de fin de jeu 
-	 */
 
 	
 	/**
@@ -136,11 +133,11 @@ public class PacmanGame extends Game{
 		
 		mortAgent();
 		
-		
 		if(this.getTourInvincible() == this.getNbTours()){
 			this.setIsInvincible(false);
 			this.getLabyrinthe().estInvinsible = false;
 		}
+		
 		if(finJeu() == true){
 			this.etatJeu = 1;
 		}
@@ -312,6 +309,17 @@ public class PacmanGame extends Game{
     }
     
     /**
+     * Charge un niveau aléatoire parmis ceux disponibles
+     * @return String (chemin du maze)
+     */
+    public String levelUp(){
+		int rnd = new Random().nextInt(this.allMazes.size());
+		String map = this.allMazes.get(rnd);
+		this.allMazes.remove(rnd);
+		return map;
+	}
+    
+    /**
      * Fin du jeu si
      * - Tous les pacmans sont morts 
      * - Toutes les pacgommes sont mangées 
@@ -335,13 +343,13 @@ public class PacmanGame extends Game{
     	if(noCapsuleFound == true){
     		System.out.println("Plus de capsules, fin du Jeu.");
     		this.etatJeu = 1;
+    		ServeurEmetteur.test(levelUp());							//changemennt de niveau
     		return true;
     	}
     	return false;
     }
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction est de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -382,7 +390,6 @@ public class PacmanGame extends Game{
 
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction ouest de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -424,7 +431,6 @@ public class PacmanGame extends Game{
     
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction sud de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -464,7 +470,6 @@ public class PacmanGame extends Game{
     }
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction ouest de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.

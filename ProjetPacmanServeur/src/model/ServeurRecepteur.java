@@ -8,8 +8,9 @@ public class ServeurRecepteur extends Thread {
 	static ControleurGame controleur;
 	
 	//constructeur 
-	public ServeurRecepteur(Socket so){
+	public ServeurRecepteur(Socket so,ControleurGame controleur){
 		this.clientSocket = so;
+		ServeurRecepteur.controleur = controleur;
 	}
 	
 	/**
@@ -19,10 +20,9 @@ public class ServeurRecepteur extends Thread {
 	 */
 	static public void traiter(String chaine){
 		String[] parts = chaine.split(":");
-		
 		//la direction que le joueur envoi(haut,bas,gauche,droite)
 		if(parts[0].equals("direction")){	
-			switch(parts[2]){
+			switch(parts[1]){
 			case "0" :
 				controleur.getGame().pacmans.get(0).setNextAction(0);
 				break;
@@ -42,7 +42,7 @@ public class ServeurRecepteur extends Thread {
 		}
 		//la commande que le joueur envoi(init,play,step,pause,changement)
 		else{								
-			switch(parts[2]){
+			switch(parts[1]){
 			case "init" :
 				controleur.restart();
 				break;
@@ -56,7 +56,7 @@ public class ServeurRecepteur extends Thread {
 				controleur.pause();
 				break;
 			default :
-				controleur.changement(parts[2]);
+				controleur.changement(parts[1]);
 				break;
 			}
 		}
