@@ -1,8 +1,7 @@
 package model;
-import java.util.ArrayList;
 
-import java.net.*;
-import java.io.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -69,10 +68,6 @@ public class PacmanGame extends Game{
 	public ArrayList<Agent> getPacmans(){
 		return this.pacmans;
 	}
-	
-	/**
-	 * @return le boolean de fin de jeu 
-	 */
 
 	
 	/**
@@ -96,8 +91,6 @@ public class PacmanGame extends Game{
 	
 	//Méthode appelé quand un tour est lancé
 	public void takeTurn(){
-	
-	
 		//set action des fantomes qui ne sont pas controlés 
 		AgentAction action = new AgentAction(0);
 		for(int i = 0; i < fantomes.size(); i++){
@@ -139,20 +132,18 @@ public class PacmanGame extends Game{
 		
 		mortAgent();
 		
-		
 		if(this.getTourInvincible() == this.getNbTours()){
 			this.setIsInvincible(false);
 			this.getLabyrinthe().estInvinsible = false;
 		}
-		if(finJeu() == true){
-			this.etatJeu = 1;
-		}
-		
+				
+		gameOver();
 		this.NbTours += 1 ;
+		ServeurEmetteur.test(this.toString());
 		
 		
 	}
-	
+
 	
 	/**
 	 * Méthode appelée quand game doit être reinitialiser.
@@ -296,7 +287,7 @@ public class PacmanGame extends Game{
 						i--;
 						isAlivePacman = false;
 						this.setNbies(this.getNbVies()-1);
-						//renvoyer quelque chose si le pacman meurt pour le son
+						ServeurEmetteur.test("musique:sounds/pacman_death.wav;");
 					}
 				}
 				if(isAlivePacman == true && this.getIsInvincible() == true){
@@ -305,7 +296,7 @@ public class PacmanGame extends Game{
 						this.getLabyrinthe().getGhosts_start().remove(j);
 						j--;
 						this.setNbPoints(this.getNbPoints()+10);
-						//renvoyer quelque chose si un fantome meurt pour le son
+						ServeurEmetteur.test("musique:sounds/ghost_death.wav;");
 					}
 					
 				}
@@ -314,36 +305,66 @@ public class PacmanGame extends Game{
     }
     
     /**
+     * Charge un niveau aléatoire parmis ceux disponibles
+     * @return String (chemin du maze)
+     */
+    public String levelUp(){
+		int rnd = new Random().nextInt(this.allMazes.size());
+		String map = this.allMazes.get(rnd);
+		this.allMazes.remove(rnd);
+		return map;
+	}
+    
+    /**
      * Fin du jeu si
      * - Tous les pacmans sont morts 
      * - Toutes les pacgommes sont mangées 
      * @return true si fin endGame false sinon
      */
-    public boolean finJeu(){
-    	//cas ou tous les pacmans meurent
-    	if(pacmans.isEmpty()||getNbVies()<=0){
-    		this.etatJeu = 3;
-    		return true ;
+    public void gameOver(){
+    	
+    	
+    	//cas ou il n'y a plus de pacmans jouables 
+    	//ou le joueur n'a plus de vies 
+    	//(défaite)
+    	if(getNbVies()<=0){
+    		this.stop();																//jeu en pause 
+    		ServeurEmetteur.test("chemin"+"layouts/capsuleClassic.lay"+";etat:false");	//chargement d'un nouveau labyrinthe 
     	}
+
+    	
+    	//cas ou perd une vies (pas de pause)
+    	if(this.getNbVies() < nbViesTemp){
+    		nbViesTemp = this.getNbVies();
+    		System.out.print("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+			boolean savedFood[][] = this.getLabyrinthe().getFood();
+			try {
+				labyrinthe = new Maze(this.getChemin());
+				this.getLabyrinthe().food = savedFood;
+				RechargementAgents();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    		
+    	}
+    	
+    	
+    	//test pour savoir si il reste des capsule dans le labyrinthe 
     	boolean noCapsuleFound = true;
     	for(int i = 0; i< this.getLabyrinthe().getSizeX(); i++){
     		for(int j = 0; j < this.getLabyrinthe().getSizeY(); j++){
-    			if(this.getLabyrinthe().food[i][j] == true){
-    				noCapsuleFound = false;
-    			}
+    			if(this.getLabyrinthe().food[i][j] == true){ noCapsuleFound = false; }
     		}
     	}
-    	//cas ou il n'y a plus de capsules trouvées dans le labyrinthe 
+    	
+    	//cas ou il n'y a plus de capsules dans le labyrinthe (victoire)
     	if(noCapsuleFound == true){
-    		System.out.println("Plus de capsules, fin du Jeu.");
-    		this.etatJeu = 1;
-    		return true;
+    		ServeurEmetteur.test("sounds/next_level.wav");				//envoi du sound de victoire 
+    		ServeurEmetteur.test(this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe			
     	}
-    	return false;
     }
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction est de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -384,7 +405,6 @@ public class PacmanGame extends Game{
 
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction ouest de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -426,7 +446,6 @@ public class PacmanGame extends Game{
     
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction sud de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -466,7 +485,6 @@ public class PacmanGame extends Game{
     }
     
     /**
-     * @author etudiant_pas_moi.
      * Cherche l'ennemi ou mur le plus proche dans la direction ouest de l'agent. 
      * @param TypeAgent : le type de l'agent.
      * @param agent : agent cherchant où son ses ennemis.
@@ -504,5 +522,6 @@ public class PacmanGame extends Game{
     	}
     	return valeur_distance;
     }
+
 }
 
