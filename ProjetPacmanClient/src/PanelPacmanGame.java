@@ -11,7 +11,7 @@ public class PanelPacmanGame extends JPanel{
 	private double sizePacman=0.65;	
 	private Color pacmansColor = Color.yellow;
 	
-	private Color ghostsColor = Color.white;
+
 	private Color ghostScarredColor=Color.white;
 
 	private double sizeFood=0.3; 
@@ -24,13 +24,13 @@ public class PanelPacmanGame extends JPanel{
 	
 	private ArrayList<PositionAgent> pacmans_pos;
 	private ArrayList<PositionAgent> ghosts_pos;
-	
-	
+		
 	private boolean ghostsScarred;
-	
+
 
 	public PanelPacmanGame(Maze maze) {
 		this.m = maze;
+		System.out.println("AHAHAHAAHAHAHAHA : " + maze.toString());
 		pacmans_pos = this.m.getPacman_start();
 		ghosts_pos = this.m.getGhosts_start();
 		ghostsScarred = false;		

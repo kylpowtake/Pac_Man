@@ -13,7 +13,6 @@ import javax.sound.sampled.DataLine;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 import javax.swing.JFrame;
@@ -23,29 +22,33 @@ import javax.swing.event.ChangeListener;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Random;
 
 
 public class View{
 
 	//attributs 
 	private Maze labyrinthe;
-	public String chemin = "";
 	public JPanel jPanelMaze;
 	public Maze maze;
 	public ArrayList<String> allMazes = new ArrayList<>();
 	public ImageIcon iconLife;
 	public ImageIcon iconInvincible;
 	public Touches panelTouches = new Touches();
-	private int NbVies = 3;
-	private int NbPoints = 0;
+	private boolean food[][];
+	private boolean capsule[][];
 	private boolean isInvincible;
-	private int etat;
-	boolean food[][];
+	private ArrayList<PositionAgent> fantomes;
+	private ArrayList<PositionAgent> pacmans;
+	private int NbPoints = 0;
+	private int NbVies = 3;
+	private int NbTours = 0;
+	private String chemin = "";
+	private String musique;
+	private String etat;
+	
 	
 	
 	//les fenêtres 
-	JFrame Configuration;	//fenêtre de configuration du nombre de joueurs
 	JFrame Commandes;		//fenêtre de commandes du jeu
 	JFrame Jeu;				//fenêtre du jeu 
 	
@@ -66,10 +69,20 @@ public class View{
 	
 	
     //contructeur
-	public View() {
-		//this.labyrinthe = game.getLabyrinthe();
-		this.createUserFrame(labyrinthe);		
-	}	
+	public View(String chemin) {
+		this.chemin = chemin;
+		try {
+			System.out.println("apaapap      " + chemin);
+			this.maze = new Maze(chemin);
+			this.labyrinthe = maze;
+			this.createUserFrame(maze);		
+		} catch (Exception e) {
+			System.out.println("icicicici nous passons pasooons");
+
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}	
 	
 	
     /**
@@ -102,11 +115,11 @@ public class View{
 	 * @see Observateur#actualiser(boolean, boolean, boolean)
 	 * la méthode actualise la fenêtre du jeu a chaque tour 
 	 */
-	public void actualiser(boolean booleanRestart, boolean testtransformation, boolean GameOver) {
+	public void actualiser() {
 		
 		//update nombre de tours et nombre de points 
 		//Valeurs à ajouter de reçu en JSON
-		this.Label_2.setText("Turn : " + NbVies);		
+		this.Label_2.setText("Turn : " + NbTours);		
 		this.Label_3.setText("Number of points : " + NbPoints);
 		
 		
@@ -138,69 +151,11 @@ public class View{
 			this.Label_5.setIcon(iconLife);
 		}
 		
-		//si le jeu est terminé 
-			//si on a gagné 
-				//alors on charge un autre labyrinthe aléatoirement 
-			//sinon
-				//si le nombre de vies est supérieur à 0
-					//on sauvegarde l'état du labyrinthe et on peut recommencer le jeu acet état
-				//sinon 
-					//on doit recommencer avec l'état initial du labyrinthe le nombre de points à 0 et le nombre de vies à 3
-			//Valeur à ajouter reçu en JSON
-		if(etat == 1){	
-				//Information à recevoir en JSON : Musique à jouer + niveau jouer
-				//playSound("sounds/next_level.wav");
-			}
-		if(etat == 2){
-					try {
-						this.labyrinthe = new Maze(chemin);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					this.Restart.setEnabled(false);
-					this.Pause.setEnabled(false);
-					this.Step.setEnabled(true);
-					this.Run.setEnabled(true);
-					this.changeMaze.setEnabled(true);
-				}
-		if(etat == 3 ){
-					playSound("sounds/you_died.wav");
-					ImageIcon icon2 = new ImageIcon("sounds/you_died.gif");
-					JFrame f = new JFrame();
-					JLabel l = new JLabel();
-					l.setIcon(icon2);
-					f.setSize(640,360);
-					f.setLocation(710,250);
-					f.add(l);
-					f.setVisible(true);
-					try {
-						Thread.sleep(8000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					f.setVisible(false);
-					
-					this.Restart.setEnabled(true);
-					this.Pause.setEnabled(false);
-					this.Step.setEnabled(false);
-					this.Run.setEnabled(false);
-					this.changeMaze.setEnabled(true);
-		}
-		
+		//playSound("sounds/next_level.wav");		
 	
 		//on supprime le composant qui contient l'état du labyrinthe  
 		Jeu.getContentPane().getComponent(0);
 		Jeu.validate();
-
-		//on le met à jour en fonction du chemin (nom du labyrinthe) reçu 
-		if(booleanRestart){
-			try {
-				this.labyrinthe = new Maze(chemin);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
 		
 		//et on remet ce nouvel état dans le composant 
 		jPanelMaze = new PanelPacmanGame(labyrinthe);
@@ -208,6 +163,55 @@ public class View{
 		Jeu.validate();
 	}
 	
+	
+	
+	
+	public void actualiserChemin(){
+		//On a gagné et on doit afficher le nouveau labyrinthe 
+		if(etat == "true"){
+			
+		} 
+		//On a perdu toutes nos vies et on doit rafficher le chemin de base	mais avant cela un peu de dark soul
+		else {
+			playSound("sounds/you_died.wav");
+			ImageIcon icon2 = new ImageIcon("sounds/you_died.gif");
+			JFrame f = new JFrame();
+			JLabel l = new JLabel();
+			l.setIcon(icon2);
+			f.setSize(640,360);
+			f.setLocation(710,250);
+			f.add(l);
+			f.setVisible(true);
+			try {
+				Thread.sleep(8000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			f.setVisible(false);
+		}
+		
+		
+		this.Restart.setEnabled(true);
+		this.Pause.setEnabled(false);
+		this.Step.setEnabled(false);
+		this.Run.setEnabled(false);
+		this.changeMaze.setEnabled(true);
+		
+		try {
+			labyrinthe = new Maze(chemin);
+			
+			//on supprime le composant qui contient l'état du labyrinthe  
+			Jeu.getContentPane().getComponent(0);
+			Jeu.validate();
+			
+			//et on remet ce nouvel état dans le composant 
+			jPanelMaze = new PanelPacmanGame(labyrinthe);
+			Jeu.add(jPanelMaze,BorderLayout.CENTER);
+			Jeu.validate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * méthode permettant de configurer un labyrinthe 
@@ -224,20 +228,18 @@ public class View{
 				
 		try {
 			maze = this.labyrinthe;
+
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+
 		
 		
 		//police d'écriture 
 		Font font = new Font("Serif",Font.BOLD,15);
 		
-		
-		//les 3 fenêtres 
-		Configuration = new JFrame("Configuration");
-		Configuration.setSize(new Dimension(500,150));
-		Configuration.setLocation(700,300);
-		
+				
 		Commandes = new JFrame("Commandes");
 		Commandes.setSize(new Dimension(1200, 200));
 		Commandes.setLocation(400,780);
@@ -304,7 +306,7 @@ public class View{
 	    Label_2.setFont(font);
 	    
 	    //Donnée reçu en JSON
-	    //Label_3 = new JLabel("Number of points : " + this.game.getNbPoints());
+	    Label_3 = new JLabel("Number of points : " + this.NbPoints);
 	    Label_3.setHorizontalAlignment(JLabel.CENTER);
 	    Label_3.setFont(font);
 	    
@@ -364,7 +366,7 @@ public class View{
 		    	Run.setEnabled(true);
 		    	Step.setEnabled(true);
 		    	changeMaze.setEnabled(true);
-		    	Configuration.setVisible(true);
+		    	ClientEmetteur.setMessage("commande:init");
 			}
 		});
 		
@@ -378,7 +380,7 @@ public class View{
 		    	Pause.setEnabled(true);
 		    	Step.setEnabled(false);
 		    	changeMaze.setEnabled(false);
-		    	Configuration.setVisible(false);
+		    	ClientEmetteur.setMessage("commande:play");
 		    	
 		    	//request focus from panel touches 
 		    	panelTouches.requestFocus();
@@ -393,8 +395,8 @@ public class View{
 		    	Restart.setEnabled(true);
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
-		    	Configuration.setVisible(false);
-		    	
+		    	ClientEmetteur.setMessage("commande:step");
+
 		    	//request focus from panel touches 
 		    	panelTouches.requestFocus();
 			}
@@ -411,6 +413,8 @@ public class View{
 		    	Run.setEnabled(true);
 		    	Pause.setEnabled(false);
 		    	changeMaze.setEnabled(true);
+		    	ClientEmetteur.setMessage("commande:pause");
+
 			}
 		});
 		
@@ -427,8 +431,92 @@ public class View{
 		    	Restart.setEnabled(true);
 		    	Run.setEnabled(false);
 		    	Step.setEnabled(false);
+		    	ClientEmetteur.setMessage("commande:" + chemin);
+
 			}
 		});
 
+	}
+	
+	
+	/*
+	 * Tous les getters et setters.
+	 */
+	public  void setFood(boolean foodt[][]){
+		food = foodt;
+		this.labyrinthe.food = foodt;
+	}
+	public boolean[][] getFood(){
+		return food;
+	}
+	public  void setCapsule(boolean capsulet[][]){
+		capsule = capsulet;
+		this.labyrinthe.setCapsuleFull(capsule);
+	}
+	public boolean[][] getCapsule(){
+		return capsule;
+	}
+	public void setInvincible(boolean isInvincible){
+		this.isInvincible = isInvincible ;
+	}
+	
+	public boolean getInvincible(){
+		return this.isInvincible;
+	}
+	public void setFantomes(ArrayList<PositionAgent> fantomes){
+		this.fantomes = fantomes;
+		this.labyrinthe.setGhosts_start(fantomes);
+	}
+	public ArrayList<PositionAgent> getFantomes(){
+		return this.fantomes;
+	}
+	public void setPacmans(ArrayList<PositionAgent> pacmans){
+		this.pacmans = pacmans;
+		this.labyrinthe.setPacman_start(pacmans);
+	}
+	public ArrayList<PositionAgent> getPacmans(){
+		return this.pacmans;
+	}
+	public void setScore(int score){
+		this.NbPoints = score ;
+	}
+	
+	public int getScore(){
+		return this.NbPoints;
+	}
+	public void setVie(int vie){
+		this.NbVies = vie ;
+	}
+	
+	public int getVie(){
+		return this.NbVies;
+	}
+	public void setTours(int NbTours){
+		this.NbTours = NbTours ;
+	}
+	
+	public int getTours(){
+		return this.NbTours;
+	}
+	public void setChemin(String chemin){
+		this.chemin = chemin ;
+	}
+	
+	public String getChemin(){
+		return this.chemin;
+	}
+	public void setMusique(String musique){
+		this.musique = musique ;
+	}
+	
+	public String getMusique(){
+		return this.musique;
+	}
+	public void setEtat(String etat){
+		this.etat = etat ;
+	}
+	
+	public String getEtat(){
+		return this.etat;
 	}
 }

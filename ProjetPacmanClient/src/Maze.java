@@ -217,7 +217,13 @@ public class Maze implements Serializable{
 		return(ghosts_start.size());
 	}
 	
+	public boolean[][] getCapsule(){
+		return this.capsules;
+	}
 	
+	public void setCapsuleFull(boolean[][] capsule){
+		this.capsules = capsule;
+	}
 	public ArrayList<PositionAgent> getPacman_start() {
 		return pacman_start;
 	}

@@ -15,19 +15,24 @@ public class Touches extends JPanel implements KeyListener {
 	   	  {
 	   	  	case KeyEvent.VK_UP :
 	   	  		this.touchesCliques = 0;
+	   	  		ClientEmetteur.setMessage("direction:" + touchesCliques);
 	   	  		break;
 	   	  	case KeyEvent.VK_DOWN:
 	   	  		this.touchesCliques = 1;
+	   	  		ClientEmetteur.setMessage("direction:" + touchesCliques);
 	   	  		break;
 	   	  	case KeyEvent.VK_LEFT:
 	   	  		this.touchesCliques = 3;
+	   	  		ClientEmetteur.setMessage("direction:" + touchesCliques);
 	   	  		break;
 	   	  	case KeyEvent.VK_RIGHT:
 	   	  		this.touchesCliques = 2;
+	   	  		ClientEmetteur.setMessage("direction:" + touchesCliques);
 	   	  		break;
 	   	  		
 	   	  	default:
 	   	  		this.touchesCliques = 4;
+	   	  		ClientEmetteur.setMessage("direction:" + touchesCliques);
 	   	  		break;
 	   	  }
 
