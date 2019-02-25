@@ -52,7 +52,8 @@ public class MainServeur {
 	  	             
 	                //envoi du chemin du labyrinthe au client
 	                out = new PrintWriter(clientSocket.getOutputStream(),true);
-					out.println("chemin:" + chemin);                        
+					out.println("chemin:" + chemin);   
+					out.flush();
 					
 	                //creation de nouveaux gestionnaires pour le client 
 	                ServeurRecepteur serveurRecepteur = new ServeurRecepteur(clientSocket,controleur);

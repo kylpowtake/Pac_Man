@@ -20,6 +20,7 @@ public class ServeurRecepteur extends Thread {
 	 */
 	static public void traiter(String chaine){
 		String[] parts = chaine.split(":");
+		System.out.print("message : "+ chaine);
 		//la direction que le joueur envoi(haut,bas,gauche,droite)
 		if(parts[0].equals("direction")){	
 			switch(parts[1]){
@@ -50,7 +51,6 @@ public class ServeurRecepteur extends Thread {
 				controleur.start();
 				break;
 			case "step" :
-				controleur.step();
 				break;
 			case "pause" :
 				controleur.pause();

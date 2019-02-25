@@ -10,16 +10,16 @@ public abstract class Game{
 
 	public ArrayList<String> allMazes = new ArrayList<>();
 	public Thread thread; 
-	public boolean isRunning = true;
+	public boolean isRunning = false;		//par defaut a false, le client le met a true des qu'il lance une partie 
 	public boolean isInvincible;
-	public int NbToursSecondes = 2;		
-	public int NbTours = 0;						//tour actuel 
+	public int NbToursSecondes = 2;	
+	public int nbViesTemp = 3;
+	public int NbTours = 0;					//tour actuel 
 	public int NbToursMax = 100000000;		//nombre de tours max  
 	public int NbPoints = 0;
 	public int NbVies = 3;
 	public String chemin;
 	public Maze labyrinthe;
-	public int etatJeu = 0; 				// renvoi l'etat du jeu (0 quand le jeu n'est pas fini, 1 quand on gagne 2 perd une vie 3 quand on perd le jeu)
 	public int tourInvincible; 				//Nombre de tours restant d'invincibilité pour les pacmans.
 
 	//Liste des agents 
@@ -94,6 +94,19 @@ public abstract class Game{
 		  chaine = chaine.substring(0,chaine.length() - 1);
 		  chaine += ";";
 		}
+		chaine += "capsule:";
+		for(int i = 0; i< this.getLabyrinthe().getSizeX(); i++){
+    		for(int j = 0; j < this.getLabyrinthe().getSizeY(); j++){
+    			if(this.getLabyrinthe().isCapsule(i,j) == true){
+    				chaine += i + " " + j + ","; 
+    			}
+    		}
+    	}
+		if(chaine.endsWith(","))
+		{
+		  chaine = chaine.substring(0,chaine.length() - 1);
+		  chaine += ";";
+		}
 		chaine += "invincible:" + this.isInvincible +";";
 		chaine += "agent:";
 		for(int i = 0; i < fantomes.size(); i++){
@@ -111,7 +124,7 @@ public abstract class Game{
 		chaine += "vie:" + this.getNbVies() + ";";
 		chaine += "tour:" + this.getNbTours() + ";";
 		chaine += "chemin:" + this.chemin + ";"; 
-		chaine += "etat:" + this.etatJeu + ";";
+		chaine += "musique:sounds/pacman_death.wav;";  
 		
 		return chaine;	
 	}
@@ -129,23 +142,11 @@ public abstract class Game{
 		File directory = new File("layouts");	
 		File[] files = directory.listFiles();
 		for ( File f : files) {
-			this.allMazes.add(f.getAbsolutePath());
+			this.allMazes.add(f.getPath());
 		}
 		initializeGame();
 	}
 	
-	/**
-	 * Si le nombre de tours est inférieur au nombre de tours max on implémente un tour, sinon on finit le jeu.
-	 * Après chaque tour on endort le jeu pour un certain temps. 
-	 */
-	public void step(){
-		if(NbTours <= NbToursMax){
-			takeTurn();
-		}
-		else{
-			//rien pour l'instant il y avait un gameOver();
-		}
-	}
 	
 	/**
 	 * Méthode arrêtant la boucle du run (ServeurEmetteur).
@@ -369,6 +370,7 @@ public abstract class Game{
 	
     //méthodes abstraites
 	abstract public void takeTurn();
+	abstract public void gameOver();
 	abstract public void initializeGame();
 	abstract public void actualiser(String chemin);
     abstract public boolean isLegalMove(Agent agent, AgentAction action);

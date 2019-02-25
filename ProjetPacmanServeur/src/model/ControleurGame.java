@@ -19,11 +19,6 @@ public class ControleurGame implements InterfaceControleur{
     }
 	
 	@Override
-    public void step(){
-		this.game.step();    	
-    }
-	
-	@Override
     public void pause(){
 		this.game.stop();
     }

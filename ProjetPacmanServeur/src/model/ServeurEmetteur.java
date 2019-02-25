@@ -7,40 +7,42 @@ import java.io.*;
 public class ServeurEmetteur extends Thread {
 	
 	static Socket clientSocket;
+	static PrintWriter sortie;
 	Game game;
+	
 	
 	//constructeur 
 	public ServeurEmetteur(Socket so,Game game){
 		clientSocket = so;
 		this.game = game;
+		try {
+		    sortie = new PrintWriter(clientSocket.getOutputStream(),true);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	public static void test(String chaine){
-		try {
-			PrintWriter sortie = new PrintWriter(clientSocket.getOutputStream(),true); 
-			sortie.println(chaine);
-		} catch(NullPointerException npe){
-			System.out.println("Pointeur null  : " + npe.getMessage());
-		} catch(SocketException se){
-			System.out.println("deconnexion d'un client " + se.getMessage());
-		} catch(IOException e){
-			System.out.println("Problème lors du run : " + e.getMessage());
-		}
+		sortie.println(chaine);
 	}
 	
 	
 	public void run(){
-		
-		while(game.isRunning == true && game.NbTours < game.NbToursMax){
-			try {
-				Thread.sleep(1000/game.NbToursSecondes);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		while(true){
+			
+			//System.out.print("a retirer probleme de flush\n");
+			if(game.isRunning == true && game.NbTours < game.NbToursMax){
+				try {
+					Thread.sleep(1000/game.NbToursSecondes);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				game.takeTurn();
 			}
-			game.step();
-		}
-		if(game.NbTours >= game.NbToursMax){
-			System.out.println("fin du jeu");
+			if(game.NbTours >= game.NbToursMax){
+				System.out.println("fin du jeu");
+			}
+			sortie.flush();
 		}
 	 } 
 }
