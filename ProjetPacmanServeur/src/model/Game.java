@@ -10,16 +10,17 @@ public abstract class Game{
 
 	public ArrayList<String> allMazes = new ArrayList<>();	//contient la liste de tous les labyrinthes disponibles 
 	public Thread thread; 
-	private boolean isRunning = false;						//definit l'etat du jeu(play,stop) par defaut a false(stop), le client le met à true(play) dès qu'il lance une partie 
-	private boolean isInvincible;							//définit l'etat du pacman 	
-	private int NbToursSecondes = 2;						//definit la vitesse de jeu désirée par le joueur (pas implémenté pour l'instant)
-	private int NbTours = 0;								//tour actuel de jeu 
-	private int NbPoints = 0;								//nombre de point sur une partie 
-	private int NbVies,NbViesTemp = 3;						//le nombre de vies du joueur 
-	private String chemin;									//le chemin du labyrinthe 
+	public boolean isRunning = false;						//definit l'etat du jeu(play,stop) par defaut a false(stop), le client le met à true(play) dès qu'il lance une partie 
+	public boolean isInvincible;							//définit l'etat du pacman 	
+	public int NbToursSecondes = 2;						//definit la vitesse de jeu désirée par le joueur (pas implémenté pour l'instant)
+	public int NbTours = 0;								//tour actuel de jeu 
+	public int NbPoints = 0;								//nombre de point sur une partie 
+	public int NbVies = 3,NbViesTemp = 3;						//le nombre de vies du joueur 
+	public String chemin;									//le chemin du labyrinthe 
 	public Maze labyrinthe;									//le labyrinthe 
-	private int tourInvincible; 							//Nombre de tours restant d'invincibilité pour les pacmans.
-	private int identifiant;								//l'identifiant du joueur avec lequel il s'est connecté 
+	public int tourInvincible; 							//Nombre de tours restant d'invincibilité pour les pacmans.
+	public int identifiant;								//l'identifiant du joueur avec lequel il s'est connecté 
+	public boolean finThread = false;
 
 	//Liste des agents 
 	public ArrayList<Agent> fantomes;
@@ -80,7 +81,7 @@ public abstract class Game{
 	
 	/**
 	 * Methode pour formater les informations à envoyer au client
-	 *  
+	 * @return String
 	 */
 	public String toString(){
 		String chaine = "update;food:";
@@ -129,7 +130,6 @@ public abstract class Game{
 		chaine += "vie:" + this.getNbVies() + ";";
 		chaine += "tour:" + this.getNbTours() + ";";
 		chaine += "chemin:" + this.chemin + ";"; 
-		chaine += "musique:sounds/pacman_death.wav;";  
 		
 		return chaine;	
 	}
@@ -154,30 +154,34 @@ public abstract class Game{
 	
 	
 	/**
-	 * Méthode arrêtant la boucle du run (ServeurEmetteur).
+	 * Méthode mettant le jeu en pause (ServeurEmetteur)
 	 */
 	public void stop(){
 		isRunning = false;
 	}
 	
 	/**
-	 * Méthode relançant la boucle du run (ServeurEmetteur)
+	 * Méthode relançant le jeu (ServeurEmetteur)
 	 */
     public void play(){ 
         isRunning = true;
     }
     
     /**
-     * Actualise l'affichage et le game à partir d'un fichier contenant le 
+     * Actualise l'affichage et le game à partir d'un fichier contenant le chemin
      * @param chemin : le chemin vers le fichier contenant le labyrinthe.
      */
     public void changement(String chemin){
     	actualiser(chemin);
     }
     
-    
  
-    //Cherche le nombre d'agents adverses qu'il y a dans la partie Nord Est du labyrinthe.
+    /**
+     * Cherche le nombre d'agents adverses qu'il y a dans la partie Nord Est du labyrinthe.
+     * @param typeAgent
+     * @param agent
+     * @return
+     */
     public int NombreAgentNordEst(boolean typeAgent, Agent agent){
     	//Si l'agent est un fantôme
     	int valeurRetour = 0;
@@ -210,15 +214,16 @@ public abstract class Game{
     }
 
 
-    /*
+    /**
      * Cherche le nombre d'agents adverses qu'il y a dans la partie Nord Ouest du labyrinthe.
+     * @param typeAgent
+     * @param agent
+     * @return
      */
     public int NombreAgentNordOuest(boolean typeAgent, Agent agent){
     	//Si l'agent est un fantôme
     	int valeurRetour = 0;
-    	/*
-    	 * On cherche le nombre de pacmans
-    	 */
+    	//On cherche le nombre de pacmans
     	if(typeAgent){
     		for(int i=agent.getPosition().getX(); i > 0; i--){
     			for(int j=agent.getPosition().getY(); j > 0; j--){
@@ -230,9 +235,7 @@ public abstract class Game{
     		return valeurRetour;
     	} else {
     		//Sinon c'est un pacman
-    		/*
-    		 * On cherche le nombre de fantomes
-    		 */
+    		//On cherche le nombre de fantomes
         	for(int i=agent.getPosition().getX(); i > 0; i--){
         		for(int j=agent.getPosition().getY(); j > 0; j--){
         			if(this.labyrinthe.isFantome(i,  j)){
@@ -244,9 +247,12 @@ public abstract class Game{
     	}
     }
    
-    /*
+    /**
      * Cherche le nombre d'agents adverses qu'il y a dans la partie Sud Ouest du labyrinthe.
-     */
+     * @param typeAgent
+     * @param agent
+     * @return
+     */ 
     public int NombreAgentSudOuest(boolean typeAgent, Agent agent){
     	//Si l'agent est un fantôme
     	int valeurRetour = 0;
@@ -278,8 +284,11 @@ public abstract class Game{
     	}
     }
     
-    /*
-     * Cherche le nombre d'agents adverses qu'il y a dans la partie Sud Est du labyrinthe.
+    /**
+     * Cherche le nombre d'agents adverses qu'il y a dans la partie Sud Est du labyrinthe
+     * @param typeAgent
+     * @param agent
+     * @return
      */
     public int NombreAgentSudEst(boolean typeAgent, Agent agent){
     	//Si l'agent est un fantôme
@@ -312,8 +321,11 @@ public abstract class Game{
     	}
     }
     
-   /*
+   /**
     * Test si il y a un passage avant le mur dans la direction donnée
+    * @param agent
+    * @param dir
+    * @return
     */
     public boolean testFinMur(Agent agent, int dir){
     	PositionAgent pos = new PositionAgent(agent.getPosition().getX(), agent.getPosition().getY(), agent.getPosition().getDir());

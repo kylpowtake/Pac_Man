@@ -14,7 +14,6 @@ public class ServeurEmetteur extends Thread {
 	//constructeur 
 	public ServeurEmetteur(Socket so){
 		clientSocket = so;
-		//this.game = game;
 		try {
 		    sortie = new PrintWriter(clientSocket.getOutputStream(),true);
 		} catch (IOException e) {
@@ -29,14 +28,14 @@ public class ServeurEmetteur extends Thread {
 	
 	
 	public void run(){
-		while(true){
+		while(game.finThread != true){
 			if(game.getIsRunning() == true){
+				game.takeTurn();
 				try {
-					Thread.sleep(1000/game.getNbTours());
+					Thread.sleep(1000/game.getNbToursSecondes());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}
-				game.takeTurn();
+				}			
 			}
 			sortie.flush();
 		}

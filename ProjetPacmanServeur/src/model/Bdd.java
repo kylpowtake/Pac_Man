@@ -21,8 +21,7 @@ final public class Bdd {
      * methode permettant de verifier si une personne a un compte
      */
 	static public int connect(String pseudo, String mdp){
-		try {
-
+		try{
 			Class.forName( "com.mysql.jdbc.Driver" );
 			connexion = DriverManager.getConnection( url, utilisateur, motDePasse );
 			statement = connexion.createStatement();
@@ -36,28 +35,27 @@ final public class Bdd {
 		         int identifiant = resultat.getInt( "id" );
 		         return identifiant;
 			}
-
-		}catch (ClassNotFoundException e) {
+		}catch(ClassNotFoundException e) {
 			e.printStackTrace();
 	    }catch (SQLException e) {
 			e.printStackTrace();
 		}finally {
-            if ( resultat != null ) {
-                try {
+            if(resultat != null ) {
+                try{
                     resultat.close();
-                } catch ( SQLException ignore ) {
+                }catch (SQLException ignore){
                 }
             }
-            if ( statement != null ) {
+            if (statement != null) {
                 try {
                     statement.close();
-                } catch ( SQLException ignore ) {
+                }catch(SQLException ignore) {
                 }
             }
-            if ( connexion != null ) {
-                try {
+            if(connexion != null) {
+                try{
                     connexion.close();
-                } catch ( SQLException ignore ) {
+                }catch(SQLException ignore) {
                 }
             }
         }
@@ -70,12 +68,10 @@ final public class Bdd {
      */
 	static public void sendScore(int identifiant,int score){
 		try {
-			System.out.print("passe");
 			Class.forName( "com.mysql.jdbc.Driver" );
 			connexion = DriverManager.getConnection( url, utilisateur, motDePasse );
 			statement = connexion.createStatement();
 			statement.executeUpdate( "INSERT INTO Partie (id,score,date) " + "VALUES ('" + identifiant + "','" + score + "', NOW());" );
-
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 	    }catch (SQLException e) {

@@ -10,7 +10,7 @@ public class MainServeur {
 	static Vector<Socket> clients = new Vector<>();				//vecteur contenant tout les clients (socket)
 	static ServeurRecepteur test = null;
 	static PrintWriter out;
-	static String chemin = "layouts/capsuleClassic.lay";		//chemin envoyé au client à sa connexion 
+	static String chemin = "layouts/tinyMaze.lay";		//chemin envoyé au client à sa connexion 
 	
 	
 	

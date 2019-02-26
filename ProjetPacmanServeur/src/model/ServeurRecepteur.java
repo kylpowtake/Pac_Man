@@ -15,12 +15,12 @@ public class ServeurRecepteur extends Thread {
 	
 	/**
 	 * @param chaine
-	 * traite la chaine envoyée par le client 
-	 * en fonction de si c'est une direction, une commande ou une demande de connexion  
+	 * traite la chaine envoyée par le client(direction,demande de connexion,commande)
 	 */
 	static public void traiter(String chaine){
 		String[] parts = chaine.split(":");
-		//la direction que le joueur envoi(haut,bas,gauche,droite)
+		System.out.println(chaine);
+		//cas d'une direction 
 		if(parts[0].equals("direction")){	
 			switch(parts[1]){
 			case "0" :
@@ -39,7 +39,8 @@ public class ServeurRecepteur extends Thread {
 				controleur.getGame().pacmans.get(0).setNextAction(4);
 				break;
 			}
-		}else if(parts[0].equals("pseudo")){		
+		}//cas d'une demande de connexion
+		else if(parts[0].equals("pseudo")){		
 			 String[] parts2 = parts[1].split(";");
 			 String pseudo = parts2[0];
 			 String mdp = parts[2];
@@ -48,24 +49,28 @@ public class ServeurRecepteur extends Thread {
 				 MainServeur.setGame(clientSocket,identifiant);
 			 }else{
 				 MainServeur.setEmetteur(clientSocket);
-				 ServeurEmetteur.sendMessage("connexion:http://localhost:8080/pro/connexion");
+				 ServeurEmetteur.sendMessage("connexion:http://192.168.43.238:8080/pro/connexion");
 			 }
- 
-		}
-		//la commande que le joueur envoi(play,pause,slider,changement)
+		}//cas du changement de vitesse du jeu 
+		else if(parts[0].equals("slider")){
+			controleur.slider(Integer.parseInt(parts[1]));
+		}	
+		//cas d'une commande 
 		else{								
 			switch(parts[1]){
+			case "init":
+				controleur.init();
+				break;
 			case "play" :
 				controleur.start();
 				break;
 			case "pause" :
 				controleur.pause();
 				break;
-			case "slider":
-				controleur.slider(Integer.parseInt(parts[1]));
-				break;
-			default :
+			case "chemin":
 				controleur.changement(parts[1]);
+			default :
+				System.out.println("cas non pris en charge");
 				break;
 			}
 		}
@@ -81,10 +86,13 @@ public class ServeurRecepteur extends Thread {
 			 }	 
 		} catch(NullPointerException npe){
 			System.out.println("Pointeur null  : " + npe.getMessage());
+			controleur.finJeu();
 		} catch(SocketException se){
 			System.out.println("deconnexion d'un client " + se.getMessage());
+			controleur.finJeu();
 		} catch(IOException e){
 			System.out.println("Problème lors du run : " + e.getMessage());
+			controleur.finJeu();
 		}
 	 } 
 }
