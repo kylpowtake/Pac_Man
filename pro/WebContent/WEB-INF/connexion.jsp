@@ -25,11 +25,6 @@
                 <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
                 <span class="erreur">${form.erreurs['motdepasse']}</span>
                 <br />
-                
-                <br />
-                <label for="memoire">Se souvenir de moi</label>
-                <input type="checkbox" id="memoire" name="memoire" />
-                <br />
 
                 <input type="submit" value="Connexion" class="sansLabel" />
                 <br />
@@ -47,5 +42,6 @@
                 </c:if>
             </fieldset>
         </form>
+        
     </body>
 </html>

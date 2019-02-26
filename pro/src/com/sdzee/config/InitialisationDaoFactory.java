@@ -7,9 +7,9 @@ import javax.servlet.ServletContextListener;
 import com.sdzee.dao.DAOFactory;
 
 public class InitialisationDaoFactory implements ServletContextListener {
-    private static final String ATT_DAO_FACTORY = "daofactory";
-
-    private DAOFactory          daoFactory;
+    
+	private static final String ATT_DAO_FACTORY = "daofactory";
+    private DAOFactory daoFactory;
 
     @Override
     public void contextInitialized( ServletContextEvent event ) {
