@@ -5,4 +5,5 @@ public interface InterfaceControleur {
     public void pause();
     public void slider(int valeur);
     public void changement(String chemin);
+    public void finJeu();
 }

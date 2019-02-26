@@ -14,6 +14,8 @@ public class GestionReceptionMessage {
 			GestionMessageChemin(message);
 		} else if(message.startsWith("update;")) {
 			GestionMessageUpdate(message);
+		} else if(message.startsWith("musique:")){
+			GestionMessageMusique(message);
 		} else {
 			System.out.println("Message reçu non traitable");
 		}
@@ -38,6 +40,9 @@ public class GestionReceptionMessage {
 		MainClient.viewConnexion.setLabelResultat(messageErreur);
 		openWebpage(messageErreur);
 	}
+	
+	
+	
 	public static void GestionMessageChemin(String message){
 		if(MainClient.viewConnexion.TestPresent()){
 			MainClient.viewConnexion.Close();
@@ -49,14 +54,19 @@ public class GestionReceptionMessage {
 			String[] partieEtat = partieMessageMajeurs[1].split(":");
 			MainClient.view.setEtat(partieEtat[1]);
 			MainClient.view.actualiserChemin();
+		} else {
+			int emplacement = message.indexOf(":");
+			String chemin = message.substring(emplacement+1);
+			MainClient.setView(chemin);		
 		}
-		
-		
-		int emplacement = message.indexOf(":");
-		String chemin = message.substring(emplacement+1);
-		System.out.println(message + "      " + chemin);
-		MainClient.setView(chemin);
 	}
+	
+	
+	
+	public static void GestionMessageMusique(String message){
+		
+	}
+	
 	
 	
 

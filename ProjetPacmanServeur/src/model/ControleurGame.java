@@ -31,5 +31,11 @@ public class ControleurGame implements InterfaceControleur{
 	public void slider(int valeur) {
 		this.game.setNbToursSecondes(valeur);
 		
-	}	
+	}
+	
+	@Override
+	public void finJeu(){
+		game.setIsRunnin(false);
+		Bdd.sendScore(game.getIdentifiant(), game.getNbPoints());
+	}
 }

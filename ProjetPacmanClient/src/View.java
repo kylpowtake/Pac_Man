@@ -290,7 +290,8 @@ public class View{
 			@Override
 			public void stateChanged(ChangeEvent event) {
 				JSlider source = (JSlider) event.getSource();
-				//Envoyer valeur à serveur
+				int valeur = source.getValue();
+				ClientEmetteur.setMessage("slider:" + valeur);
 			}
 			
 		});	  
@@ -419,7 +420,6 @@ public class View{
 		});
 		
 		//changeMaze------------------------------------------
-		//Pas sur de le laisser
 		changeMaze.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evenement) {
 				JFileChooser chooser = new JFileChooser(); 
