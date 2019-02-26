@@ -29,7 +29,6 @@ public class View{
 	//attributs 
 	private Maze labyrinthe;
 	public JPanel jPanelMaze;
-	public Maze maze;
 	public ArrayList<String> allMazes = new ArrayList<>();
 	public ImageIcon iconLife;
 	public ImageIcon iconInvincible;
@@ -73,9 +72,8 @@ public class View{
 		this.chemin = chemin;
 		try {
 			System.out.println("apaapap      " + chemin);
-			this.maze = new Maze(chemin);
-			this.labyrinthe = maze;
-			this.createUserFrame(maze);		
+			this.labyrinthe = new Maze(chemin);
+			this.createUserFrame(labyrinthe);		
 		} catch (Exception e) {
 			System.out.println("icicicici nous passons pasooons");
 
@@ -88,9 +86,10 @@ public class View{
     /**
      * méthode pour rajouter de la musique au jeu 
      */
-    public void playSound(String path){
+    public static void playSound(String path){
     	try {
-		    File yourFile = new File(path);
+    		System.out.println("la musique ets  : " + path);
+    		File yourFile = new File(path);
 		    AudioInputStream stream;
 		    AudioFormat format;
 		    DataLine.Info info;
@@ -168,12 +167,12 @@ public class View{
 	
 	public void actualiserChemin(){
 		//On a gagné et on doit afficher le nouveau labyrinthe 
-		if(etat == "true"){
+		if(etat.equals("true")){
 			
 		} 
 		//On a perdu toutes nos vies et on doit rafficher le chemin de base	mais avant cela un peu de dark soul
 		else {
-			playSound("sounds/you_died.wav");
+			System.out.println("chemin    :    " + this.chemin);
 			ImageIcon icon2 = new ImageIcon("sounds/you_died.gif");
 			JFrame f = new JFrame();
 			JLabel l = new JLabel();
@@ -225,14 +224,6 @@ public class View{
 	 * méthode permettant de créer toutes les fenêtres 
 	 */
 	public void createUserFrame(Maze labyrinthe) {
-				
-		try {
-			maze = this.labyrinthe;
-
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		
 
 		
 		
@@ -348,7 +339,7 @@ public class View{
 		
 		
 		//les composants de la fenêtre du jeu 
-		jPanelMaze = new PanelPacmanGame(maze);
+		jPanelMaze = new PanelPacmanGame(this.labyrinthe);
 		panelTouches.addKeyListener(panelTouches);
 		panelTouches.setFocusable(true);
 		
@@ -442,6 +433,9 @@ public class View{
 	/*
 	 * Tous les getters et setters.
 	 */
+	public Maze getLabyrinthe(){
+		return this.labyrinthe;
+	}
 	public  void setFood(boolean foodt[][]){
 		food = foodt;
 		this.labyrinthe.food = foodt;
