@@ -1,3 +1,6 @@
+import java.awt.Desktop;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -5,7 +8,9 @@ public class GestionReceptionMessage {
 
 	public static void GestionMessageGlobal(String message){
 		System.out.println(message);
-		if(message.startsWith("chemin:")){
+		if(message.startsWith("connexion:")){
+			GestionMessageConnexion(message);
+		} else if(message.startsWith("chemin:")){
 			GestionMessageChemin(message);
 		} else if(message.startsWith("update;")) {
 			GestionMessageUpdate(message);
@@ -14,6 +19,25 @@ public class GestionReceptionMessage {
 		}
 	}
 	
+	
+
+
+
+	public static void openWebpage(String urlString) {
+		System.out.println(urlString);
+		try {
+			Desktop.getDesktop().browse(new URL(urlString).toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}	
+
+	public static void GestionMessageConnexion(String message){
+		int emplacement = message.indexOf(":") + 1;
+		String messageErreur = message.substring(emplacement);
+		MainClient.viewConnexion.setLabelResultat(messageErreur);
+		openWebpage(messageErreur);
+	}
 	public static void GestionMessageChemin(String message){
 		if(MainClient.viewConnexion.TestPresent()){
 			MainClient.viewConnexion.Close();
@@ -113,8 +137,7 @@ public class GestionReceptionMessage {
 			//Gestion de la miseà jour de food dans View.
 			GestionMAJFood(food);
 		} else {
-			System.out.println("Il n'y a pas assez de parties dans le message, il en faut deux en tout : on est mal là");
-			System.exit(1);
+			GestionMAJFood(food);			
 		}
 	}
 	
@@ -169,8 +192,7 @@ public class GestionReceptionMessage {
 			//Gestion de la miseà jour de capsule dans View.
 			GestionMAJCapsule(capsule);
 		} else {
-			System.out.println("Il n'y a pas assez de parties dans le message, il en faut deux en tout : on est mal là");
-			System.exit(1);
+			GestionMAJCapsule(capsule);
 		}
 	}
 	
