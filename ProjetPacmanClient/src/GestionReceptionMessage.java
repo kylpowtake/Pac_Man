@@ -14,8 +14,10 @@ public class GestionReceptionMessage {
 			GestionMessageChemin(message);
 		} else if(message.startsWith("update;")) {
 			GestionMessageUpdate(message);
+		} else if(message.startsWith("musique:")){
+			GestionMessageMusique(message);
 		} else {
-			System.out.println("Message reçu non traitable");
+			System.out.println("Message reçu non traitable :    " + message);
 		}
 	}
 	
@@ -38,6 +40,9 @@ public class GestionReceptionMessage {
 		MainClient.viewConnexion.setLabelResultat(messageErreur);
 		openWebpage(messageErreur);
 	}
+	
+	
+	
 	public static void GestionMessageChemin(String message){
 		if(MainClient.viewConnexion.TestPresent()){
 			MainClient.viewConnexion.Close();
@@ -49,14 +54,20 @@ public class GestionReceptionMessage {
 			String[] partieEtat = partieMessageMajeurs[1].split(":");
 			MainClient.view.setEtat(partieEtat[1]);
 			MainClient.view.actualiserChemin();
+		} else {
+			int emplacement = message.indexOf(":");
+			String chemin = message.substring(emplacement+1);
+			MainClient.setView(chemin);		
 		}
-		
-		
-		int emplacement = message.indexOf(":");
-		String chemin = message.substring(emplacement+1);
-		System.out.println(message + "      " + chemin);
-		MainClient.setView(chemin);
 	}
+	
+	
+	
+	public static void GestionMessageMusique(String message){
+		String[] parties = message.split(":");
+		View.playSound(parties[1]);
+	}
+	
 	
 	
 
@@ -73,7 +84,7 @@ public class GestionReceptionMessage {
 			System.exit(1);
 		}
 		//On s'assure qu'il y a assez de partie dans le message.
-		if(partiesMessageMajeurs.length == 10){
+		if(partiesMessageMajeurs.length == 9){
 			//On s'occupe des différentes parties une par une.
 			//L'ordre est : food, invincible, agent, score, vie, nbtours, nomterrain, musique, etat.
 			//On s'occupe de food.
@@ -91,13 +102,11 @@ public class GestionReceptionMessage {
 			GestionPartieMessageTours(partiesMessageMajeurs[7]);
 
 			GestionPartieMessageChemin(partiesMessageMajeurs[8]);
-
-			GestionPartieMessageMusique(partiesMessageMajeurs[9]);
 			
 			MainClient.view.actualiser();
 			
 		} else {
-			System.out.println("Il n'y a pas assez de parties dans le message, il en faut dix en tout : on est mal là : " + partiesMessageMajeurs.length);
+			System.out.println("Il n'y a pas assez de parties dans le message, il en faut 9 en tout : on est mal là : " + partiesMessageMajeurs.length);
 			System.exit(1);
 		}
 		
@@ -143,7 +152,8 @@ public class GestionReceptionMessage {
 	
 	//Met à jour food
 	public static void GestionMAJFood(ArrayList<int[]> food){
-		boolean[][] foodtemp = 	new boolean[MainClient.view.maze.getSizeX()][MainClient.view.maze.getSizeY()];
+		boolean[][] foodtemp = 	new boolean[MainClient.view.getLabyrinthe().getSizeX()][MainClient.view.getLabyrinthe().getSizeY()];
+		System.out.println("x est :   " + MainClient.view.getLabyrinthe().getSizeX() + "  et y est :   " + MainClient.view.getLabyrinthe().getSizeY());
 		for(int i = 0; i <foodtemp.length; i++){
 			for(int j = 0; j < foodtemp[i].length; j++){
 				foodtemp[i][j] = false;
@@ -198,7 +208,7 @@ public class GestionReceptionMessage {
 	
 	//Met à jour capsule
 	public static void GestionMAJCapsule(ArrayList<int[]> capsule){
-		boolean[][] capsuletemp = 	new boolean[MainClient.view.maze.getSizeX()][MainClient.view.maze.getSizeY()];
+		boolean[][] capsuletemp = 	new boolean[MainClient.view.getLabyrinthe().getSizeX()][MainClient.view.getLabyrinthe().getSizeY()];
 		for(int i = 0; i <capsuletemp.length; i++){
 			for(int j = 0; j < capsuletemp[i].length; j++){
 				capsuletemp[i][j] = false;
@@ -423,36 +433,7 @@ public class GestionReceptionMessage {
 	public static void GestionMAJChemin(String chemin){
 		MainClient.view.setChemin(chemin);
 	}
-	
-	
-	//Gère la musique
-	public static void GestionPartieMessageMusique(String musique_string){
-		//Contient le string musique et le string avec sa valeur.
-		String messagePartieLegereSeparation[] = null;
-		//On s'assure que le message contient un :
-		if(musique_string.contains(":")){
-			//On sépare le string avec  :  comme séparateur et qu'on met dans partiesMessageMajeurs[].
-			messagePartieLegereSeparation = musique_string.split(":");
-		} else {
-			System.out.println("Il n'y a pas de séparateur :  :    On est mal là.");
-			System.exit(1);
-		}
-		//On s'assure qu'il y a assez de partie dans le message.
-		if(messagePartieLegereSeparation.length == 2){
-			//Il n'y a qu'une valeur pour musique
-			GestionMAJMusique(messagePartieLegereSeparation[1]);
-			//Gestion de la mise à jour de musique dans View.
-		} else {
-			System.out.println("Il n'y a pas assez de parties dans le message, il en faut deux en tout : on est mal là.");
-			System.exit(1);
-		}
-	}
 
-	//Met à jour la musique
-	public static void GestionMAJMusique(String musique){
-		MainClient.view.setMusique(musique);
-	}
-	
 	
 	//Gère etat
 	public static void GestionPartieMessageEtat(String etat_string){
