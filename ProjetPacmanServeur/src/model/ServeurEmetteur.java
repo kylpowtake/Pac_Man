@@ -8,13 +8,13 @@ public class ServeurEmetteur extends Thread {
 	
 	static Socket clientSocket;
 	static PrintWriter sortie;
-	Game game;
+	static Game game;
 	
 	
 	//constructeur 
-	public ServeurEmetteur(Socket so,Game game){
+	public ServeurEmetteur(Socket so){
 		clientSocket = so;
-		this.game = game;
+		//this.game = game;
 		try {
 		    sortie = new PrintWriter(clientSocket.getOutputStream(),true);
 		} catch (IOException e) {
@@ -22,25 +22,21 @@ public class ServeurEmetteur extends Thread {
 		} 
 	}
 	
-	public static void test(String chaine){
+	
+	public static void sendMessage(String chaine){
 		sortie.println(chaine);
 	}
 	
 	
 	public void run(){
 		while(true){
-			
-			//System.out.print("a retirer probleme de flush\n");
-			if(game.isRunning == true && game.NbTours < game.NbToursMax){
+			if(game.getIsRunning() == true){
 				try {
-					Thread.sleep(1000/game.NbToursSecondes);
+					Thread.sleep(1000/game.getNbTours());
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				game.takeTurn();
-			}
-			if(game.NbTours >= game.NbToursMax){
-				System.out.println("fin du jeu");
 			}
 			sortie.flush();
 		}

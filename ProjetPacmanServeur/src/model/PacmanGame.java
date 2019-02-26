@@ -37,6 +37,7 @@ public class PacmanGame extends Game{
 		fantomes = new ArrayList<Agent>();
 		pacmans = new ArrayList<Agent>();
 		
+		
 		this.labyrinthe = labyrinthe;
 		this.RechargementAgents();
 	}		
@@ -138,8 +139,8 @@ public class PacmanGame extends Game{
 		}
 				
 		gameOver();
-		this.NbTours += 1 ;
-		ServeurEmetteur.test(this.toString());
+		this.setNbTours(this.getNbTours()+1);
+		ServeurEmetteur.sendMessage(this.toString());
 		
 		
 	}
@@ -287,7 +288,7 @@ public class PacmanGame extends Game{
 						i--;
 						isAlivePacman = false;
 						this.setNbies(this.getNbVies()-1);
-						ServeurEmetteur.test("musique:sounds/pacman_death.wav;");
+						ServeurEmetteur.sendMessage("musique:sounds/pacman_death.wav;");
 					}
 				}
 				if(isAlivePacman == true && this.getIsInvincible() == true){
@@ -296,7 +297,7 @@ public class PacmanGame extends Game{
 						this.getLabyrinthe().getGhosts_start().remove(j);
 						j--;
 						this.setNbPoints(this.getNbPoints()+10);
-						ServeurEmetteur.test("musique:sounds/ghost_death.wav;");
+						ServeurEmetteur.sendMessage("musique:sounds/ghost_death.wav;");
 					}
 					
 				}
@@ -311,6 +312,7 @@ public class PacmanGame extends Game{
     public String levelUp(){
 		int rnd = new Random().nextInt(this.allMazes.size());
 		String map = this.allMazes.get(rnd);
+		this.actualiser(map);
 		this.allMazes.remove(rnd);
 		return map;
 	}
@@ -323,20 +325,22 @@ public class PacmanGame extends Game{
      */
     public void gameOver(){
     	
-    	
     	//cas ou il n'y a plus de pacmans jouables 
     	//ou le joueur n'a plus de vies 
     	//(défaite)
     	if(getNbVies()<=0){
-    		this.stop();																//jeu en pause 
-    		ServeurEmetteur.test("chemin"+"layouts/capsuleClassic.lay"+";etat:false");	//chargement d'un nouveau labyrinthe 
+    		this.stop();																		//jeu en pause 
+    		ServeurEmetteur.sendMessage("chemin"+"layouts/capsuleClassic.lay"+";etat:false");	//chargement d'un nouveau labyrinthe 
+    		Bdd.sendScore(this.getIdentifiant(),this.getNbPoints());							//envoi du score 
+    		this.setNbPoints(0);																//remise du score à 0;
+    		this.setNbies(3);
     	}
 
     	
-    	//cas ou perd une vies (pas de pause)
-    	if(this.getNbVies() < nbViesTemp){
-    		nbViesTemp = this.getNbVies();
-    		System.out.print("ttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+    	//cas ou une vie est perdue
+    	//sauvegrde de l'etat actuel du labyrinthe 
+    	if(this.getNbVies() < this.getNbVies()){
+    		this.setNbiesTemp(this.getNbVies());
 			boolean savedFood[][] = this.getLabyrinthe().getFood();
 			try {
 				labyrinthe = new Maze(this.getChemin());
@@ -344,10 +348,8 @@ public class PacmanGame extends Game{
 				RechargementAgents();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-    		
+			}	
     	}
-    	
     	
     	//test pour savoir si il reste des capsule dans le labyrinthe 
     	boolean noCapsuleFound = true;
@@ -359,8 +361,9 @@ public class PacmanGame extends Game{
     	
     	//cas ou il n'y a plus de capsules dans le labyrinthe (victoire)
     	if(noCapsuleFound == true){
-    		ServeurEmetteur.test("sounds/next_level.wav");				//envoi du sound de victoire 
-    		ServeurEmetteur.test(this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe			
+    		ServeurEmetteur.sendMessage("musique:sounds/next_level.wav");				//envoi du sound de victoire 
+    		ServeurEmetteur.sendMessage("chemin:"+this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe		
+    		
     	}
     }
     

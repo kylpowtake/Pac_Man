@@ -8,14 +8,13 @@ public class ControleurGame implements InterfaceControleur{
 		this.game = game;
     }
 	
+	public Game getGame(){
+		return this.game;
+	}
+	
 	@Override
 	public void start(){
 		this.game.play();
-    }
-	
-	@Override
-    public void restart(){
-		this.game.init();    	
     }
 	
 	@Override
@@ -28,7 +27,9 @@ public class ControleurGame implements InterfaceControleur{
 		this. game.changement(chemin);
 	}
 
-	public Game getGame(){
-		return this.game;
-	}
+	@Override
+	public void slider(int valeur) {
+		this.game.setNbToursSecondes(valeur);
+		
+	}	
 }

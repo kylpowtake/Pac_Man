@@ -8,19 +8,18 @@ import Comportement.EnumComportement;
 
 public abstract class Game{
 
-	public ArrayList<String> allMazes = new ArrayList<>();
+	public ArrayList<String> allMazes = new ArrayList<>();	//contient la liste de tous les labyrinthes disponibles 
 	public Thread thread; 
-	public boolean isRunning = false;		//par defaut a false, le client le met a true des qu'il lance une partie 
-	public boolean isInvincible;
-	public int NbToursSecondes = 2;	
-	public int nbViesTemp = 3;
-	public int NbTours = 0;					//tour actuel 
-	public int NbToursMax = 100000000;		//nombre de tours max  
-	public int NbPoints = 0;
-	public int NbVies = 3;
-	public String chemin;
-	public Maze labyrinthe;
-	public int tourInvincible; 				//Nombre de tours restant d'invincibilité pour les pacmans.
+	private boolean isRunning = false;						//definit l'etat du jeu(play,stop) par defaut a false(stop), le client le met à true(play) dès qu'il lance une partie 
+	private boolean isInvincible;							//définit l'etat du pacman 	
+	private int NbToursSecondes = 2;						//definit la vitesse de jeu désirée par le joueur (pas implémenté pour l'instant)
+	private int NbTours = 0;								//tour actuel de jeu 
+	private int NbPoints = 0;								//nombre de point sur une partie 
+	private int NbVies,NbViesTemp = 3;						//le nombre de vies du joueur 
+	private String chemin;									//le chemin du labyrinthe 
+	public Maze labyrinthe;									//le labyrinthe 
+	private int tourInvincible; 							//Nombre de tours restant d'invincibilité pour les pacmans.
+	private int identifiant;								//l'identifiant du joueur avec lequel il s'est connecté 
 
 	//Liste des agents 
 	public ArrayList<Agent> fantomes;
@@ -32,6 +31,10 @@ public abstract class Game{
 	
 	
 	//getteurs/setteurs 
+	public int getIdentifiant(){return this.identifiant;}
+	public void setIdentifiant(int id){this.identifiant = id;}
+	
+	
 	public boolean getIsRunning(){return this.isRunning;}
 	public void setIsRunnin(boolean etat){this.isRunning = etat;}
 	
@@ -44,23 +47,21 @@ public abstract class Game{
 	public int getNbTours(){return this.NbTours;}
 	public void setNbTours(int nb){this.NbTours = nb;}
 	
-	public int getNbToursMax(){return this.NbToursMax;}
-	public void setNbToursMax(int nb){this.NbToursMax = nb;}
-	
 	public int getNbPoints(){return this.NbPoints;}
 	public void setNbPoints(int nb){this.NbPoints = nb;}
 	
 	public int getNbVies(){return this.NbVies;}
 	public void setNbies(int nb){this.NbVies = nb;}
 	
+	public int getNbViesTemp(){return this.NbViesTemp;}
+	public void setNbiesTemp(int nb){this.NbViesTemp = nb;}
+	
 	public String getChemin(){return this.chemin;}
 	public void setChemin(String chemin){this.chemin = chemin;}
 	
 	public Maze getLabyrinthe(){return this.labyrinthe;}
-	public void setLabyrinthe(Maze labyrinthe){
-		System.out.println("Dans le set de labyrinthe : ");
-		this.labyrinthe = labyrinthe;
-	}
+	public void setLabyrinthe(Maze labyrinthe){this.labyrinthe = labyrinthe;}
+	
 	public int getTourInvincible(){return this.tourInvincible;}
 	public void setTourInvincible(int tourInvincible){this.tourInvincible = tourInvincible;}
 	
@@ -73,6 +74,7 @@ public abstract class Game{
 		this.NbTours = 0;
 		this.chemin = chemin;
 	}
+	
 	
 	
 	
@@ -89,10 +91,11 @@ public abstract class Game{
     			}
     		}
     	}
-		if(chaine.endsWith(","))
-		{
+		if(chaine.endsWith(",")){
 		  chaine = chaine.substring(0,chaine.length() - 1);
 		  chaine += ";";
+		}else if(chaine.endsWith(":")){
+			chaine += ";";
 		}
 		chaine += "capsule:";
 		for(int i = 0; i< this.getLabyrinthe().getSizeX(); i++){
@@ -106,6 +109,8 @@ public abstract class Game{
 		{
 		  chaine = chaine.substring(0,chaine.length() - 1);
 		  chaine += ";";
+		}else if(chaine.endsWith(":")){
+			chaine += ";";
 		}
 		chaine += "invincible:" + this.isInvincible +";";
 		chaine += "agent:";

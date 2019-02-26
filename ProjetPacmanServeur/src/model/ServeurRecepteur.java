@@ -4,23 +4,22 @@ import java.net.*;
 import java.io.*;
 
 public class ServeurRecepteur extends Thread {
-	Socket clientSocket;
+	static Socket clientSocket;
 	static ControleurGame controleur;
 	
+	
 	//constructeur 
-	public ServeurRecepteur(Socket so,ControleurGame controleur){
-		this.clientSocket = so;
-		ServeurRecepteur.controleur = controleur;
+	public ServeurRecepteur(Socket so){
+		clientSocket = so;
 	}
 	
 	/**
 	 * @param chaine
 	 * traite la chaine envoyée par le client 
-	 * en fonction de si c'est une direction ou une commande 
+	 * en fonction de si c'est une direction, une commande ou une demande de connexion  
 	 */
 	static public void traiter(String chaine){
 		String[] parts = chaine.split(":");
-		System.out.print("message : "+ chaine);
 		//la direction que le joueur envoi(haut,bas,gauche,droite)
 		if(parts[0].equals("direction")){	
 			switch(parts[1]){
@@ -40,20 +39,30 @@ public class ServeurRecepteur extends Thread {
 				controleur.getGame().pacmans.get(0).setNextAction(4);
 				break;
 			}
+		}else if(parts[0].equals("pseudo")){		
+			 String[] parts2 = parts[1].split(";");
+			 String pseudo = parts2[0];
+			 String mdp = parts[2];
+			 int identifiant = Bdd.connect(pseudo, mdp);
+			 if(identifiant!=-1){
+				 MainServeur.setGame(clientSocket,identifiant);
+			 }else{
+				 MainServeur.setEmetteur(clientSocket);
+				 ServeurEmetteur.sendMessage("connexion:http://localhost:8080/pro/connexion");
+			 }
+ 
 		}
-		//la commande que le joueur envoi(init,play,step,pause,changement)
+		//la commande que le joueur envoi(play,pause,slider,changement)
 		else{								
 			switch(parts[1]){
-			case "init" :
-				controleur.restart();
-				break;
 			case "play" :
 				controleur.start();
 				break;
-			case "step" :
-				break;
 			case "pause" :
 				controleur.pause();
+				break;
+			case "slider":
+				controleur.slider(Integer.parseInt(parts[1]));
 				break;
 			default :
 				controleur.changement(parts[1]);
