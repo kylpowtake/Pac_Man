@@ -5,9 +5,8 @@ import java.sql.Timestamp;
 public class Utilisateur {
 
     private Long      id;
-    private String    email;
     private String    motDePasse;
-    private String    nom;
+    private String    pseudo;
     private Timestamp dateInscription;
 
     public Long getId() {
@@ -17,13 +16,6 @@ public class Utilisateur {
         this.id = id;
     }
 
-    public void setEmail( String email ) {
-        this.email = email;
-    }
-    public String getEmail() {
-        return email;
-    }
-
     public void setMotDePasse( String motDePasse ) {
         this.motDePasse = motDePasse;
     }
@@ -31,11 +23,11 @@ public class Utilisateur {
         return motDePasse;
     }
 
-    public void setNom( String nom ) {
-        this.nom = nom;
+    public void setPseudo( String pseudo ) {
+        this.pseudo = pseudo;
     }
-    public String getNom() {
-        return nom;
+    public String getPseudo() {
+        return pseudo;
     }
 
     public Timestamp getDateInscription() {

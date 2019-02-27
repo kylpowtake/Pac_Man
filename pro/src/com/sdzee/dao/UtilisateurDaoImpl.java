@@ -12,8 +12,8 @@ import com.sdzee.beans.Utilisateur;
 
 public class UtilisateurDaoImpl implements UtilisateurDao {
 
-    private static final String SQL_SELECT_PAR_EMAIL = "SELECT id, email, nom, mot_de_passe, date_inscription FROM Utilisateur WHERE email = ?";
-    private static final String SQL_INSERT           = "INSERT INTO Utilisateur (email, mot_de_passe, nom, date_inscription) VALUES (?, ?, ?, NOW())";
+    private static final String SQL_SELECT_PAR_PSEUDO = "SELECT id, pseudo, mot_de_passe, date_inscription FROM Utilisateur WHERE pseudo = ?";
+    private static final String SQL_INSERT           = "INSERT INTO Utilisateur (pseudo, mot_de_passe, date_inscription) VALUES (?, ?, NOW())";
 
     private DAOFactory          daoFactory;
 
@@ -23,8 +23,8 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 
     /* Implémentation de la méthode définie dans l'interface UtilisateurDao */
     @Override
-    public Utilisateur trouver( String email ) throws DAOException {
-        return trouver( SQL_SELECT_PAR_EMAIL, email );
+    public Utilisateur trouver( String pseudo ) throws DAOException {
+        return trouver( SQL_SELECT_PAR_PSEUDO, pseudo );
     }
 
     /* Implémentation de la méthode définie dans l'interface UtilisateurDao */
@@ -36,10 +36,10 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 
         try {
             connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, utilisateur.getEmail(), utilisateur.getMotDePasse(), utilisateur.getNom() );
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, utilisateur.getPseudo(), utilisateur.getMotDePasse());
             int statut = preparedStatement.executeUpdate();
             if ( statut == 0 ) {
-                throw new DAOException( "Échec de la création de l'utilisateur, aucfligne ajoutée dans la table." );
+                throw new DAOException( "Échec de la création de l'utilisateur, aucune ligne ajoutée dans la table." );
             }
             valeursAutoGenerees = preparedStatement.getGeneratedKeys();
             if ( valeursAutoGenerees.next() ) {
@@ -95,9 +95,8 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     private static Utilisateur map( ResultSet resultSet ) throws SQLException {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setId( resultSet.getLong( "id" ) );
-        utilisateur.setEmail( resultSet.getString( "email" ) );
+        utilisateur.setPseudo( resultSet.getString( "pseudo" ) );
         utilisateur.setMotDePasse( resultSet.getString( "mot_de_passe" ) );
-        utilisateur.setNom( resultSet.getString( "nom" ) );
         utilisateur.setDateInscription( resultSet.getTimestamp( "date_inscription" ) );
         return utilisateur;
     }

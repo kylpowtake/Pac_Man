@@ -9,7 +9,7 @@ import com.sdzee.beans.Utilisateur;
 
 public final class ConnexionForm {
 	
-    private static final String CHAMP_EMAIL  = "email";
+    private static final String CHAMP_PSEUDO= "pseudo";
     private static final String CHAMP_PASS   = "motdepasse";
 
     private String resultat;
@@ -25,18 +25,18 @@ public final class ConnexionForm {
 
     public Utilisateur connecterUtilisateur( HttpServletRequest request ) {
         /* Récupération des champs du formulaire */
-        String email = getValeurChamp( request, CHAMP_EMAIL );
+        String pseudo = getValeurChamp( request, CHAMP_PSEUDO );
         String motDePasse = getValeurChamp( request, CHAMP_PASS );
 
         Utilisateur utilisateur = new Utilisateur();
 
-        /* Validation du champ email. */
+        /* Validation du champ pseudo. */
         try {
-            validationEmail( email );
+            validationPseudo( pseudo );
         } catch ( Exception e ) {
-            setErreur( CHAMP_EMAIL, e.getMessage() );
+            setErreur( CHAMP_PSEUDO, e.getMessage() );
         }
-        utilisateur.setEmail( email );
+        utilisateur.setPseudo( pseudo );
 
         /* Validation du champ mot de passe. */
         try {
@@ -57,12 +57,9 @@ public final class ConnexionForm {
     }
 
     /**
-     * Valide l'adresse email saisie.
+     * Valide le pseudo saisie.
      */
-    private void validationEmail( String email ) throws Exception {
-        if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-            throw new Exception( "Merci de saisir une adresse mail valide." );
-        }
+    private void validationPseudo( String pseudo ) throws Exception {
     }
 
     /**

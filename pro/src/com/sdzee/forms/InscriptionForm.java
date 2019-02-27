@@ -12,10 +12,9 @@ import com.sdzee.dao.DAOException;
 import com.sdzee.dao.UtilisateurDao;
 
 public final class InscriptionForm {
-    private static final String CHAMP_EMAIL      = "email";
+    private static final String CHAMP_PSEUDO      = "pseudo";
     private static final String CHAMP_PASS       = "motdepasse";
     private static final String CHAMP_CONF       = "confirmation";
-    private static final String CHAMP_NOM        = "nom";
 
     private static final String ALGO_CHIFFREMENT = "SHA-256";
 
@@ -36,16 +35,14 @@ public final class InscriptionForm {
     }
 
     public Utilisateur inscrireUtilisateur( HttpServletRequest request ) {
-        String email = getValeurChamp( request, CHAMP_EMAIL );
+        String pseudo = getValeurChamp( request, CHAMP_PSEUDO );
         String motDePasse = getValeurChamp( request, CHAMP_PASS );
         String confirmation = getValeurChamp( request, CHAMP_CONF );
-        String nom = getValeurChamp( request, CHAMP_NOM );
 
         Utilisateur utilisateur = new Utilisateur();
         try {
-            traiterEmail( email, utilisateur );
+            traiterPseudo( pseudo, utilisateur );
             traiterMotsDePasse( motDePasse, confirmation, utilisateur );
-            traiterNom( nom, utilisateur );
             if ( erreurs.isEmpty() ) {
                 utilisateurDao.creer( utilisateur );
                 resultat = "Succès de l'inscription.";
@@ -61,16 +58,16 @@ public final class InscriptionForm {
     }
 
     /*
-     * Appel à la validation de l'adresse email reçue et initialisation de la
-     * propriété email du bean
+     * Appel à la validation du pseudo reçue et initialisation de la
+     * propriété pseudo du bean
      */
-    private void traiterEmail( String email, Utilisateur utilisateur ) {
+    private void traiterPseudo( String pseudo, Utilisateur utilisateur ) {
         try {
-            validationEmail( email );
+            validationPseudo( pseudo );
         } catch ( FormValidationException e ) {
-            setErreur( CHAMP_EMAIL, e.getMessage() );
+            setErreur( CHAMP_PSEUDO, e.getMessage() );
         }
-        utilisateur.setEmail( email );
+        utilisateur.setPseudo( pseudo );
     }
 
     /*
@@ -102,29 +99,14 @@ public final class InscriptionForm {
         utilisateur.setMotDePasse( motDePasseChiffre );
     }
 
-    /*
-     * Appel à la validation du nom reçu et initialisation de la propriété nom
-     * du bean
-     */
-    private void traiterNom( String nom, Utilisateur utilisateur ) {
-        try {
-            validationNom( nom );
-        } catch ( FormValidationException e ) {
-            setErreur( CHAMP_NOM, e.getMessage() );
-        }
-        utilisateur.setNom( nom );
-    }
-
-    /* Validation de l'adresse email */
-    private void validationEmail( String email ) throws FormValidationException {
-        if ( email != null ) {
-            if ( !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
-                throw new FormValidationException( "Merci de saisir une adresse mail valide." );
-            } else if ( utilisateurDao.trouver( email ) != null ) {
+    /* Validation du pseudo */
+    private void validationPseudo( String pseudo ) throws FormValidationException {
+        if ( pseudo != null && pseudo.length() >= 3) {
+            if ( utilisateurDao.trouver( pseudo ) != null ) {
                 throw new FormValidationException( "Cette adresse email est déjà utilisée, merci d'en choisir une autre." );
             }
         } else {
-            throw new FormValidationException( "Merci de saisir une adresse mail." );
+            throw new FormValidationException( "Le pseudo doit faire au moins trois caractères" );
         }
     }
 
@@ -138,13 +120,6 @@ public final class InscriptionForm {
             }
         } else {
             throw new FormValidationException( "Merci de saisir et confirmer votre mot de passe." );
-        }
-    }
-
-    /* Validation du nom */
-    private void validationNom( String nom ) throws FormValidationException {
-        if ( nom != null && nom.length() < 3 ) {
-            throw new FormValidationException( "Le nom d'utilisateur doit contenir au moins 3 caractères." );
         }
     }
 
