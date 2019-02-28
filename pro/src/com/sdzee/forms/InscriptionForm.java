@@ -12,7 +12,7 @@ import com.sdzee.dao.DAOException;
 import com.sdzee.dao.UtilisateurDao;
 
 public final class InscriptionForm {
-    private static final String CHAMP_PSEUDO      = "pseudo";
+    private static final String CHAMP_PSEUDO     = "pseudo";
     private static final String CHAMP_PASS       = "motdepasse";
     private static final String CHAMP_CONF       = "confirmation";
 
@@ -44,7 +44,7 @@ public final class InscriptionForm {
             traiterPseudo( pseudo, utilisateur );
             traiterMotsDePasse( motDePasse, confirmation, utilisateur );
             if ( erreurs.isEmpty() ) {
-                utilisateurDao.creer( utilisateur );
+                utilisateurDao.CreerUtilisateur( utilisateur );
                 resultat = "Succès de l'inscription.";
             } else {
                 resultat = "Échec de l'inscription.";
@@ -91,19 +91,22 @@ public final class InscriptionForm {
          * 
          * La String retournée est de longueur 56 et contient le hash en Base64.
          */
+        System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n" + motDePasse);
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
         passwordEncryptor.setPlainDigest( false );
         String motDePasseChiffre = passwordEncryptor.encryptPassword( motDePasse );
 
         utilisateur.setMotDePasse( motDePasseChiffre );
+        System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n" + utilisateur.getMotDePasse() + "   " + utilisateur.getMotDePasse().length());
+
     }
 
     /* Validation du pseudo */
     private void validationPseudo( String pseudo ) throws FormValidationException {
         if ( pseudo != null && pseudo.length() >= 3) {
-            if ( utilisateurDao.trouver( pseudo ) != null ) {
-                throw new FormValidationException( "Cette adresse email est déjà utilisée, merci d'en choisir une autre." );
+            if ( utilisateurDao.TrouverUtilisateur( pseudo ) != null ) {
+                throw new FormValidationException( "Ce pseudo est déjà utilisé, merci d'en choisir un autre." );
             }
         } else {
             throw new FormValidationException( "Le pseudo doit faire au moins trois caractères" );

@@ -1,104 +1,118 @@
 package com.sdzee.dao;
 
-import static com.sdzee.dao.DAOUtilitaire.fermeturesSilencieuses;
-import static com.sdzee.dao.DAOUtilitaire.initialisationRequetePreparee;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import com.sdzee.beans.Utilisateur;
 
 public class UtilisateurDaoImpl implements UtilisateurDao {
 
-    private static final String SQL_SELECT_PAR_PSEUDO = "SELECT id, pseudo, mot_de_passe, date_inscription FROM Utilisateur WHERE pseudo = ?";
-    private static final String SQL_INSERT           = "INSERT INTO Utilisateur (pseudo, mot_de_passe, date_inscription) VALUES (?, ?, NOW())";
-
-    private DAOFactory          daoFactory;
-
-    UtilisateurDaoImpl( DAOFactory daoFactory ) {
-        this.daoFactory = daoFactory;
+    UtilisateurDaoImpl() {
     }
 
-    /* Implémentation de la méthode définie dans l'interface UtilisateurDao */
+    /**
+     * Permet de trouver un utilisateur dans la base de données Pacman dans la table Utilisateur selon le pseudo donnée.
+     * @param pseudo : Pseudo de l'utilisateur recherché.
+     * @return Utilisateur : L'utilisateur recherché.
+	 * @throws DAOException : L'exception pouvant être renvoyée.
+     */
     @Override
-    public Utilisateur trouver( String pseudo ) throws DAOException {
-        return trouver( SQL_SELECT_PAR_PSEUDO, pseudo );
-    }
-
-    /* Implémentation de la méthode définie dans l'interface UtilisateurDao */
-    @Override
-    public void creer( Utilisateur utilisateur ) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet valeursAutoGenerees = null;
-
-        try {
-            connexion = daoFactory.getConnection();
-            preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, utilisateur.getPseudo(), utilisateur.getMotDePasse());
-            int statut = preparedStatement.executeUpdate();
-            if ( statut == 0 ) {
-                throw new DAOException( "Échec de la création de l'utilisateur, aucune ligne ajoutée dans la table." );
-            }
-            valeursAutoGenerees = preparedStatement.getGeneratedKeys();
-            if ( valeursAutoGenerees.next() ) {
-                utilisateur.setId( valeursAutoGenerees.getLong( 1 ) );
-            } else {
-                throw new DAOException( "Échec de la création de l'utilisateur en base, aucun ID auto-généré retourné." );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        } finally {
-            fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+    public Utilisateur TrouverUtilisateur( String pseudo ) throws DAOException {
+    	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
+    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
+    	//Ouvre la session.
+    	Session session = sessionFactory.openSession();
+    	//Commence la transaction.
+    	session.beginTransaction();
+    	//initialise l'id de 'lutilisateur.
+    	//Si le pseudo n'est as dans la table l'id restera -1 sinon on le changera pour celui de l'utilisateur trouvé..
+    	long id = -1;
+    	//On prend la liste des utilisateurs dans la table.
+        List utilisateurs = session.createQuery("FROM Utilisateur").list(); 
+        //Pour chacun de ces utilisateurs : 
+        for (Iterator iterator = utilisateurs.iterator(); iterator.hasNext();){        	
+        	Utilisateur utilisateur = (Utilisateur) iterator.next(); 
+        	//On test si c'est le bon utilisateur.
+        	if(utilisateur.getPseudo().equals(pseudo)) {
+        		//Si c'est le bon, on change la valeur de id à l'id de l'utilisateur.
+        		id =  utilisateur.getId();
+        	}
+        }
+        if(id != -1) {
+        	//Si le pseudo a étté trouvé dans la table.
+        	//Cherche l'utilisateur dans le tableau Utilisateur selon l'id donnée.
+        	Utilisateur utilisateur = session.get(Utilisateur.class, id);
+        	//Applique la transaction.
+        	session.getTransaction().commit();
+            //Ferme la session.
+        	session.close();
+        	//Retourne l'utilisateur trouvé.
+        	return utilisateur;
+        } else {
+        	//si le pseudo n'a pas été trouvé dans la table.
+            Utilisateur utilisateur = null;
+        	//Applique la transaction.
+        	session.getTransaction().commit();
+            //Ferme la session.
+        	session.close();
+        	//Retourne un utilisateur null car il n'a pas été trouvé.
+        	return utilisateur;
         }
     }
 
-    /*
-     * Méthode générique utilisée pour retourner un utilisateur depuis la base
-     * de données, correspondant à la requête SQL donnée prenant en paramètres
-     * les objets passés en argument.
+    
+    /**
+     * Permet de trouver un utilisateur dans la base de données Pacman dans la table Utilisateur selon l'id donnée.
+     * @param id : id de l'utilisateur recherché.
+     * @return Utilisateur : L'utilisateur recherché.
+	 * @throws DAOException : L'exception pouvant être renvoyée.
      */
-    private Utilisateur trouver( String sql, Object... objets ) throws DAOException {
-        Connection connexion = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-        Utilisateur utilisateur = null;
-
-        try {
-            /* Récupération d'une connexion depuis la Factory */
-            connexion = daoFactory.getConnection();
-            /*
-             * Préparation de la requête avec les objets passés en arguments
-             * (ici, uniquement une adresse email) et exécution.
-             */
-            preparedStatement = initialisationRequetePreparee( connexion, sql, false, objets );
-            resultSet = preparedStatement.executeQuery();
-            /* Parcours de la ligne de données retournée dans le ResultSet */
-            if ( resultSet.next() ) {
-                utilisateur = map( resultSet );
-            }
-        } catch ( SQLException e ) {
-            throw new DAOException( e );
-        } finally {
-            fermeturesSilencieuses( resultSet, preparedStatement, connexion );
-        }
-
+    @Override
+    public Utilisateur TrouverUtilisateur(long id) throws DAOException {
+    	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
+    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
+    	//Ouvre la session.
+    	Session session = sessionFactory.openSession();
+    	//Commence la transaction.
+    	session.beginTransaction();
+    	//Cherche l'utilisateur dans le tableau Utilisateur selon l'id donnée.
+        Utilisateur utilisateur = session.get(Utilisateur.class, id);
+    	//Applique la transaction.
+        session.getTransaction().commit();
+        //Ferme la session.
+        session.close();
+    	//Retourne l'utilisateur trouvé.
         return utilisateur;
     }
-
-    /*
-     * Simple méthode utilitaire permettant de faire la correspondance (le
-     * mapping) entre une ligne issue de la table des utilisateurs (un
-     * ResultSet) et un bean Utilisateur.
-     */
-    private static Utilisateur map( ResultSet resultSet ) throws SQLException {
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setId( resultSet.getLong( "id" ) );
-        utilisateur.setPseudo( resultSet.getString( "pseudo" ) );
-        utilisateur.setMotDePasse( resultSet.getString( "mot_de_passe" ) );
-        utilisateur.setDateInscription( resultSet.getTimestamp( "date_inscription" ) );
-        return utilisateur;
+    
+    
+	/**
+	 * Permet de créer un nouveau utilisateur en l'ajoutant à la base de données Pacman dans la table Utilisateur.
+	 * @param utilisateur : nouveau utilisateur à ajouter à la table Utilisteur.
+	 * @throws DAOException : L'exception pouvant être renvoyée.
+	 */
+    @Override
+    public void CreerUtilisateur( Utilisateur utilisateur ) throws DAOException {
+    	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
+    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
+    	//Ouvre la session.
+    	Session session = sessionFactory.openSession();
+    	//Commence la transaction.
+    	session.beginTransaction();
+    	//Initialise la valeur de la date d'inscription de l'utilisateur au moment actuel.
+    	utilisateur.setDateInscription(new Timestamp( new Date().getTime()));
+    	//Ajoute l'utilisateur donnée en paramètre à la base de données.
+    	session.save(utilisateur);    	
+    	//Applique la transaction.
+        session.getTransaction().commit();
+        //Ferme la session.
+    	session.close();
     }
-
 }

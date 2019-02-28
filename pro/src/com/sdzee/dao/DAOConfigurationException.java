@@ -1,5 +1,6 @@
 package com.sdzee.dao;
 
+@SuppressWarnings("serial")
 public class DAOConfigurationException extends RuntimeException {
 
     public DAOConfigurationException( String message ) {

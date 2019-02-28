@@ -16,9 +16,9 @@
                     <p class="info">(Vous ne vous êtes pas connecté(e) depuis ce navigateur depuis ${requestScope.intervalleConnexions})</p>
                 </c:if>
 
-                <label for="nom">Adresse email <span class="requis">*</span></label>
-                <input type="email" id="email" name="email" value="<c:out value="${utilisateur.email}"/>" size="20" maxlength="60" />
-                <span class="erreur">${form.erreurs['email']}</span>
+                <label for="nom">Pseudo <span class="requis">*</span></label>
+                <input type="text" id="pseudo" name="pseudo" value="<c:out value="${utilisateur.pseudo}"/>" size="20" maxlength="60" />
+                <span class="erreur">${form.erreurs['pseudo']}</span>
                 <br />
 
                 <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
@@ -35,9 +35,9 @@
 
                 <c:if test="${!empty sessionScope.sessionUtilisateur}">
 
-                    <%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
+                    <%-- Si l'utilisateur existe en session, alors on affiche son pseudo. --%>
 
-                    <p class="succes">Vous êtes connecté(e) avec l'adresse : ${sessionScope.sessionUtilisateur.email}</p>
+                    <p class="succes">Vous êtes connecté(e) avec le pseudo : ${sessionScope.sessionUtilisateur.pseudo}</p>
 
                 </c:if>
             </fieldset>

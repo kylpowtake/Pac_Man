@@ -6,23 +6,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import com.sdzee.beans.Utilisateur;
+import com.sdzee.dao.DAOFactory;
+import com.sdzee.dao.UtilisateurDao;
 import com.sdzee.forms.ConnexionForm;
 
 public class Connexion extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
+    public static final String CONF_DAO_FACTORY 		  = "daofactory";
 	public static final String  ATT_USER                  = "utilisateur";
     public static final String  ATT_FORM                  = "form";
     public static final String  ATT_SESSION_USER          = "sessionUtilisateur";
     public static final String  VUE                       = "/WEB-INF/connexion.jsp";
 
+    
+    private UtilisateurDao     utilisateurDao;
+
+    public void init() throws ServletException {
+        /* Récupération d'une instance de notre DAO Utilisateur */
+        this.utilisateurDao = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUtilisateurDao();
+    }
+    
+    
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Préparation de l'objet formulaire */
-        ConnexionForm form = new ConnexionForm();
+        ConnexionForm form = new ConnexionForm( utilisateurDao);
 
         /* Traitement de la requête et récupération du bean en résultant */
         Utilisateur utilisateur = form.connecterUtilisateur( request );
@@ -35,6 +47,7 @@ public class Connexion extends HttpServlet {
          * Utilisateur à la session, sinon suppression du bean de la session.
          */
         if ( form.getErreurs().isEmpty() ) {
+        	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
         } else {
             session.setAttribute( ATT_SESSION_USER, null );

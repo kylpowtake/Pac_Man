@@ -5,22 +5,34 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.jasypt.util.password.ConfigurablePasswordEncryptor;
+
 import com.sdzee.beans.Utilisateur;
+import com.sdzee.dao.UtilisateurDao;
+
 
 public final class ConnexionForm {
 	
     private static final String CHAMP_PSEUDO= "pseudo";
     private static final String CHAMP_PASS   = "motdepasse";
+    
+    private static final String ALGO_CHIFFREMENT = "SHA-256";
 
+    
     private String resultat;
     private Map<String, String> erreurs = new HashMap<String, String>();
+    private UtilisateurDao      utilisateurDao;
 
-    public String getResultat() {
-        return resultat;
+    public ConnexionForm( UtilisateurDao utilisateurDao ) {
+        this.utilisateurDao = utilisateurDao;
     }
-
+    
     public Map<String, String> getErreurs() {
         return erreurs;
+    }
+    
+    public String getResultat() {
+        return resultat;
     }
 
     public Utilisateur connecterUtilisateur( HttpServletRequest request ) {
@@ -48,18 +60,38 @@ public final class ConnexionForm {
 
         /* Initialisation du résultat global de la validation. */
         if ( erreurs.isEmpty() ) {
-            resultat = "Succès de la connexion.";
+            Utilisateur utilisateurTemp = utilisateurDao.TrouverUtilisateur(utilisateur.getPseudo());
+            if(utilisateurTemp != null) {
+                System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n" + motDePasse);
+                System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n" + utilisateurTemp.getMotDePasse() + "    " + utilisateurTemp.getMotDePasse().length());
+
+
+                ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+                if(passwordEncryptor.checkPassword(motDePasse, utilisateur.getMotDePasse())){
+                    System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n décryptage réussi");
+                    resultat = "Succès de la connexion.";
+                } else {
+                    System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n décriptage echioué");
+                    resultat = "Échec de la connexion. Ce pseudo ou mot de passe est incorrecte.";
+                }
+            }else {
+                resultat = "Échec de la connexion. Ce pseudo ou mot de passe est incorrecte.";
+            }
         } else {
-            resultat = "Échec de la connexion.";
+            resultat = "Échec de la connexion. Ily a des erreurs dans le formulaire.";
         }
 
         return utilisateur;
     }
-
+    
+    
     /**
      * Valide le pseudo saisie.
      */
     private void validationPseudo( String pseudo ) throws Exception {
+        if ( pseudo == null ) {
+            throw new Exception( "Merci de saisir votre mot de passe." );
+        }
     }
 
     /**
