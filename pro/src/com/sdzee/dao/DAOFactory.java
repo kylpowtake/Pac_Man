@@ -1,6 +1,5 @@
 package com.sdzee.dao;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -74,6 +73,6 @@ public class DAOFactory {
      * pour le moment)
      */
     public UtilisateurDao getUtilisateurDao() {
-        return new UtilisateurDaoImpl( this );
+        return new UtilisateurDaoImpl();
     }
 }

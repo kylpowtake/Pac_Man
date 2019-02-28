@@ -1,5 +1,6 @@
 package com.sdzee.dao;
 
+@SuppressWarnings("serial")
 public class DAOException extends RuntimeException {
 
     public DAOException( String message ) {
