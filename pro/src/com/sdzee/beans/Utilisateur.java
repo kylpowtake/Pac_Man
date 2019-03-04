@@ -9,6 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.TypeDef;
+import org.jasypt.hibernate3.type.EncryptedStringType;
 
 /**
  * Classe utilisée pour représenté un utilisateur.

@@ -36,7 +36,8 @@ public class Connexion extends HttpServlet {
 
     
     
-    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException { 	
+    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
+    	
     	request.setAttribute("parties",partieDao.TrouverParties());
         this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
     }
