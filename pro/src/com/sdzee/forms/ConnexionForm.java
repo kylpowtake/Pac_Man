@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import com.sdzee.beans.Utilisateur;
+import com.sdzee.dao.PartieDao;
 import com.sdzee.dao.UtilisateurDao;
 
 

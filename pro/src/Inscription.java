@@ -1,20 +1,20 @@
 
-
 import java.io.IOException;
-
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.sdzee.beans.Utilisateur;
 import com.sdzee.dao.DAOFactory;
 import com.sdzee.dao.UtilisateurDao;
 import com.sdzee.forms.InscriptionForm;
 
-@SuppressWarnings("serial")
+@WebServlet( "/inscription" )
 public class Inscription extends HttpServlet {
-    public static final String CONF_DAO_FACTORY = "daofactory";
+
+	private static final long serialVersionUID  = 3697220712479015561L;
+	public static final String CONF_DAO_FACTORY = "daofactory";
     public static final String ATT_USER         = "utilisateur";
     public static final String ATT_FORM         = "form";
     public static final String VUE              = "/WEB-INF/inscription.jsp";

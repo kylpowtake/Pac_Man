@@ -2,6 +2,7 @@
     <wb-module deploy-name="pro">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/" source-path="/src/com/sdzee/hibernate/lib"/>
         <property name="context-root" value="pro"/>
         <property name="java-output-path" value="/pro/build/classes"/>
     </wb-module>

@@ -22,7 +22,7 @@ import javax.persistence.Id;
 @Table(name = "Partie")
 public class Partie {
 		//L'id de la partie.
-		private long idPartie;
+		private long id;
 		//L'id de l'utilisateur ayant réalisé la partie.
 		private long idUtilisateur;
 		//Le score de la partie
@@ -39,15 +39,15 @@ public class Partie {
 		 * Permet d'obtenir l'id  de la partie.
 		 * @return  l'id de la partie.
 		 */
-		public long getIdPartie() {
-			return this.idPartie;
+		public long getid() {
+			return this.id;
 		}
 		/**
 		 * Permet de changer l'id de la partie.
 		 * @param id : nouveau identifiant de la partie.
 		 */
-		public void setIdPartie(long idPartie) {
-			this.idPartie = idPartie;
+		public void setid(long id) {
+			this.id = id;
 		}
 		
 		

@@ -7,6 +7,8 @@
         <title>Accès restreint 2</title>
     </head>
     <body>
-        <p>Vous êtes connecté(e) avec l'adresse ${sessionScope.sessionUtilisateur.email}, vous avez bien accès à l'espace restreint 2.</p>
+    	<a href="<%=request.getContextPath()+"/deconnexion"%>">Deconnexion</a>
+    	<a href="<%=request.getContextPath()+"/restreint/accesRestreint.jsp"%>">retour</a>
+        <p>Vous êtes connecté(e) avec l'adresse ${sessionScope.sessionUtilisateur.pseudo}, vous avez bien accès à l'espace restreint 2.</p>
     </body>
 </html>
