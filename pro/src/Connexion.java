@@ -42,13 +42,6 @@ public class Connexion extends HttpServlet {
     	request.setAttribute("partie",returnParties());
         this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
     }
-    
-    
-   
-    
-    public void returnHightScore() {
-    	
-    }
 
 
 	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {

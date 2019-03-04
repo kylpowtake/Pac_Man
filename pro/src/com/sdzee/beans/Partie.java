@@ -32,8 +32,6 @@ public class Partie {
 		private String pseudoUtilisateur;
 		//Le temps de fin de la partie.
 		private Timestamp date;
-		
-		private String pseudoUtilisateur;
 	
 		
 		//Indique à hibernate que cette valeur s'incrémente et correspond à la colomne increment du tableau(l'id).
@@ -75,7 +73,7 @@ public class Partie {
 		
 		
 		//indique à hibernate la colomne associé à cette variable.
-		@Column(name = "id_utilisateur")
+		@Column(name = "idUtilisateur")
 		/**
 		 * Permet d'obtenir l'id de l'utilisateur de la partie.
 		 * @return  l'id de l'utilisateur de la partie.
@@ -111,22 +109,6 @@ public class Partie {
 		
 		
 		
-		//indique à hibernate que cette variable n'est pas à prendre en compte lors du mappage.
-		@Transient
-		/**
-		 * Permet d'obtenir le pseudo de l'utilisateur.
-		 * @return le pseudo de l'utilisateur.
-		 */
-	    public String getPseudoUtilisateur() {
-	        return pseudoUtilisateur;
-	    }
-		/**
-		 * Permet de changer le pseudo de l'utilisateur.
-		 * @param pseudo : nouveau pseudo de l'utilisateur.
-		 */
-	    public void setPseudoUtilisateur( String pseudoUtilisateur ) {
-	        this.pseudoUtilisateur = pseudoUtilisateur;
-	    }
 		
 		
 		//indique à hibernate la colomne associé à cette variable.
