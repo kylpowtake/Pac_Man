@@ -33,7 +33,7 @@
                 
                 <%-- Vérification de la présence d'un objet utilisateur en session --%>
 
-                <c:if test="${!empty sessionScope.sessionUtilisateur}">
+                <c:if test="${!empty sessionScope.sessionUtilisateur.motDePasse}">
 
                     <%-- Si l'utilisateur existe en session, alors on affiche son pseudo. --%>
 

@@ -65,7 +65,7 @@ public class Partie {
 		 * Permet de changer l'id de l'utilisateur de la partie.
 		 * @param id : nouveau identifiant de l'utilisateur ayant fait la partie.
 		 */
-		public void setId(long idUtilisateur) {
+		public void setIdUtilisateur(long idUtilisateur) {
 			this.idUtilisateur = idUtilisateur;
 		}
 
@@ -89,7 +89,7 @@ public class Partie {
 		
 		
 		//indique à hibernate la colomne associé à cette variable.
-		@Column(name = "date_inscription")
+		@Column(name = "date")
 		/**
 		 * Permet d'obtenir la date de la partie.
 		 * @return la date de la partie.
