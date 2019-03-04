@@ -20,9 +20,6 @@
     
     	<div class="contain">
     	
-    		<c:forEach var="name"  items="${requestScope['parties']}" >
-          		<c:out value="${name['score']}" />
-			</c:forEach>
     	
     	
     		<!-- header -->
@@ -124,56 +121,14 @@
 			                    </tr>
 			                  </thead>
 			                  <tbody>
-			                    <tr>
-			                      <td>Personne1</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne2</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne3</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne4</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne5</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne1</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne2</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne3</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne4</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
-			                    <tr>
-			                      <td>Personne5</td>
-			                      <td>100</td>
-			                      <td>Date</td>
-			                    </tr>
+			                  
+			                  	<c:forEach var="name"  items="${requestScope['parties']}" >
+	    							<tr>
+	    								<td><c:out value="${name['idUtilisateur']}" /></td>
+	          							<td><c:out value="${name['score']}" /></td>
+	          							<td><c:out value="${name['date']}" /></td>
+	          						</tr>
+								</c:forEach>
 			                  </tbody>
 			                </table>
 			           	</div>
