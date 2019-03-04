@@ -20,7 +20,7 @@
 							
 							
 							<div class="form-group">
-								<label for="nom" class="control-label">Pseudo d'utilisateur</label>
+								<label for="nom" class="control-label">Pseudo d'utilisateur <span class="requis">*</span></label>
 		                		<input type="text" id="nom" name="pseudo" value="<c:out value="${utilisateur.pseudo}"/>" maxlength="50" class="form-control" />
 		                		<span class="erreur">${form.erreurs['pseudo']}</span>
 	                		</div>
