@@ -122,9 +122,9 @@
 			                  </thead>
 			                  <tbody>
 			                  
-			                  	<c:forEach var="name"  items="${requestScope['parties']}" >
+			                  	<c:forEach var="name"  items="${requestScope['partie']}" >
 	    							<tr>
-	    								<td><c:out value="${name['idUtilisateur']}" /></td>
+	    								<td><c:out value="${name['pseudoUtilisateur']}" /></td>
 	          							<td><c:out value="${name['score']}" /></td>
 	          							<td><c:out value="${name['date']}" /></td>
 	          						</tr>

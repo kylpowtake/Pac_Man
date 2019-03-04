@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sdzee.beans.Partie;
 import com.sdzee.beans.Utilisateur;
 import com.sdzee.dao.DAOFactory;
 import com.sdzee.dao.PartieDao;
@@ -37,14 +39,16 @@ public class Connexion extends HttpServlet {
     
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-    	
-    	request.setAttribute("parties",partieDao.TrouverParties());
+    	request.setAttribute("partie",returnParties());
         this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
     }
-
-
-
-	
+    
+    
+   
+    
+    public void returnHightScore() {
+    	
+    }
 
 
 	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
@@ -64,19 +68,28 @@ public class Connexion extends HttpServlet {
         if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty()) {    	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
             /* Stockage du formulaire et du bean dans l'objet request */
-            
             this.getServletContext().getRequestDispatcher( VUE_HOME ).forward( request, response );
 
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
             request.setAttribute( ATT_FORM, form );
-            request.setAttribute("parties",partieDao.TrouverParties());
+            request.setAttribute("partie",returnParties());
             request.setAttribute( ATT_USER, utilisateur );
             this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
 
         }
-
-
-
     }
+	
+	/**
+	 * associe a chaque partie le pseudo de son utilisateur grace a son identifiant 
+	 * @return
+	 */
+	 public ArrayList<Partie> returnParties() {
+	    	ArrayList<Partie> parties = partieDao.TrouverParties();
+	    	for (int i = 0; i < parties.size(); i++) {
+	    		 Utilisateur u =  utilisateurDao.TrouverUtilisateur(parties.get(i).getIdUtilisateur());
+	    		 parties.get(i).setPseudoUtilisateur(u.getPseudo());
+	    	}	
+	    	return parties;
+	    }
 }
