@@ -61,7 +61,6 @@ public class Connexion extends HttpServlet {
          * Si aucune erreur de validation n'a eu lieu, alors ajout du bean
          * Utilisateur à la session, sinon suppression du bean de la session.
          */
-        System.out.println("\n\n\n\n\n\n\n blahblahblahblah    " + utilisateur.getPseudo()  + "  " + utilisateur.getMotDePasse());
         if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty()) {    	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
             /* Stockage du formulaire et du bean dans l'objet request */

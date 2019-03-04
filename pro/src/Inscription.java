@@ -17,7 +17,8 @@ public class Inscription extends HttpServlet {
 	public static final String CONF_DAO_FACTORY = "daofactory";
     public static final String ATT_USER         = "utilisateur";
     public static final String ATT_FORM         = "form";
-    public static final String VUE              = "/WEB-INF/inscription.jsp";
+    public static final String VUE_ACCUEIL      = "/WEB-INF/connexion.jsp";
+    public static final String VUE_INSCRIPTION  = "/WEB-INF/inscription.jsp";
 
     private UtilisateurDao     utilisateurDao;
 
@@ -28,7 +29,7 @@ public class Inscription extends HttpServlet {
 
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Affichage de la page d'inscription */
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        this.getServletContext().getRequestDispatcher( VUE_INSCRIPTION ).forward( request, response );
     }
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
@@ -42,6 +43,14 @@ public class Inscription extends HttpServlet {
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_USER, utilisateur );
 
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        //Test si tout c'est bien passé.
+        if(true) {
+        	//Si l'inscription a réussi et l'utilisateur a été rajouté à la base de données, on passe à la page de connection.
+            this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
+        } else {
+        	//Si l'inscription a échoué, on reste sur la page d'inscription.
+            this.getServletContext().getRequestDispatcher( VUE_INSCRIPTION ).forward( request, response );
+
+        }
     }
 }

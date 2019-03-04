@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,6 +28,8 @@ public class Partie {
 		private long idUtilisateur;
 		//Le score de la partie
 		private long score;
+		//Le test du pseudo.
+		private String pseudoUtilisateur;
 		//Le temps de fin de la partie.
 		private Timestamp date;
 	
@@ -86,6 +89,25 @@ public class Partie {
 		public void setScore(long score) {
 			this.score = score;
 		}
+		
+		
+		
+		//indique à hibernate que cette variable n'est pas à prendre en compte lors du mappage.
+		@Transient
+		/**
+		 * Permet d'obtenir le pseudo de l'utilisateur.
+		 * @return le pseudo de l'utilisateur.
+		 */
+	    public String getPseudoUtilisateur() {
+	        return pseudoUtilisateur;
+	    }
+		/**
+		 * Permet de changer le pseudo de l'utilisateur.
+		 * @param pseudo : nouveau pseudo de l'utilisateur.
+		 */
+	    public void setPseudoUtilisateur( String pseudoUtilisateur ) {
+	        this.pseudoUtilisateur = pseudoUtilisateur;
+	    }
 		
 		
 		//indique à hibernate la colomne associé à cette variable.
