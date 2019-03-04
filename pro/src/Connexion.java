@@ -60,19 +60,21 @@ public class Connexion extends HttpServlet {
          * Si aucune erreur de validation n'a eu lieu, alors ajout du bean
          * Utilisateur à la session, sinon suppression du bean de la session.
          */
-        if ( form.getErreurs().isEmpty() ) {    	
+        System.out.println("\n\n\n\n\n\n\n blahblahblahblah    " + utilisateur.getPseudo()  + "  " + utilisateur.getMotDePasse());
+        if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty()) {    	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
+            /* Stockage du formulaire et du bean dans l'objet request */
             request.setAttribute( ATT_FORM, form );
             this.getServletContext().getRequestDispatcher( VUE_HOME ).forward( request, response );
+
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
             request.setAttribute( ATT_USER, utilisateur );
             this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
+
         }
 
-        /* Stockage du formulaire et du bean dans l'objet request */
-        
 
-        
+
     }
 }

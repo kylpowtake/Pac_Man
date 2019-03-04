@@ -21,7 +21,7 @@
     	<div class ="row">
     	</div>
     	
-        <p>Vous êtes connecté(e) avec l'adresse ${sessionScope.sessionUtilisateur.pseudo}, vous avez bien accès à l'espace restreint.</p>
+        <p>Vous êtes connecté(e) avec le pseudo ${sessionScope.sessionUtilisateur.pseudo} et le mot de passe ${sessionScope.sessionUtilisateur.motDePasse}, vous avez bien accès à l'espace restreint.</p>
         tableau historique parties jouees</br>
         graphe si le temps 
 
