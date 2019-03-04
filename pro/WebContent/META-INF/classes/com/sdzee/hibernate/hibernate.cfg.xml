@@ -1,8 +1,8 @@
-<?xml version = '1.0' encoding='UTF-8'?>
+<?xml version = "1.0" ?>
 <!DOCTYPE hibernate-configuration PUBLIC
-        '-//Hibernate/Hibernate Configuration DTD 3.0//EN'
-    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
-    
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
 <hibernate-configuration>
    <session-factory>
    
@@ -21,9 +21,8 @@
        <property name="show_sql">true</property> 
        
       <!-- Names the annotated entity class -->
-      <mapping class="com.sdzee.beans.Utilisateur"/>      
-      <mapping class="com.sdzee.beans.Partie"/>      
-
+      <mapping class="com.sdzee.beans.Utilisateur"/>     
+      <mapping class="com.sdzee.beans.Partie"/>   
       
    </session-factory>
 </hibernate-configuration>

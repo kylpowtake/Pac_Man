@@ -36,8 +36,7 @@ public class Connexion extends HttpServlet {
 
     
     
-    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-    	
+    public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException { 	
     	request.setAttribute("parties",partieDao.TrouverParties());
         this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
     }
@@ -63,14 +62,17 @@ public class Connexion extends HttpServlet {
          */
         if ( form.getErreurs().isEmpty() ) {    	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
+            request.setAttribute( ATT_FORM, form );
+            this.getServletContext().getRequestDispatcher( VUE_HOME ).forward( request, response );
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
+            request.setAttribute( ATT_USER, utilisateur );
+            this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
         }
 
         /* Stockage du formulaire et du bean dans l'objet request */
-        request.setAttribute( ATT_FORM, form );
-        request.setAttribute( ATT_USER, utilisateur );
+        
 
-        this.getServletContext().getRequestDispatcher( VUE_HOME ).forward( request, response );
+        
     }
 }

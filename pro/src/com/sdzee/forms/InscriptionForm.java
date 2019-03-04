@@ -91,11 +91,14 @@ public final class InscriptionForm {
          * 
          * La String retournée est de longueur 56 et contient le hash en Base64.
          */
+        System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n" + motDePasse);
         ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
         passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
         passwordEncryptor.setPlainDigest( false );
         String motDePasseChiffre = passwordEncryptor.encryptPassword( motDePasse );
+
         utilisateur.setMotDePasse( motDePasseChiffre );
+        System.out.println("Nous y sommeau debbugagge  yyoolloo \n\n\n\n\n\n" + utilisateur.getMotDePasse() + "   " + utilisateur.getMotDePasse().length());
 
     }
 
