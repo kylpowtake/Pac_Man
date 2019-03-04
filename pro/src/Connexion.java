@@ -73,7 +73,8 @@ public class Connexion extends HttpServlet {
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
             request.setAttribute( ATT_FORM, form );
-            request.setAttribute("partie",returnParties());
+            request.setAttribute("partie", partieDao.TrouverParties());            
+            //request.setAttribute("partie",returnParties());
             request.setAttribute( ATT_USER, utilisateur );
             this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
 
@@ -85,10 +86,12 @@ public class Connexion extends HttpServlet {
 	 * @return
 	 */
 	 public ArrayList<Partie> returnParties() {
+		 
 	    	ArrayList<Partie> parties = partieDao.TrouverParties();
 	    	for (int i = 0; i < parties.size(); i++) {
-	    		 Utilisateur u =  utilisateurDao.TrouverUtilisateur(parties.get(i).getIdUtilisateur());
-	    		 parties.get(i).setPseudoUtilisateur(u.getPseudo());
+	    		 //Utilisateur u =  utilisateurDao.TrouverUtilisateur(parties.get(i).getIdUtilisateur());
+	    		 //parties.get(i).setPseudoUtilisateur(u.getPseudo());
+	    		 System.out.println("\n\n me voila \n\n");
 	    	}	
 	    	return parties;
 	    }
