@@ -23,14 +23,17 @@ import com.sdzee.forms.GestionCompteForm;
 @WebServlet("/gestionCompte")
 public class GestionCompte extends HttpServlet {
 
-	private static final long serialVersionUID 			  = 2602287818998353428L;
-	public static final String  VUE_HOME				  = "/restreint/accesRestreint.jsp";
+	private static final long 	serialVersionUID 		  =  2602287818998353428L;
+	public static final String 	CONF_DAO_FACTORY 		  =  "daofactory";
+	public static final String  ATT_SESSION_USER          =  "sessionUtilisateur";
+	public static final String  ATT_FORM                  =  "form";
+	public static final String  VUE				  		  =  "/accesRestreint.jsp";
+	public static final String 	URL_REDIRECTION 		  =  "http://localhost:8080/pro/deconnexion";
+	
 	private UtilisateurDao     utilisateurDao;
     private PartieDao		   partieDao;
-    public static final String  ATT_SESSION_USER          = "sessionUtilisateur";
-
-	public static final String CONF_DAO_FACTORY = "daofactory";
     
+
     public void init() throws ServletException {
         // Récupération d'une instance des DAO
         this.utilisateurDao = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUtilisateurDao();
@@ -40,41 +43,36 @@ public class GestionCompte extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
+		
+		//récupération du tableau de score de l'utilisateur 
 		request.setAttribute("partie",partieDao.TrouverPartiesAUtilisateur(user.getId()));
-
+		
+		//si demande de suppression appel a la methode supprimer de utilisateur et redirection vers la page de deconnexio
 		if(request.getParameter("supprimer") != null){
 			this.utilisateurDao.SupprimerUtilisateur(user);
+			response.sendRedirect( URL_REDIRECTION );
 		}
 		
-		this.getServletContext().getRequestDispatcher( VUE_HOME ).forward( request, response );
+		this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		GestionCompteForm form = new GestionCompteForm( utilisateurDao ); 
+		
 		//Traitement de la requête et récupération du bean en résultant
         Utilisateur utilisateur = form.ChangerUtilisateur( request );
             
         //Récupération de la session depuis la requête 
         HttpSession session = request.getSession();
         
-        session.getAttribute(name)
-
-
-        if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty()) {    	
-            session.setAttribute( ATT_SESSION_USER, utilisateur );
-            response.sendRedirect( URL_REDIRECTION );
-
-        } else {
-            session.setAttribute( ATT_SESSION_USER, null );
-            request.setAttribute( ATT_FORM, form );
-            request.setAttribute("partie",returnParties());
-            request.setAttribute( ATT_USER, utilisateur );
-            this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
-
+        //reset de la session de l'utilisateur 
+        session.setAttribute(ATT_SESSION_USER,utilisateur);
+        
+        if(!form.getErreurs().isEmpty()) {
+        	request.setAttribute( ATT_FORM, form);
         }
-
      
     }
 

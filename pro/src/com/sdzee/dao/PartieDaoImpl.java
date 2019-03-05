@@ -1,5 +1,6 @@
 package com.sdzee.dao;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -118,9 +119,6 @@ public class PartieDaoImpl implements PartieDao{
 		return parties;
 		
 		
-		
-		
-		
 		/*
 		 * Ceci est en utilisant un bean partie étant mapper avec la table Partie.
 		 * Dès lors, pour obtenir toutes les parties et savoir les pseudos corrrespondants avec les idUtilisateurs, il faut soit :
@@ -151,6 +149,7 @@ public class PartieDaoImpl implements PartieDao{
     	session.close();
     	
     	return parties;
+    	*/
 	}
 
 }
