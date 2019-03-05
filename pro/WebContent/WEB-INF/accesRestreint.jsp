@@ -99,12 +99,17 @@
 			                <label for="pseudo">Nouveau pseudo</label>
 			                <input type="text" id="pseudo" name="pseudo" value="<c:out value="${utilisateur.pseudo}"/>" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['pseudo']}</span>
+			        
+			
+			                <label for="ancienpMotDePasse">Ancien mot de passe</label>
+			                <input type="password" id="ancienMotDePasse" name="ancienMotDePasse" value="" class="form-control form-control-user"/>
+			                <span class="erreur">${form.erreurs['ancienMotDePasse']}</span>
 			   
 			                
 			                <label for="nouveauMotDePasse">Nouveau mot de passe</label>
 			                <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" value="" class="form-control form-control-user"/>
-			                <span class="erreur">${form.erreurs['nouveauMotDePasse']}</span>
-			           		<br />
+			                <span class="erreur">${form.erreurs['nouveauMotDePasse']}</span></ br>
+			           
 			                
 			                <label for="confMotDePasse">Confirmation du mot de passe</label>
 			                <input type="password" id="confMotDePasse" name="confMotDePasse" value="" class="form-control form-control-user"/>

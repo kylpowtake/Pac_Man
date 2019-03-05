@@ -51,14 +51,9 @@ public class GestionCompte extends HttpServlet {
 		if(request.getParameter("supprimer") != null){
 			this.utilisateurDao.SupprimerUtilisateur(user);
 			response.sendRedirect( URL_REDIRECTION );
-			System.out.println("demande de suppression");
-		}else {
-			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+		} else {		
 			this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
 		}
-		
-		
-		
 	}
 
 
@@ -79,9 +74,12 @@ public class GestionCompte extends HttpServlet {
         
         if(!form.getErreurs().isEmpty()) {
         	request.setAttribute( ATT_FORM, form);
+        	System.out.println("\n\n\n\n\n  dans échoué " + form.getResultat() + form.getErreurs().get("ancienMotDePasse"));
+        } else {
+        	System.out.println("\n\n\n\n\n  dans réussi" + form.getResultat());
         }
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
-     
+		this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+
     }
 
 }
