@@ -44,7 +44,7 @@ public class Inscription extends HttpServlet {
         request.setAttribute( ATT_USER, utilisateur );
 
         //Test si tout c'est bien passé.
-        if(true) {
+        if(form.getErreurs().isEmpty()) {
         	//Si l'inscription a réussi et l'utilisateur a été rajouté à la base de données, on passe à la page de connection.
             this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
         } else {

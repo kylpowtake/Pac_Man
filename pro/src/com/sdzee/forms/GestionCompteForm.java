@@ -67,16 +67,32 @@ public class GestionCompteForm {
         //On récupère dans la session l'utilisateur s'étant connecté.
         Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
         
-	    if(!ancienMotDePasse.isEmpty() || !nouveauMotDePasse.isEmpty() || !confMotDePasse.isEmpty() ) {
-	    	/* Validation du champ ancien mot de passe. */
-	    	try {
-	        	validationMotDePasse( ancienMotDePasse );
-	    	} catch ( Exception e ) {
-	        	setErreur( CHAMP_ANCIEN_PASS, e.getMessage() );
-	    	}
-	    	//L'ancien mot de passe n'est pas erroné, on peut donc tester si c'est celui associé à l'utilisateur.
+        
+        /*
+         * ancienMotDePasse = obligatoire.
+         * pseudo ou (nouveauMotDePasse + confMotDePasse) obligatoire
+         * pseudo et (nouveauMotDePasse + confMotDePasse) possible
+         */
 
-	    	//On vérifie la validité du nouveau mot de passe et de sa confirmation. 
+    	/* Validation du champ ancien mot de passe. */
+    	try {
+        	validationMotDePasseActuelle( ancienMotDePasse, utilisateur.getMotDePasse());
+    	} catch ( Exception e ) {
+        	setErreur( CHAMP_ANCIEN_PASS, e.getMessage() );
+    	}
+    	//L'ancien mot de passe n'est pas erroné, on peut donc tester si c'est celui associé à l'utilisateur.
+        
+    	//On vérifie que le pseudo ne soit pas nul et soit déjà dans labase de données.
+        try {
+            validationPseudo( pseudo );
+        } catch ( FormValidationException e ) {
+            setErreur( CHAMP_PSEUDO, e.getMessage() );
+        }
+        utilisateur.setPseudo( pseudo );
+    	
+    	//Ici, il y en a au moins un qui n'est pas nul, or il faut que les deux ne soient pas nuls.
+	    if((nouveauMotDePasse != null && !nouveauMotDePasse.isEmpty()) || (confMotDePasse != null && !confMotDePasse.isEmpty())) {
+	    	//Il faut donc les tester en vérifiant leur validité. 
 	        try {
 	            validationMotsDePasse( nouveauMotDePasse, confMotDePasse );
 	        } catch ( FormValidationException e ) {
@@ -84,6 +100,7 @@ public class GestionCompteForm {
 	            setErreur( CHAMP_CONF_PASS, null );
 	        }
 	        /*
+	         * Le nouveau mot de passe a été vérifié.
 	         * Utilisation de la bibliothèque Jasypt pour chiffrer le nouveau mot de passe
 	         * efficacement.
 	         * 
@@ -96,7 +113,7 @@ public class GestionCompteForm {
 	        passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
 	        passwordEncryptor.setPlainDigest( false );
 	        motDePasseChiffre = passwordEncryptor.encryptPassword( nouveauMotDePasse );
-	    	//La confirmation du mot de passe n'est pas erroné, on peut donc tester si c'est le même que le nouveau.
+	    	//La confirmation du mot de passe n'est pas erroné, on peut donc tester si c'est le même que le nouveau.	
 	    }
 	    
 	    /* Initialisation du résultat global de la validation. */
@@ -105,20 +122,15 @@ public class GestionCompteForm {
 	     */
 	    if ( erreurs.isEmpty()) {
 	    	//On n'active pas le changement si le pseudo et un des mots de passe est nul(ils le sont alors tous car il n'y a pas d'erreurs).
-	    	if(pseudo.isEmpty() && nouveauMotDePasse.isEmpty()) {
+	    	if((pseudo == null || pseudo.isEmpty()) && (nouveauMotDePasse == null || nouveauMotDePasse.isEmpty())) {
 	    		resultat = "Échec du changement, il faut au moins une valeur à changer pour le faire.";
 	    	} else {
 	    		//Si le pseudo n'est pas vide ou/et les mots de passe ne sont pas vides, on peut appliquer un changement. 
-	    		//On ne change pas le mot de passe si l'ancien mot de passe n'est pas le même que le mot de passe actuelle de l'utilisateur.
-	    		if(ancienMotDePasse.equals(utilisateur.getMotDePasse())) {
 	    			utilisateurDao.ChangerUtilisateur(utilisateur, pseudo, motDePasseChiffre);	    		
-	    		} else {
-	    	        resultat = "Échec du changement. Le mot de passe actuel donné n'est pas le bon.";
-	    		}
 	    	}
 	    } else {
 	    	//Il y a des erreurs, il y a donc parmis les trois mots de passe au moins qui a une erreur.
-	    	resultat = "Échec de la connexion. Ily a des erreurs dans le formulaire.";
+	    	resultat = "Échec de la connexion. Il y a des erreurs dans le formulaire.";
 	    }
 	    return utilisateur;
 	}
@@ -127,7 +139,7 @@ public class GestionCompteForm {
 /**
  * Valide le mot de passe saisi.
  */
-private void validationMotDePasse( String motDePasse ) throws Exception {
+private void validationMotDePasseActuelle( String motDePasse, String motDePasseActuelle) throws Exception {
 	//Il y a une erreur si le mot de passe est nul.
     if ( motDePasse != null ) {
     	//Il y a une erreur si le mot de passe ne fait pas au moins trois caractères.
@@ -136,6 +148,9 @@ private void validationMotDePasse( String motDePasse ) throws Exception {
         }
     } else {
         throw new Exception( "Merci de saisir votre mot de passe." );
+    }
+    if(!motDePasseActuelle.equals(motDePasse)){
+    	throw new Exception( "Le mot de passe rentrer n'est pas le votre." );
     }
 }
 
@@ -173,6 +188,18 @@ private void validationMotsDePasse( String motDePasse, String confirmation ) thr
     }
 }
 
+/* Validation du pseudo */
+private void validationPseudo( String pseudo ) throws FormValidationException {
+    if ( pseudo != null) {
+    	if(pseudo.length() >= 3) {
+    		if ( utilisateurDao.TrouverUtilisateur( pseudo ) != null ) {
+            	throw new FormValidationException( "Ce pseudo est déjà utilisé, merci d'en choisir un autre." );
+        	}
+    	} else {
+        	throw new FormValidationException( "Le pseudo doit faire au moins trois caractères" );
+    	}
+    }
+}
 
 }
 
