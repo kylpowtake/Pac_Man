@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
 import com.sdzee.beans.Utilisateur;
-import com.sdzee.dao.PartieDao;
 import com.sdzee.dao.UtilisateurDao;
 
 
@@ -88,6 +87,7 @@ public final class ConnexionForm {
                 if(passwordEncryptor.checkPassword(motDePasse, utilisateurTemp.getMotDePasse())){
                 	//Si le résultat est positif, on connecte l'utilisateur en ajoutant son mot de passe à l'utilisateur renvoyé.
                     resultat = "Succès de la connexion.";
+                    utilisateur.setId(utilisateurTemp.getId());
                     utilisateur.setMotDePasse( motDePasse );
                 } else {
                 	//Si le résultat est négatif on ne rajoute pas le mot de passe à l'utilisateur renvoyé, il ne sera donc pas considré connecté.

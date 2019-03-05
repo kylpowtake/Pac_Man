@@ -1,6 +1,5 @@
 package com.sdzee.dao;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -47,43 +46,7 @@ public class PartieDaoImpl implements PartieDao{
 	 * @throws DAOException : L'exception pouvant être renvoyée.
      */
 	@Override
-	public ArrayList<Partie> TrouverPartiesAUtilisateur(long idUtilisateur) throws DAOException {    	
-    	
-		
-    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
-    	Session session = sessionFactory.openSession();
-	
-		List<Object[]> yourList = session.createSQLQuery("Select p.score, u.pseudo, p.date From Partie p inner join Utilisateur u on p.idUtilisateur = u.id where p.idUtilisateur = " + idUtilisateur).list();
-		Iterator<Object[]> it = yourList.iterator();
-		ArrayList<Partie> parties = new ArrayList<>();
-		while (it.hasNext()) {
-		Partie partie = new Partie();
-		long score     = -1;
-		String pseudo    = "";
-		Timestamp date = null;
-		Object[] row = it.next();
-		if(row[0]!=null){
-		score = Long.parseLong(row[0].toString());
-		}
-		if(row[1]!=null){
-		pseudo = row[1].toString();
-		}
-		if(row[2]!=null){
-		date = Timestamp.valueOf(row[2].toString());
-		}
-		partie.setScore(score);
-		partie.setPseudoUtilisateur(pseudo);
-		partie.setDate(date);
-		parties.add(partie);
-		}
-    	
-    	return parties;
-	}
-	/*
-	@Override
 	public ArrayList<Partie> TrouverPartiesAUtilisateur(long idUtilisateur) throws DAOException {
-		
-		
     	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
     	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
     	//Ouvre la session.
@@ -109,10 +72,8 @@ public class PartieDaoImpl implements PartieDao{
     	session.close();
     	    	
 		return parties;
-		
-		
 	}
-*/
+
 	
     /**
      * Permet de trouver toutes les parties dans la base de données Pacman dans la table Partie.
@@ -121,42 +82,6 @@ public class PartieDaoImpl implements PartieDao{
      */
 	@Override
 	public ArrayList<Partie> TrouverParties() throws DAOException {
-		
-		
-    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
-    	Session session = sessionFactory.openSession();
-	
-		List<Object[]> yourList = session.createSQLQuery("Select p.score, u.pseudo, p.date From Partie p inner join Utilisateur u on p.idUtilisateur = u.id").list();
-		Iterator<Object[]> it = yourList.iterator();
-		ArrayList<Partie> parties = new ArrayList<>();
-		while (it.hasNext()) {
-		Partie partie = new Partie();
-		long score     = -1;
-		String pseudo    = "";
-		Timestamp date = null;
-		Object[] row = it.next();
-		if(row[0]!=null){
-		score = Long.parseLong(row[0].toString());
-		}
-		if(row[1]!=null){
-		pseudo = row[1].toString();
-		}
-		if(row[2]!=null){
-		date = Timestamp.valueOf(row[2].toString());
-		}
-		partie.setScore(score);
-		partie.setPseudoUtilisateur(pseudo);
-		partie.setDate(date);
-		parties.add(partie);
-		}
-		
-		return parties;
-		
-		
-		
-		
-		
-		/*
     	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
     	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
     	//Ouvre la session.
@@ -179,7 +104,6 @@ public class PartieDaoImpl implements PartieDao{
     	session.close();
     	
     	return parties;
-    	*/
 	}
 
 }

@@ -18,25 +18,23 @@ import com.sdzee.forms.ConnexionForm;
 @WebServlet( "/connexion" )
 public class Connexion extends HttpServlet {
 	
-    public static final String CONF_DAO_FACTORY 		  = "daofactory";
+    public static final String 	CONF_DAO_FACTORY 		  = "daofactory";
 	private static final long   serialVersionUID 		  = 954882317930586448L;
 	public static final String  ATT_USER                  = "utilisateur";
     public static final String  ATT_FORM                  = "form";
     public static final String  ATT_SESSION_USER          = "sessionUtilisateur";
     public static final String  VUE_ACCUEIL               = "/WEB-INF/connexion.jsp";
-    public static final String  VUE_HOME				  = "/restreint/accesRestreint.jsp";
-
+    public static final String 	URL_REDIRECTION			  = "http://localhost:8080/pro/gestionCompte";
     
     private UtilisateurDao     utilisateurDao;
     private PartieDao		   partieDao;
 
     public void init() throws ServletException {
-        /* Récupération d'une instance de notre DAO Utilisateur */
+        // Récupération d'une instance des DAO
         this.utilisateurDao = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUtilisateurDao();
         this.partieDao = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getPartieDao();
     }
 
-    
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
     	request.setAttribute("partie",returnParties());
@@ -45,29 +43,27 @@ public class Connexion extends HttpServlet {
 
 
 	public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
-        /* Préparation de l'objet formulaire */
-        ConnexionForm form = new ConnexionForm( utilisateurDao);
+        //Préparation de l'objet formulaire
+        ConnexionForm form = new ConnexionForm( utilisateurDao ); 
 
-        /* Traitement de la requête et récupération du bean en résultant */
+        //Traitement de la requête et récupération du bean en résultant
         Utilisateur utilisateur = form.connecterUtilisateur( request );
 
-        /* Récupération de la session depuis la requête */
+        //Récupération de la session depuis la requête 
         HttpSession session = request.getSession();
 
         /**
          * Si aucune erreur de validation n'a eu lieu, alors ajout du bean
          * Utilisateur à la session, sinon suppression du bean de la session.
          */
-        if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty()) {    	
+        if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty() && utilisateur.getActivite()) {    	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
-            /* Stockage du formulaire et du bean dans l'objet request */
-            this.getServletContext().getRequestDispatcher( VUE_HOME ).forward( request, response );
+            response.sendRedirect( URL_REDIRECTION );
 
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
             request.setAttribute( ATT_FORM, form );
-            request.setAttribute("partie", partieDao.TrouverParties());            
-            //request.setAttribute("partie",returnParties());
+            request.setAttribute("partie",returnParties());
             request.setAttribute( ATT_USER, utilisateur );
             this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
 
@@ -75,17 +71,11 @@ public class Connexion extends HttpServlet {
     }
 	
 	/**
-	 * associe a chaque partie le pseudo de son utilisateur grace a son identifiant 
+	 * Retourne toutes les parties
 	 * @return
 	 */
 	 public ArrayList<Partie> returnParties() {
-		 
 	    	ArrayList<Partie> parties = partieDao.TrouverParties();
-	    	for (int i = 0; i < parties.size(); i++) {
-	    		 //Utilisateur u =  utilisateurDao.TrouverUtilisateur(parties.get(i).getIdUtilisateur());
-	    		 //parties.get(i).setPseudoUtilisateur(u.getPseudo());
-	    		 System.out.println("\n\n me voila \n\n");
-	    	}	
 	    	return parties;
 	    }
 }
