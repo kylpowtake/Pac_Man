@@ -18,7 +18,9 @@ public class GestionCompteForm {
 	private static final String CHAMP_CONF_PASS   = "confMotDePasse";
 
     public static final String  ATT_SESSION_USER          = "sessionUtilisateur";
+    private static final String ALGO_CHIFFREMENT = "SHA-256";
 
+    
 	private String resultat;
 	private Map<String, String> erreurs = new HashMap<String, String>();
 	private UtilisateurDao      utilisateurDao;
@@ -56,12 +58,15 @@ public class GestionCompteForm {
 		//Récupération de la confirmation du mot de passe de l'utilisateur voulant changer son mot de passe.
 	    String confMotDePasse = getValeurChamp( request, CHAMP_CONF_PASS );
 
+    	//Initialisation du mot de passe chiffrer.
+    	String motDePasseChiffre = "";
+    	
         /* Récupération de la session depuis la requête */
         HttpSession session = request.getSession();
 
         //On récupère dans la session l'utilisateur s'étant connecté.
         Utilisateur utilisateur = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
-
+        
 	    if(!ancienMotDePasse.isEmpty() || !nouveauMotDePasse.isEmpty() || !confMotDePasse.isEmpty() ) {
 	    	/* Validation du champ ancien mot de passe. */
 	    	try {
@@ -78,6 +83,19 @@ public class GestionCompteForm {
 	            setErreur( CHAMP_NOUVEAU_PASS, e.getMessage() );
 	            setErreur( CHAMP_CONF_PASS, null );
 	        }
+	        /*
+	         * Utilisation de la bibliothèque Jasypt pour chiffrer le nouveau mot de passe
+	         * efficacement.
+	         * 
+	         * L'algorithme SHA-256 est ici utilisé, avec par défaut un salage
+	         * aléatoire et un grand nombre d'itérations de la fonction de hashage.
+	         * 
+	         * La String retournée est de longueur 56 et contient le hash en Base64.
+	         */
+	        ConfigurablePasswordEncryptor passwordEncryptor = new ConfigurablePasswordEncryptor();
+	        passwordEncryptor.setAlgorithm( ALGO_CHIFFREMENT );
+	        passwordEncryptor.setPlainDigest( false );
+	        motDePasseChiffre = passwordEncryptor.encryptPassword( nouveauMotDePasse );
 	    	//La confirmation du mot de passe n'est pas erroné, on peut donc tester si c'est le même que le nouveau.
 	    }
 	    
@@ -93,7 +111,7 @@ public class GestionCompteForm {
 	    		//Si le pseudo n'est pas vide ou/et les mots de passe ne sont pas vides, on peut appliquer un changement. 
 	    		//On ne change pas le mot de passe si l'ancien mot de passe n'est pas le même que le mot de passe actuelle de l'utilisateur.
 	    		if(ancienMotDePasse.equals(utilisateur.getMotDePasse())) {
-	    			utilisateurDao.ChangerUtilisateur(utilisateur, pseudo, nouveauMotDePasse);	    		
+	    			utilisateurDao.ChangerUtilisateur(utilisateur, pseudo, motDePasseChiffre);	    		
 	    		} else {
 	    	        resultat = "Échec du changement. Le mot de passe actuel donné n'est pas le bon.";
 	    		}

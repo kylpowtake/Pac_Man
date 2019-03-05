@@ -74,17 +74,17 @@
 			        
 			
 			                <label for="motdepasse">Ancien mot de passe</label>
-			                <input type="password" id="motdepasse" name="motdepasse" value="" class="form-control form-control-user"/>
+			                <input type="password" id="ancienMotDePasse" name="ancienMotDePasse" value="" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['motdepasse']}</span>
 			   
 			                
 			                <label for="motdepasse">Nouveau mot de passe</label>
-			                <input type="password" id="motdepasse" name="motdepasse" value="" class="form-control form-control-user"/>
+			                <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" value="" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['motdepasse']}</span>
 			           
 			                
 			                <label for="motdepasse">Confirmation du mot de passe</label>
-			                <input type="password" id="motdepasse" name="motdepasse" value="" class="form-control form-control-user"/>
+			                <input type="password" id="confMotDePasse" name="confMotDePasse" value="" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['motdepasse']}</span>
 			            
 			
