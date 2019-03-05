@@ -9,9 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.TypeDef;
-import org.jasypt.hibernate3.type.EncryptedStringType;
 
 /**
  * Classe utilisée pour représenté un utilisateur.
@@ -30,7 +27,8 @@ public class Utilisateur {
     private String    pseudo;
     //La date de son inscription.
     private Timestamp dateInscription;
-
+    //L'activité de l'utilisateur.
+    private boolean activite;
     
 	//Indique à hibernate que cette valeur s'incrémente et correspond à la colomne increment du tableau(l'id).
 	@Id
@@ -104,4 +102,22 @@ public class Utilisateur {
     public void setDateInscription( Timestamp dateInscription ) {
         this.dateInscription = dateInscription;
     }
+    
+	//indique à hibernate la colomne associé à cette variable.
+	@Column(name = "activite")
+	/**
+	 * Permet d'obtenir l'activite de l'utilisateur.
+	 * @return l'activite de l'utilisateur.
+	 */
+    public boolean getActivite() {
+        return activite;
+    }
+	/**
+	 * Permet de changer le pseudo de l'utilisateur.
+	 * @param pseudo : nouveau pseudo de l'utilisateur.
+	 */
+    public void setActivite( boolean activite ) {
+        this.activite = activite;
+    }
+
 }

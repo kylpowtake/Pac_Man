@@ -79,40 +79,6 @@ public class PartieDaoImpl implements PartieDao{
     	
     	return parties;
 	}
-	/*
-	@Override
-	public ArrayList<Partie> TrouverPartiesAUtilisateur(long idUtilisateur) throws DAOException {
-		
-		
-    	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
-    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
-    	//Ouvre la session.
-    	Session session = sessionFactory.openSession();
-    	//Commence la transaction.
-    	session.beginTransaction();
-    	//Créer l'arraylist à rendre allant contenir toutes les parties. 
-    	ArrayList<Partie> parties = new ArrayList<>();
-    	//Récupère toutes les parties de la table.
-    	List partiesTemp = session.createQuery("From Partie").list();
-    	//Pour chaque partie : 
-    	for (Iterator iterator =  partiesTemp.iterator(); iterator.hasNext();) {
-    		Partie partieTemp = (Partie) iterator.next();
-    		//On test si c'est une partie de l'utilisateur indiqué par l'id donnée.
-    		if(partieTemp.getIdUtilisateur() == idUtilisateur) {
-    		//Si c'est une de ses parties, on l'ajoute la partie à l'arraylist.
-    		parties.add(partieTemp);
-    		}
-    	}    	
-    	//Applique la transaction.
-        session.getTransaction().commit();
-        //Ferme la session.
-    	session.close();
-    	    	
-		return parties;
-		
-		
-	}
-*/
 	
     /**
      * Permet de trouver toutes les parties dans la base de données Pacman dans la table Partie.
@@ -157,6 +123,13 @@ public class PartieDaoImpl implements PartieDao{
 		
 		
 		/*
+		 * Ceci est en utilisant un bean partie étant mapper avec la table Partie.
+		 * Dès lors, pour obtenir toutes les parties et savoir les pseudos corrrespondants avec les idUtilisateurs, il faut soit :
+		 * -Directement le mettre dans la table partie mais il faut l'updater à chaque changement.
+		 * -Une table idUtilisateur/Pseudo en brut de garder en mémoire à modifier à chaque changement.
+		 * -Associer dans le code pour chaque id son pseudo grâce à une requête.
+		 * Or pour toutes ses possibilités, soit c'est du code de basse qualité pour le cas 1 et 2, 
+		 * soit pour le 3 ça prend trop de temps avec hibernate (quelques secondes avec un utilisateur dans la base de données).
     	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
     	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
     	//Ouvre la session.
