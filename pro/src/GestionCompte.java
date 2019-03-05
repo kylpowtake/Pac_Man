@@ -59,19 +59,19 @@ public class GestionCompte extends HttpServlet {
         //Récupération de la session depuis la requête 
         HttpSession session = request.getSession();
         
-        session.getAttribute(name)
+        //session.getAttribute(name);
 
 
         if ( form.getErreurs().isEmpty() && utilisateur.getMotDePasse() != null && !utilisateur.getMotDePasse().isEmpty()) {    	
             session.setAttribute( ATT_SESSION_USER, utilisateur );
-            response.sendRedirect( URL_REDIRECTION );
+            //response.sendRedirect( URL_REDIRECTION );
 
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
-            request.setAttribute( ATT_FORM, form );
-            request.setAttribute("partie",returnParties());
-            request.setAttribute( ATT_USER, utilisateur );
-            this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
+            //request.setAttribute( ATT_FORM, form );
+            //request.setAttribute("partie",returnParties());
+            //request.setAttribute( ATT_USER, utilisateur );
+            //this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
 
         }
 

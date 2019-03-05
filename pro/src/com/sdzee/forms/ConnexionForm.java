@@ -89,6 +89,7 @@ public final class ConnexionForm {
                     resultat = "Succès de la connexion.";
                     utilisateur.setId(utilisateurTemp.getId());
                     utilisateur.setMotDePasse( motDePasse );
+                    utilisateur.setActivite(utilisateurTemp.getActivite());
                 } else {
                 	//Si le résultat est négatif on ne rajoute pas le mot de passe à l'utilisateur renvoyé, il ne sera donc pas considré connecté.
                     resultat = "Échec de la connexion. Ce pseudo ou mot de passe est incorrecte.";
