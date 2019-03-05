@@ -41,13 +41,17 @@
 			                <table id="dataTable" class="table table-striped table-bordered text-center">
 			                  <thead>
 			                    <tr>
-			                      <th>Pseudo</th>
 			                      <th>Score</th>
 			                      <th>Date</th>
 			                    </tr>
 			                  </thead>
 			                  <tbody>
-
+									<c:forEach var="name"  items="${requestScope['partie']}" >
+	    							<tr>
+	          							<td><c:out value="${name['score']}" /></td>
+	          							<td><c:out value="${name['date']}" /></td>
+	          						</tr>
+								</c:forEach>
 			                  </tbody>
 			                </table>
 			           	</div>
@@ -62,7 +66,7 @@
 
 						
 						
-						<form method="post" action="connexion">
+						<form method="post" action="gestionCompte">
 						
 			                <label for="pseudo">Nouveau pseudo</label>
 			                <input type="text" id="pseudo" name="pseudo" value="<c:out value="${utilisateur.pseudo}"/>" class="form-control form-control-user"/>
@@ -97,7 +101,10 @@
   					</div>
   					
   					<div class="card-footer text-center bg-danger">
-  						supprimer son compte 
+  						<form method="get" action="gestionCompte">
+  							 <input type="hidden" id="custId" name="supprimer" value="true">
+			                 <input type="submit" value="Supprimer son compte" class="btn btn-danger btn-user btn-block" />
+			        	</form>
   					</div>
   					
   				</div>
@@ -105,9 +112,18 @@
     	</div>
     	
         <p>Vous êtes connecté(e) avec le pseudo ${sessionScope.sessionUtilisateur.pseudo} et le mot de passe ${sessionScope.sessionUtilisateur.motDePasse}, vous avez bien accès à l'espace restreint.</p>
-        tableau historique parties jouees</br>
-        graphe si le temps 
+
 
     </body>
 </html>
 
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTable').DataTable( {
+        	"responsive" : true,
+        	"bLengthChange":false,
+        	"iDisplayLength" : 5
+        } );
+    } );
+    </script>

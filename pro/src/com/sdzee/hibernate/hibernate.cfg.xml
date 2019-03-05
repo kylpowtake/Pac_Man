@@ -22,6 +22,7 @@
        
       <!-- Names the annotated entity class -->
       <mapping class="com.sdzee.beans.Utilisateur"/>     
+      <mapping class="com.sdzee.beans.Partie"/>   
       
    </session-factory>
 </hibernate-configuration>
