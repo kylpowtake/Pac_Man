@@ -14,6 +14,28 @@
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        
+        <!-- script pour le tableau de scores -->
+        <script type="text/javascript">
+		    $(document).ready(function() {
+		        $('#dataTable').DataTable( {
+		        	"responsive" : true,
+		        	"bLengthChange":false,
+		        	"iDisplayLength" : 5
+		        } );
+		    } );
+	    </script>
+	    <script>
+	    	function ValidateForm() {
+	    		if (confirm("voulez vous vraiment supprimer votre compte ?")) {
+	    		    return true;
+	    		  } else {
+	    		    return false;
+	    		  }
+	    	}
+	    </script>
+
+        
         <title>Accès restreint</title>
     </head>
     <body>
@@ -68,24 +90,25 @@
 						
 						<form method="post" action="gestionCompte">
 						
+							<label for="ancienMotDePasse">Mot de passe<span> *</span></label>
+			                <input type="password" id="ancienpMotDePasse" name="ancienpMotDePasse" value="" class="form-control form-control-user"/>
+			                <span class="erreur">${form.erreurs['ancienMotDePasse']}</span>
+			                
+			                <hr />
+						
 			                <label for="pseudo">Nouveau pseudo</label>
 			                <input type="text" id="pseudo" name="pseudo" value="<c:out value="${utilisateur.pseudo}"/>" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['pseudo']}</span>
-			        
-			
-			                <label for="ancienpMotDePasse">Ancien mot de passe</label>
-			                <input type="password" id="ancienpMotDePasse" name="ancienpMotDePasse" value="" class="form-control form-control-user"/>
-			                <span class="erreur">${form.erreurs['motdepasse']}</span>
 			   
 			                
 			                <label for="nouveauMotDePasse">Nouveau mot de passe</label>
 			                <input type="password" id="nouveauMotDePasse" name="nouveauMotDePasse" value="" class="form-control form-control-user"/>
-			                <span class="erreur">${form.erreurs['motdepasse']}</span>
-			           
+			                <span class="erreur">${form.erreurs['nouveauMotDePasse']}</span>
+			           		<br />
 			                
 			                <label for="confMotDePasse">Confirmation du mot de passe</label>
 			                <input type="password" id="confMotDePasse" name="confMotDePasse" value="" class="form-control form-control-user"/>
-			                <span class="erreur">${form.erreurs['motdepasse']}</span>
+			                <span class="erreur">${form.erreurs['confMotDePasse']}</span>
 			            
 			
 			                <input type="submit" value="Modifier" class="btn btn-primary btn-user btn-block" />
@@ -102,28 +125,16 @@
   					
   					<div class="card-footer text-center bg-danger">
   						<form method="get" action="gestionCompte">
-  							 <input type="hidden" id="custId" name="supprimer" value="true">
-			                 <input type="submit" value="Supprimer son compte" class="btn btn-danger btn-user btn-block" />
+  							 <input type="hidden" name="supprimer">
+			                 <input type="submit" value="Supprimer son compte" class="btn btn-danger btn-user btn-block"  onclick="return ValidateForm();" />
 			        	</form>
   					</div>
   					
   				</div>
     		</div>
     	</div>
-    	
-        <p>Vous êtes connecté(e) avec le pseudo ${sessionScope.sessionUtilisateur.pseudo} et le mot de passe ${sessionScope.sessionUtilisateur.motDePasse}, vous avez bien accès à l'espace restreint.</p>
-
 
     </body>
 </html>
 
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#dataTable').DataTable( {
-        	"responsive" : true,
-        	"bLengthChange":false,
-        	"iDisplayLength" : 5
-        } );
-    } );
-    </script>

@@ -27,7 +27,7 @@ public class GestionCompte extends HttpServlet {
 	public static final String 	CONF_DAO_FACTORY 		  =  "daofactory";
 	public static final String  ATT_SESSION_USER          =  "sessionUtilisateur";
 	public static final String  ATT_FORM                  =  "form";
-	public static final String  VUE				  		  =  "/accesRestreint.jsp";
+	public static final String  VUE				  		  =  "/WEB-INF/accesRestreint.jsp";
 	public static final String 	URL_REDIRECTION 		  =  "http://localhost:8080/pro/deconnexion";
 	
 	private UtilisateurDao     utilisateurDao;
@@ -51,9 +51,14 @@ public class GestionCompte extends HttpServlet {
 		if(request.getParameter("supprimer") != null){
 			this.utilisateurDao.SupprimerUtilisateur(user);
 			response.sendRedirect( URL_REDIRECTION );
+			System.out.println("demande de suppression");
+		}else {
+			System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+			this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
 		}
 		
-		this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+		
+		
 	}
 
 
@@ -69,10 +74,13 @@ public class GestionCompte extends HttpServlet {
         
         //reset de la session de l'utilisateur 
         session.setAttribute(ATT_SESSION_USER,utilisateur);
+
+        
         
         if(!form.getErreurs().isEmpty()) {
         	request.setAttribute( ATT_FORM, form);
         }
+        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
      
     }
 
