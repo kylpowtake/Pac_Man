@@ -2,6 +2,8 @@ package model;
 
 import java.net.*;
 import java.io.*;
+import java.net.InetAddress;
+import java.util.Enumeration;
 
 public class ServeurRecepteur extends Thread {
 	static Socket clientSocket;
@@ -49,7 +51,17 @@ public class ServeurRecepteur extends Thread {
 				 MainServeur.setGame(clientSocket,identifiant);
 			 }else{
 				 MainServeur.setEmetteur(clientSocket);
-				 ServeurEmetteur.sendMessage("connexion:http://192.168.43.238:8080/pro/connexion");
+				try {
+					String ip = null;
+					NetworkInterface nif = NetworkInterface.getByName("wlo1");
+					Enumeration <InetAddress> inetAdrress = nif.getInetAddresses();
+					while(inetAdrress.hasMoreElements()){
+						ip = inetAdrress.nextElement().getHostName();
+					}
+					ServeurEmetteur.sendMessage("connexion:http:/"+ip+":8080/pro/inscription");
+				} catch (SocketException e) {
+					e.printStackTrace();
+				}
 			 }
 		}//cas du changement de vitesse du jeu 
 		else if(parts[0].equals("slider")){

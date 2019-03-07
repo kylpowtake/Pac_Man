@@ -44,10 +44,5 @@ public class ControleurGame implements InterfaceControleur{
 		Bdd.sendScore(game.getIdentifiant(),game.getNbPoints());
 		
 	}
-	
-	@Override
-	public void finJeu(){
-		game.setIsRunnin(false);
-		Bdd.sendScore(game.getIdentifiant(), game.getNbPoints());
-	}
+
 }

@@ -7,5 +7,4 @@ public interface InterfaceControleur {
     public void finJeu();
     public void slider(int valeur);
     public void changement(String chemin);
-    public void finJeu();
 }

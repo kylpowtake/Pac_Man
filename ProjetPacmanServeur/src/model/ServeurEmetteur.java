@@ -16,6 +16,7 @@ public class ServeurEmetteur extends Thread {
 		clientSocket = so;
 		try {
 		    sortie = new PrintWriter(clientSocket.getOutputStream(),true);
+		    System.out.println(clientSocket.getPort());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 

@@ -58,7 +58,6 @@ public class MainServeur {
 		ServeurEmetteur serveurEmetteur = new ServeurEmetteur(so);
         Thread envoi = new Thread(serveurEmetteur);
 		return envoi;
-		
 	}
 	
 	public static void setGame(Socket so,int identifiant){
@@ -67,6 +66,8 @@ public class MainServeur {
 			PacmanGame game = new PacmanGame(laby, chemin);
 			game.setLabyrinthe(laby);
 			ControleurGame controleur = new ControleurGame(game);
+			
+			System.out.println(game.toString());
 			
 			game.setIdentifiant(identifiant);
 			
