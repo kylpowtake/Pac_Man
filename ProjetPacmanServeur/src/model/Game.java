@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.net.Socket;
 import java.util.ArrayList;
 
 
@@ -21,7 +22,7 @@ public abstract class Game{
 	public int tourInvincible; 							//Nombre de tours restant d'invincibilité pour les pacmans.
 	public int identifiant;								//l'identifiant du joueur avec lequel il s'est connecté 
 	public boolean finThread = false;
-
+	public Socket socket;
 	//Liste des agents 
 	public ArrayList<Agent> fantomes;
 	public ArrayList<Agent> pacmans;
@@ -71,9 +72,10 @@ public abstract class Game{
 	 * @param labyrinthe : Contient le labyrinthe.
 	 * @param chemin : Contient le lien vers un fichier contenant le labyrinthe original.
 	 */
-	public Game(Maze labyrinthe, String chemin){
+	public Game(Maze labyrinthe, String chemin, Socket socket){
 		this.NbTours = 0;
 		this.chemin = chemin;
+		this.socket = socket;
 	}
 	
 	

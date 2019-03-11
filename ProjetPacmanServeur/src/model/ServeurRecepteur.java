@@ -6,9 +6,12 @@ import java.net.InetAddress;
 import java.util.Enumeration;
 
 public class ServeurRecepteur extends Thread {
-	static Socket clientSocket;
-	static ControleurGame controleur;
-	
+	ServeurEmetteur serveurEmetteur;
+	Socket clientSocket;
+	ControleurGame controleur;
+	int id;
+	static String chemin = "layouts/tinyMaze.lay";		//chemin envoyé au client à sa connexion 
+
 	
 	//constructeur 
 	public ServeurRecepteur(Socket so){
@@ -19,7 +22,7 @@ public class ServeurRecepteur extends Thread {
 	 * @param chaine
 	 * traite la chaine envoyée par le client(direction,demande de connexion,commande)
 	 */
-	static public void traiter(String chaine){
+	public void traiter(String chaine){
 		String[] parts = chaine.split(":");
 		System.out.println(chaine);
 		//cas d'une direction 
@@ -48,9 +51,10 @@ public class ServeurRecepteur extends Thread {
 			 String mdp = parts[2];
 			 int identifiant = Bdd.connect(pseudo, mdp);
 			 if(identifiant!=-1){
-				 MainServeur.setGame(clientSocket,identifiant);
+				 setGame(clientSocket,identifiant);
+				 System.out.println(clientSocket.toString());
 			 }else{
-				 MainServeur.setEmetteur(clientSocket);
+				 setEmetteur(clientSocket);
 				try {
 					String ip = null;
 					NetworkInterface nif = NetworkInterface.getByName("wlo1");
@@ -58,7 +62,7 @@ public class ServeurRecepteur extends Thread {
 					while(inetAdrress.hasMoreElements()){
 						ip = inetAdrress.nextElement().getHostName();
 					}
-					ServeurEmetteur.sendMessage("connexion:http:/"+ip+":8080/pro/inscription");
+					serveurEmetteur.sendMessage("connexion:http:/"+ip+":8080/pro/inscription");
 				} catch (SocketException e) {
 					e.printStackTrace();
 				}
@@ -107,4 +111,38 @@ public class ServeurRecepteur extends Thread {
 			controleur.finJeu();
 		}
 	 } 
+	
+	public Thread setEmetteur(Socket so){
+		serveurEmetteur = new ServeurEmetteur(so);
+        Thread envoi = new Thread(serveurEmetteur);
+		return envoi;
+	}
+	
+
+	
+	public void setGame(Socket so,int identifiant){
+		try {
+			Maze laby = new Maze(chemin);
+			PacmanGame game = new PacmanGame(laby, chemin, clientSocket);
+			game.setLabyrinthe(laby);
+			controleur = new ControleurGame(game);
+			
+			System.out.println(game.toString());
+			
+			game.setIdentifiant(identifiant);
+			
+			//demarrage du thread d'envoi 
+			setEmetteur(so).start();
+			
+			//set du game et du controleur 
+			serveurEmetteur.game = game;
+			
+			//envoi du chemin au client 
+			serveurEmetteur.sendMessage("chemin:"+MainServeur.chemin); 
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

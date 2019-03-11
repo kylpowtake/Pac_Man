@@ -6,9 +6,9 @@ import java.io.*;
 
 public class ServeurEmetteur extends Thread {
 	
-	static Socket clientSocket;
-	static PrintWriter sortie;
-	static Game game;
+	Socket clientSocket;
+	PrintWriter sortie;
+	Game game;
 	
 	
 	//constructeur 
@@ -23,7 +23,7 @@ public class ServeurEmetteur extends Thread {
 	}
 	
 	
-	public static void sendMessage(String chaine){
+	public void sendMessage(String chaine){
 		sortie.println(chaine);
 	}
 	

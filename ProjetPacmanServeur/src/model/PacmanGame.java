@@ -1,5 +1,6 @@
 package model;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,8 +31,8 @@ public class PacmanGame extends Game{
 	/**
 	 * Constructeur de PacmanGame avec un labrinthe et un chemin vers le fichier contenant le labyrinthe.
 	 */
-	public PacmanGame(Maze labyrinthe ,String chemin){
-		super(labyrinthe, chemin);
+	public PacmanGame(Maze labyrinthe ,String chemin, Socket socket){
+		super(labyrinthe, chemin, socket);
 		
 		
 		fantomes = new ArrayList<Agent>();
@@ -126,7 +127,7 @@ public class PacmanGame extends Game{
 				this.setIsInvincible(true);
 				this.getLabyrinthe().estInvinsible = true;
 				this.setTourInvincible(this.getNbTours() + 20);
-				ServeurEmetteur.sendMessage("musique:sounds/ghost_buster.wav");
+				MainServeur.Patate(socket, "musique:sounds/ghost_buster.wav");
 			}
 		}
 		
@@ -139,7 +140,7 @@ public class PacmanGame extends Game{
 				
 		gameOver();
 		this.NbTours += 1 ;
-		ServeurEmetteur.sendMessage(this.toString());
+		MainServeur.Patate(socket, this.toString());
 		
 		
 	}
@@ -287,7 +288,7 @@ public class PacmanGame extends Game{
 						i--;
 						isAlivePacman = false;
 						this.NbVies -=1;
-						ServeurEmetteur.sendMessage("musique:sounds/pacman_death.wav");
+						MainServeur.Patate(socket, "musique:sounds/pacman_death.wav");
 					}
 				}
 				if(isAlivePacman == true && this.getIsInvincible() == true){
@@ -296,7 +297,7 @@ public class PacmanGame extends Game{
 						this.getLabyrinthe().getGhosts_start().remove(j);
 						j--;
 						this.setNbPoints(this.getNbPoints()+10);
-						ServeurEmetteur.sendMessage("musique:sounds/ghost_death.wav");
+						MainServeur.Patate(socket, "musique:sounds/ghost_death.wav");
 					}
 					
 				}
@@ -329,8 +330,8 @@ public class PacmanGame extends Game{
     	//(défaite)
     	if(getNbVies()<=0){
     		this.stop();																		//jeu en pause 
-    		ServeurEmetteur.sendMessage("musique:sounds/you_died.wav");
-    		ServeurEmetteur.sendMessage("chemin:"+this.chemin+";etat:false");	//chargement d'un nouveau labyrinthe 
+    		MainServeur.Patate(socket, "musique:sounds/you_died.wav");
+    		MainServeur.Patate(socket, "chemin:"+this.chemin+";etat:false");	//chargement d'un nouveau labyrinthe 
     		Bdd.sendScore(this.getIdentifiant(),this.getNbPoints());							//envoi du score 
     		this.setNbPoints(0);																//remise du score à 0;
     		this.setNbies(3);																	//nombre reinit du nombre de vie
@@ -368,8 +369,8 @@ public class PacmanGame extends Game{
     	
     	//cas ou il n'y a plus de capsules dans le labyrinthe (victoire)
     	if(noCapsuleFound == true){
-    		ServeurEmetteur.sendMessage("musique:sounds/next_level.wav");				//envoi du sound de victoire 
-    		ServeurEmetteur.sendMessage("chemin:"+this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe		
+    		MainServeur.Patate(socket, "musique:sounds/next_level.wav");				//envoi du sound de victoire 
+    		MainServeur.Patate(socket, "chemin:"+this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe		
     	}
     }
     
