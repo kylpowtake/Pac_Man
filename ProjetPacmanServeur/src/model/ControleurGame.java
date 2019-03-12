@@ -41,7 +41,7 @@ public class ControleurGame implements InterfaceControleur{
 	public void finJeu(){
 		game.finThread = true;
 		game.setIsRunnin(false);
-		Bdd.sendScore(game.getIdentifiant(),game.getNbPoints());
+		Bdd.sendScore(game.getIdentifiant(),game.getNbPoints(), game.getNbFantomesManges(), game.getCapsulesMangees(), game.getPacGommesMangees(), game.getMapsEffectuees(), game.getNbTours());
 		
 	}
 

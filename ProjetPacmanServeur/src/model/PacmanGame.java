@@ -115,31 +115,33 @@ public class PacmanGame extends Game{
 		for(int i = 0; i < pacmans.size(); i++){
 			action.setDirection(pacmans.get(i).getNextAction());
 			pacmans.get(i).getPosition().setDir(pacmans.get(i).getNextAction());
-			this.moveAgent(pacmans.get(i), action);
+			moveAgent(pacmans.get(i), action);
 			PositionAgent position = new PositionAgent(pacmans.get(i).getPosition());
-			if(this.getLabyrinthe().isFood(position.getX(), position.getY())){
-				this.getLabyrinthe().setFood(position.getX(), position.getY(), false);
-				this.setNbPoints(this.getNbPoints()+1);
+			if(getLabyrinthe().isFood(position.getX(), position.getY())){
+				getLabyrinthe().setFood(position.getX(), position.getY(), false);
+				setNbPoints(getNbPoints()+1);
+				setPacGommesMangees(getPacGommesMangees()+1);
 			}
-			if(this.getLabyrinthe().isCapsule(position.getX(),position.getY())){
-				this.getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
-				this.setNbPoints(this.getNbPoints()+5);
-				this.setIsInvincible(true);
-				this.getLabyrinthe().estInvinsible = true;
-				this.setTourInvincible(this.getNbTours() + 20);
+			if(getLabyrinthe().isCapsule(position.getX(),position.getY())){
+				getLabyrinthe().setCapsule(position.getX(), position.getY(), false);
+				setNbPoints(getNbPoints()+5);
+				setCapsulesMangees(getCapsulesMangees()+1);
+				setIsInvincible(true);
+				getLabyrinthe().estInvinsible = true;
+				setTourInvincible(getNbTours() + 20);
 				MainServeur.Patate(socket, "musique:sounds/ghost_buster.wav");
 			}
 		}
 		
 		mortAgent();
 		
-		if(this.getTourInvincible() == this.getNbTours()){
-			this.setIsInvincible(false);
-			this.getLabyrinthe().estInvinsible = false;
+		if(getTourInvincible() == getNbTours()){
+			setIsInvincible(false);
+			getLabyrinthe().estInvinsible = false;
 		}
 				
 		gameOver();
-		this.NbTours += 1 ;
+		NbTours += 1 ;
 		MainServeur.Patate(socket, this.toString());
 		
 		
@@ -291,12 +293,13 @@ public class PacmanGame extends Game{
 						MainServeur.Patate(socket, "musique:sounds/pacman_death.wav");
 					}
 				}
-				if(isAlivePacman == true && this.getIsInvincible() == true){
+				if(isAlivePacman == true && getIsInvincible() == true){
 					if(positionPacman.getX() == positionFantome.getX() && positionPacman.getY() == positionFantome.getY()){
 						fantomes.remove(j);
-						this.getLabyrinthe().getGhosts_start().remove(j);
+						setNbFantomesManges(getNbFantomesManges()+1);
+						getLabyrinthe().getGhosts_start().remove(j);
 						j--;
-						this.setNbPoints(this.getNbPoints()+10);
+						setNbPoints(getNbPoints()+10);
 						MainServeur.Patate(socket, "musique:sounds/ghost_death.wav");
 					}
 					
@@ -310,10 +313,11 @@ public class PacmanGame extends Game{
      * @return String (chemin du maze)
      */
     public String levelUp(){
-		int rnd = new Random().nextInt(this.allMazes.size());
-		String map = this.allMazes.get(rnd);
-		this.actualiser(map);
-		this.allMazes.remove(rnd);
+		int rnd = new Random().nextInt(allMazes.size());
+		String map = allMazes.get(rnd);
+		actualiser(map);
+		allMazes.remove(rnd);
+		setMapsEffectuees(getMapsEffectuees()+1);
 		return map;
 	}
     
@@ -329,13 +333,19 @@ public class PacmanGame extends Game{
     	//ou le joueur n'a plus de vies 
     	//(défaite)
     	if(getNbVies()<=0){
-    		this.stop();																		//jeu en pause 
+    		stop();																		//jeu en pause 
     		MainServeur.Patate(socket, "musique:sounds/you_died.wav");
-    		MainServeur.Patate(socket, "chemin:"+this.chemin+";etat:false");	//chargement d'un nouveau labyrinthe 
-    		Bdd.sendScore(this.getIdentifiant(),this.getNbPoints());							//envoi du score 
-    		this.setNbPoints(0);																//remise du score à 0;
-    		this.setNbies(3);																	//nombre reinit du nombre de vie
-    		this.setNbiesTemp(3);
+    		MainServeur.Patate(socket, "chemin:"+this.chemin+";etat:false");					//chargement d'un nouveau labyrinthe 
+    		Bdd.sendScore(getIdentifiant(),getNbPoints(), getNbFantomesManges(), getCapsulesMangees(), getPacGommesMangees(), getMapsEffectuees(), getNbTours());			
+    																							//envoi du score, nombre de fantomes, capsules, pacGommes manges, des maps effectuees et des pas faits.
+    		setNbPoints(0);																//remise du score à 0;
+    		setNbies(3);																	//nombre reinit du nombre de vie
+    		setNbiesTemp(3);
+    		setNbFantomesManges(0);
+    		setCapsulesMangees(0);
+    		setPacGommesMangees(0);
+    		setMapsEffectuees(0);
+    		setNbTours(0);
     		try {
 				labyrinthe = new Maze(this.getChemin());
 				RechargementAgents();

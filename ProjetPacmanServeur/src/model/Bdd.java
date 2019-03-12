@@ -82,12 +82,12 @@ final public class Bdd {
      * @param score
      * methode permettant d'enregistrer le score d'une partie dans la BDD 
      */
-	static public void sendScore(int identifiant,int score){
+	static public void sendScore(int identifiant,int score, int fantomesManges, int capsulesMangees, int pacGommesMangees, int mapsEffectuees, int pasEffectues){
 		try {
 			Class.forName( "com.mysql.jdbc.Driver" );
 			connexion = DriverManager.getConnection( url, utilisateur, motDePasse );
 			statement = connexion.createStatement();
-			statement.executeUpdate( "INSERT INTO Partie (idUtilisateur,score,date) " + "VALUES ('" + identifiant + "','" + score + "', NOW());" );
+			statement.executeUpdate( "INSERT INTO Partie (idUtilisateur,score,fantomesManges, capsulesMangees, pacGommesMangees, mapsEffectuees, pasEffectues,date) " + "VALUES ('" + identifiant + "','" + score + "','" + fantomesManges + "','" + capsulesMangees + "','" + pacGommesMangees + "','" + mapsEffectuees + "','" + pasEffectues  + "', NOW());" );
 		}catch (ClassNotFoundException e) {
 			e.printStackTrace();
 	    }catch (SQLException e) {

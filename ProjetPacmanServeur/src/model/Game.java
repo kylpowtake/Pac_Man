@@ -11,14 +11,18 @@ public abstract class Game{
 
 	public ArrayList<String> allMazes = new ArrayList<>();	//contient la liste de tous les labyrinthes disponibles 
 	public Thread thread; 
-	public boolean isRunning = false;						//definit l'etat du jeu(play,stop) par defaut a false(stop), le client le met à true(play) dès qu'il lance une partie 
-	public boolean isInvincible;							//définit l'etat du pacman 	
+	public boolean isRunning = false;					//definit l'etat du jeu(play,stop) par defaut a false(stop), le client le met à true(play) dès qu'il lance une partie 
+	public boolean isInvincible;						//définit l'etat du pacman 	
 	public int NbToursSecondes = 2;						//definit la vitesse de jeu désirée par le joueur (pas implémenté pour l'instant)
 	public int NbTours = 0;								//tour actuel de jeu 
-	public int NbPoints = 0;								//nombre de point sur une partie 
-	public int NbVies = 3,NbViesTemp = 3;						//le nombre de vies du joueur 
-	public String chemin;									//le chemin du labyrinthe 
-	public Maze labyrinthe;									//le labyrinthe 
+	public int NbPoints = 0;							//nombre de point sur une partie 
+	public int NbVies = 3,NbViesTemp = 3;				//le nombre de vies du joueur 
+	private int NbFantomesManges = 0;					//Le nombre de fantomes manges dansla partie actuelle.
+	private int capsulesMangees = 0;					//Le nombre de capsules mangees dans la partie actuelle.
+	private int pacGommesMangees = 0;					//Le nombre de pacGommes mangees dans la partie actuelle.
+	private int mapsEffectuees = 0; 					//Le nombre de maps finies dans la partie actuelle.
+	public String chemin;								//le chemin du labyrinthe 
+	public Maze labyrinthe;								//le labyrinthe 
 	public int tourInvincible; 							//Nombre de tours restant d'invincibilité pour les pacmans.
 	public int identifiant;								//l'identifiant du joueur avec lequel il s'est connecté 
 	public boolean finThread = false;
@@ -54,6 +58,18 @@ public abstract class Game{
 	
 	public int getNbVies(){return this.NbVies;}
 	public void setNbies(int nb){this.NbVies = nb;}
+	
+	public int getNbFantomesManges() {return NbFantomesManges;}
+	public void setNbFantomesManges(int nbFantomesManges) {this.NbFantomesManges = nbFantomesManges;}
+	
+	public int getCapsulesMangees() {return capsulesMangees;}
+	public void setCapsulesMangees(int capsulesMangees) {this.capsulesMangees = capsulesMangees;}
+		
+	public int getPacGommesMangees() {return pacGommesMangees;}
+	public void setPacGommesMangees(int pacGommesMangees) {this.pacGommesMangees = pacGommesMangees;}
+	
+	public int getMapsEffectuees() {return mapsEffectuees;}
+	public void setMapsEffectuees(int mapsEffectuees) {this.mapsEffectuees = mapsEffectuees;}
 	
 	public int getNbViesTemp(){return this.NbViesTemp;}
 	public void setNbiesTemp(int nb){this.NbViesTemp = nb;}
