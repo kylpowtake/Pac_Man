@@ -3,17 +3,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
         
+        
+       <link type="text/css" rel="stylesheet" href="inc/css/compte.css" />
        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        
-        
-        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+       <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
         
         
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+        
         
         <!-- script pour le tableau de scores -->
         <script type="text/javascript">
@@ -25,6 +25,8 @@
 		        } );
 		    } );
 	    </script>
+	 
+	    
 	    <script>
 	    	function ValidateForm() {
 	    		if (confirm("voulez vous vraiment supprimer votre compte ?")) {
@@ -39,24 +41,25 @@
         <title>Accès restreint</title>
     </head>
     <body>
+    
+    
+    <div class="contain">
     	
-    	<div class="row">
-    	<div class="col-lg-8">
-    	
-    	</div>
-    	<div class="col-lg-4">
-    		<a href="<%=request.getContextPath()+"/deconnexion"%>">
-  				<img src="${pageContext.servletContext.contextPath}/inc/index.png" style="width:30px;height:40px;">
-			</a> 
-    	</div>
+    	<div class="row head">
+	    	<div class="col-8 text-center">
+				<p>Bienvenue ${sessionScope.sessionUtilisateur.pseudo}</p>
+	    	</div>
+	    	<div class="col-4 text-right">
+	    		<a href="<%=request.getContextPath()+"/deconnexion"%>">
+	  				<img src="${pageContext.servletContext.contextPath}/inc/index.png" title="Déconnexion"  style="width:40px;height:40px;">
+				</a> 
+	    	</div>
     	</div>
 
 
     	<div class ="row">
-    		<div class="col-lg-4">
-    		image banner 
-    		</div>
-    		<div class="col-lg-4">
+
+    		<div class="col-lg-8">
     			<div class="card">
 	  					<div class="card-header text-center bg-secondary"><h3>Historique de mes parties</h3></div>
 	  					<div class="card-body">
@@ -64,6 +67,11 @@
 			                  <thead>
 			                    <tr>
 			                      <th>Score</th>
+			                      <th>fantomes mangés</th>
+			                      <th>pac-gommes mangés</th>
+			                      <th>capsules mangés</th>
+			                      <th>map effectués</th>
+			                      <th>nombre de tours joués</th>
 			                      <th>Date</th>
 			                    </tr>
 			                  </thead>
@@ -71,6 +79,11 @@
 									<c:forEach var="name"  items="${requestScope['partie']}" >
 	    							<tr>
 	          							<td><c:out value="${name['score']}" /></td>
+	          							<td><c:out value="${name['fantomesManges']}" /></td>
+	          							<td><c:out value="${name['capsulesMangees']}" /></td>
+	          							<td><c:out value="${name['pacGommesMangees']}" /></td>
+	          							<td><c:out value="${name['mapsEffectuees']}" /></td>
+	          							<td><c:out value="${name['pasEffectues']}" /></td>
 	          							<td><c:out value="${name['date']}" /></td>
 	          						</tr>
 								</c:forEach>
@@ -82,7 +95,7 @@
     		<div class="col-lg-4">
     			<div class="card">
   					<div class="card-header text-center bg-secondary">
-  						modifier son compte 
+  						<h3>Modifier son compte</h3>
   					</div>
   					<div class="card-body">
 
@@ -90,7 +103,7 @@
 						
 						<form method="post" action="gestionCompte">
 						
-							<label for="ancienMotDePasse">Mot de passe<span> *</span></label>
+							<label for="ancienMotDePasse">Mot de passe<span class="requis"> *</span></label>
 			                <input type="password" id="ancienpMotDePasse" name="ancienpMotDePasse" value="" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['ancienMotDePasse']}</span>
 			                
@@ -114,7 +127,7 @@
 			                <label for="confMotDePasse">Confirmation du mot de passe</label>
 			                <input type="password" id="confMotDePasse" name="confMotDePasse" value="" class="form-control form-control-user"/>
 			                <span class="erreur">${form.erreurs['confMotDePasse']}</span>
-			            
+			            	</br>
 			
 			                <input type="submit" value="Modifier" class="btn btn-primary btn-user btn-block" />
 			               
@@ -138,6 +151,8 @@
   				</div>
     		</div>
     	</div>
+
+</div>
 
     </body>
 </html>

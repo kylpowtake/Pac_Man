@@ -5,7 +5,7 @@
         <meta charset="utf-8" />
         <title>Connexion</title>
         <link rel="icon" type="image/png" href="${pageContext.servletContext.contextPath}/inc/favicon.png"  />
-        <link type="text/css" rel="stylesheet" href="inc/form.css" />
+        <link type="text/css" rel="stylesheet" href="inc/css/connexion.css" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         
         
@@ -26,7 +26,7 @@
     		<div class="row" style="background-color:black;">
     			<!-- banner -->
     			<div class="col">
-    				<img src="${pageContext.servletContext.contextPath}/inc/banner.gif" alt="" style="width:inherit;height:320px;">
+    				<img src="${pageContext.servletContext.contextPath}/inc/banner.gif"  style="width:inherit;height:320px;">
     			</div>
     			<!-- connexion form -->
     			<div class="col">

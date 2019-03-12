@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8" />
         <title>Inscription</title>
-        <link type="text/css" rel="stylesheet" href="inc/form2.css" />       
+        <link type="text/css" rel="stylesheet" href="inc/css/inscription.css" />       
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     </head>
     <body>

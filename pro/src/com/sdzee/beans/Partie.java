@@ -2,25 +2,12 @@ package com.sdzee.beans;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-
 
 /**
  * Classe utilisée pour représenter une partie.
  * @author auteur principal
  */
-//Indique que la classe est une entité.
-@Entity
-//Donne le nom de la table relié à cette entité pour son utilisation avec hibernate
-@Table(name = "Partie")
+
 public class Partie {
 		//L'id de la partie.
 		private long id;
@@ -28,102 +15,99 @@ public class Partie {
 		private long idUtilisateur;
 		//Le score de la partie
 		private long score;
+		//le nombre de fantomes mangés
+		private long fantomesManges;
+		//le nombre de capsules mangés
+		private long capsulesMangees;
+		//le nombre de pac-Gommes manges
+		private long pacGommesMangees;
+		//le nombre de maps jouées
+		private long mapsEffectuees;
+		//le nombre de tours joués
+		private long pasEffectues;
 		//Le test du pseudo.
 		private String pseudoUtilisateur;
 		//Le temps de fin de la partie.
 		private Timestamp date;
 	
 		
-		//Indique à hibernate que cette valeur s'incrémente et correspond à la colomne increment du tableau(l'id).
-		@Id
-		@GeneratedValue(generator="increment")
-		@GenericGenerator(name="increment", strategy = "increment")
-		/**
-		 * Permet d'obtenir l'id  de la partie.
-		 * @return  l'id de la partie.
-		 */
+		//---------------------------------------------------------------------
 		public long getid() {
 			return this.id;
 		}
-		/**
-		 * Permet de changer l'id de la partie.
-		 * @param id : nouveau identifiant de la partie.
-		 */
+
 		public void setid(long id) {
 			this.id = id;
 		}
-		
-		
-		//indique à hibernate la colomne associé à cette variable.
-		@Transient
-		/**
-		 * Permet d'obtenir le pseudo de l'utilisateur.
-		 * @return le pseudo de l'utilisateur.
-		 */
+		//---------------------------------------------------------------------
 	    public String getPseudoUtilisateur() {
 	        return pseudoUtilisateur;
 	    }
-		/**
-		 * Permet de changer le pseudo de l'utilisateur.
-		 * @param pseudo : nouveau pseudo de l'utilisateur.
-		 */
+	
 	    public void setPseudoUtilisateur( String pseudoUtilisateur ) {
 	        this.pseudoUtilisateur = pseudoUtilisateur;
 	    }
-		
-		
-		//indique à hibernate la colomne associé à cette variable.
-		@Column(name = "idUtilisateur")
-		/**
-		 * Permet d'obtenir l'id de l'utilisateur de la partie.
-		 * @return  l'id de l'utilisateur de la partie.
-		 */
+	  //---------------------------------------------------------------------
 		public long getIdUtilisateur() {
 			return this.idUtilisateur;
 		}
-		/**
-		 * Permet de changer l'id de l'utilisateur de la partie.
-		 * @param id : nouveau identifiant de l'utilisateur ayant fait la partie.
-		 */
+
 		public void setIdUtilisateur(long idUtilisateur) {
 			this.idUtilisateur = idUtilisateur;
 		}
-
-		
-		//indique à hibernate la colomne associé à cette variable.
-		@Column(name = "score")
-		/**
-		 * Permet d'obtenir le score de la partie.
-		 * @return le score de la partie.
-		 */
+		//---------------------------------------------------------------------
+		public long getFantomesManges() {
+			return this.fantomesManges;
+		}
+	
+		public void setFantomesManges(long fantomesManges) {
+			this.fantomesManges = fantomesManges;
+		}
+		//---------------------------------------------------------------------
+		public long getCapsulesMangees() {
+			return this.capsulesMangees;
+		}
+	
+		public void setCapsulesMangees(long capsulesMangees) {
+			this.capsulesMangees = capsulesMangees;
+		}
+		//---------------------------------------------------------------------
+		public long getPacGommesMangees() {
+			return this.pacGommesMangees;
+		}
+	
+		public void setPacGommesMangees(long pacGommesMangees) {
+			this.pacGommesMangees = pacGommesMangees;
+		}
+		//---------------------------------------------------------------------
+		public long getMapsEffectuees() {
+			return this.mapsEffectuees;
+		}
+	
+		public void setMapsEffectuees(long mapsEffectuees) {
+			this.mapsEffectuees = mapsEffectuees;
+		}
+		//---------------------------------------------------------------------
+		public long getpasEffectues() {
+			return this.pasEffectues;
+		}
+	
+		public void setpasEffectues(long pasEffectues) {
+			this.pasEffectues = pasEffectues;
+		}
+		//---------------------------------------------------------------------
 		public long getScore() {
 			return this.score;
 		}
-		/**
-		 * Permet de changer le score de la partie.
-		 * @param score : nouveau score de la partie.
-		 */
+	
 		public void setScore(long score) {
 			this.score = score;
 		}
-		
-		
-		
-		
-		
-		//indique à hibernate la colomne associé à cette variable.
-		@Column(name = "date")
-		/**
-		 * Permet d'obtenir la date de la partie.
-		 * @return la date de la partie.
-		 */
+		//---------------------------------------------------------------------
 		public Timestamp getDate() {
 			return date;
 		}
-		/**
-		 * Permet de changer la date de la partie.
-		 * @param date : la date de la partie.
-		 */
+
 		public void setDate(Timestamp date) {
 			this.date = date;
 		}

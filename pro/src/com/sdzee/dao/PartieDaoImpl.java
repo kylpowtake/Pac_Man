@@ -53,28 +53,55 @@ public class PartieDaoImpl implements PartieDao{
     	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
     	Session session = sessionFactory.openSession();
 	
-		List<Object[]> yourList = session.createSQLQuery("Select p.score, u.pseudo, p.date From Partie p inner join Utilisateur u on p.idUtilisateur = u.id where p.idUtilisateur = " + idUtilisateur).list();
+		List<Object[]> yourList = session.createSQLQuery("Select p.score, p.fantomesManges, p.capsulesMangees, p.pacGommesMangees, p.mapsEffectuees, p.pasEffectues, p.date, u.pseudo From Partie p inner join Utilisateur u on p.idUtilisateur = u.id where p.idUtilisateur = " + idUtilisateur).list();
 		Iterator<Object[]> it = yourList.iterator();
 		ArrayList<Partie> parties = new ArrayList<>();
 		while (it.hasNext()) {
-		Partie partie = new Partie();
-		long score     = -1;
-		String pseudo    = "";
-		Timestamp date = null;
-		Object[] row = it.next();
-		if(row[0]!=null){
-		score = Long.parseLong(row[0].toString());
-		}
-		if(row[1]!=null){
-		pseudo = row[1].toString();
-		}
-		if(row[2]!=null){
-		date = Timestamp.valueOf(row[2].toString());
-		}
-		partie.setScore(score);
-		partie.setPseudoUtilisateur(pseudo);
-		partie.setDate(date);
-		parties.add(partie);
+			Partie partie = new Partie();
+			long score     = -1;
+			long fantomesManges  = -1;
+			long capsulesMangees = -1;
+			long pacGommesMangees = -1;
+			long mapsEffectuees = -1;
+			long pasEffectues = -1;
+			Timestamp date = null;
+			String pseudo    = "";
+			
+			Object[] row = it.next();
+			
+			if(row[0]!=null){
+				score = Long.parseLong(row[0].toString());
+			}
+			if(row[1]!=null){
+				fantomesManges  = Long.parseLong(row[1].toString());
+			}
+			if(row[2]!=null){
+				capsulesMangees  = Long.parseLong(row[2].toString());
+			}
+			if(row[3]!=null){
+				pacGommesMangees  = Long.parseLong(row[3].toString());
+			}
+			if(row[4]!=null){
+				mapsEffectuees  = Long.parseLong(row[4].toString());
+			}
+			if(row[5]!=null){
+				pasEffectues  = Long.parseLong(row[5].toString());
+			}
+			if(row[6]!=null){
+				date = Timestamp.valueOf(row[6].toString());
+			}
+			if(row[7]!=null){
+				pseudo  = row[7].toString();
+			}
+			partie.setScore(score);
+			partie.setFantomesManges(fantomesManges);
+			partie.setCapsulesMangees(capsulesMangees);
+			partie.setPacGommesMangees(pacGommesMangees);
+			partie.setMapsEffectuees(mapsEffectuees);
+			partie.setpasEffectues(pasEffectues);
+			partie.setDate(date);
+			partie.setPseudoUtilisateur(pseudo);
+			parties.add(partie);
 		}
     	
     	return parties;
@@ -92,7 +119,7 @@ public class PartieDaoImpl implements PartieDao{
     	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
     	Session session = sessionFactory.openSession();
 	
-		List<Object[]> yourList = session.createSQLQuery("Select p.score, u.pseudo, p.date From Partie p inner join Utilisateur u on p.idUtilisateur = u.id").list();
+    	List<Object[]> yourList = session.createSQLQuery("Select p.score, u.pseudo, p.date From Partie p inner join Utilisateur u on p.idUtilisateur = u.id").list();
 		Iterator<Object[]> it = yourList.iterator();
 		ArrayList<Partie> parties = new ArrayList<>();
 		while (it.hasNext()) {
@@ -117,39 +144,6 @@ public class PartieDaoImpl implements PartieDao{
 		}
 		
 		return parties;
-		
-		
-		/*
-		 * Ceci est en utilisant un bean partie étant mapper avec la table Partie.
-		 * Dès lors, pour obtenir toutes les parties et savoir les pseudos corrrespondants avec les idUtilisateurs, il faut soit :
-		 * -Directement le mettre dans la table partie mais il faut l'updater à chaque changement.
-		 * -Une table idUtilisateur/Pseudo en brut de garder en mémoire à modifier à chaque changement.
-		 * -Associer dans le code pour chaque id son pseudo grâce à une requête.
-		 * Or pour toutes ses possibilités, soit c'est du code de basse qualité pour le cas 1 et 2, 
-		 * soit pour le 3 ça prend trop de temps avec hibernate (quelques secondes avec un utilisateur dans la base de données).
-    	//Créer la sessionfactory à partir du fichier de configuration d'hibernate donnée permettant la calibration sur la base de données.
-    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
-    	//Ouvre la session.
-    	Session session = sessionFactory.openSession();
-    	//Commence la transaction.
-    	session.beginTransaction();
-    	//Créer l'arraylist à rendre allant contenir toutes les parties. 
-    	ArrayList<Partie> parties = new ArrayList<>();
-    	//Récupère toutes les parties de la table.
-    	List partiesTemp = session.createQuery("From Partie").list();
-    	//Pour chaque partie : 
-    	for (Iterator iterator =  partiesTemp.iterator(); iterator.hasNext();) {
-    		Partie partieTemp = (Partie) iterator.next();
-    		//On ajoute la partie à l'arraylist.
-    		parties.add(partieTemp);
-    	}
-    	//Applique la transaction.
-        session.getTransaction().commit();
-        //Ferme la session.
-    	session.close();
-    	
-    	return parties;
-    	*/
 	}
 
 }

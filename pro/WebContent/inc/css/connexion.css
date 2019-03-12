@@ -1,0 +1,68 @@
+body, p, legend, label, input {
+    font: normal 11pt verdana, helvetica, sans-serif;
+}
+
+fieldset {
+    padding: 10px;
+    border: 1px #0568CD solid;
+}
+
+legend {
+    font-weight: bold;
+    color: #0568CD;
+}
+
+hr{
+  background-color: white;
+}
+
+form label {
+    float: left;
+    width: 200px;
+    font-size: 15px;
+    margin: 3px 0px 0px 0px;
+}
+
+form input {
+    margin: 3px 3px 0px 0px;
+    border: 1px #999 solid;
+}
+
+form .requis {
+    color: #c00;
+}
+form .erreur {
+    color: #900;
+}
+form .succes {
+    color: #090;
+}
+form .info {
+    font-style: italic;
+    color: #E8A22B;
+}
+
+.contain{
+	margin: 2px 2px 0px 2px;
+	padding: 10px 20px 10px 20px;
+}
+
+
+fieldset.scheduler-border {
+    border: 1px groove #fff !important;
+    color : white;
+    padding: 0 1.4em 1.4em 1.4em !important;
+    margin: 0 0 1.5em 0 !important;
+    -webkit-box-shadow:  0px 0px 0px 0px #000;
+    box-shadow:  0px 0px 0px 0px #000;
+}
+
+legend.scheduler-border {
+    font-size: 1.2em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    
+    width:inherit; /* Or auto */
+    padding:0 10px; /* To give a bit of padding on the left and right */
+    border-bottom:none;
+}

@@ -1,0 +1,16 @@
+.contain{
+	margin: 2px 2px 0px 2px;
+	padding: 10px 20px 10px 20px;
+}
+
+form .requis {
+    color: #c00;
+}
+
+.row{
+	margin-bottom: 1em;
+}
+
+.head{
+	background-color: red;
+}
