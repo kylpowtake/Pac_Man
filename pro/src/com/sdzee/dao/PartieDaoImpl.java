@@ -145,5 +145,39 @@ public class PartieDaoImpl implements PartieDao{
 		
 		return parties;
 	}
+	
+	
+	public ArrayList<Partie> TrouverBestPlayers() throws DAOException {
+		
+		
+    	SessionFactory sessionFactory = new Configuration().configure("/com/sdzee/hibernate/hibernate.cfg.xml").buildSessionFactory();
+    	Session session = sessionFactory.openSession();
+	
+    	List<Object[]> yourList = session.createSQLQuery("Select p.score, u.pseudo, p.date From Partie p inner join Utilisateur u on p.idUtilisateur = u.id  ORDER BY p.score DESC LIMIT 3").list();
+		Iterator<Object[]> it = yourList.iterator();
+		ArrayList<Partie> parties = new ArrayList<>();
+		while (it.hasNext()) {
+		Partie partie = new Partie();
+		long score     = -1;
+		String pseudo    = "";
+		Timestamp date = null;
+		Object[] row = it.next();
+		if(row[0]!=null){
+		score = Long.parseLong(row[0].toString());
+		}
+		if(row[1]!=null){
+		pseudo = row[1].toString();
+		}
+		if(row[2]!=null){
+		date = Timestamp.valueOf(row[2].toString());
+		}
+		partie.setScore(score);
+		partie.setPseudoUtilisateur(pseudo);
+		partie.setDate(date);
+		parties.add(partie);
+		}
+		
+		return parties;
+	}
 
 }

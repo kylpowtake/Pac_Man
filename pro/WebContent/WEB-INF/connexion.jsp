@@ -33,14 +33,14 @@
     				<fieldset class="scheduler-border">
     					<legend class="scheduler-border">Connexion</legend>
     					<form method="post" action="connexion">
-			                <label for="pseudo">Pseudo <span class="requis">*</span></label>
+			                <label for="pseudo">Pseudo <span class="requis">*</span></label>  <span class="erreur">${form.erreurs['pseudo']}</span>
 			                <input type="text" id="pseudo" name="pseudo" value="<c:out value="${utilisateur.pseudo}"/>" class="form-control form-control-user"/>
-			                <span class="erreur">${form.erreurs['pseudo']}</span>
-			        
+			               
+			        	
 			
-			                <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
+			                <label for="motdepasse">Mot de passe <span class="requis">*</span></label> <span class="erreur">${form.erreurs['motdepasse']}</span>
 			                <input type="password" id="motdepasse" name="motdepasse" value="" class="form-control form-control-user"/>
-			                <span class="erreur">${form.erreurs['motdepasse']}</span>
+			                
 			                <br />
 			
 			                <input type="submit" value="Connexion" class="btn btn-primary btn-user btn-block" />
@@ -49,7 +49,7 @@
 							<p>Pas encore de compte ? <a href="<%=request.getContextPath()+"/inscription"%>">Inscrivez vous</a></p>
 			            
 			                
-			                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>  
+			                <p class="erreur">${form.resultat}</p>  
 			        	</form>
     				</fieldset>	
     			</div>
@@ -64,43 +64,27 @@
 				<div class="col-lg-4">
 					<div class="card">
   					<div class="card-header text-center bg-secondary">
-  						<img src="${pageContext.servletContext.contextPath}/inc/pic1.png" alt="" style="width:200px;height:inherit;">
+  						<img src="${pageContext.servletContext.contextPath}/inc/bestPlayerPicture.png" alt="" style="width:200px;height:inherit;">
   					</div>
   					<div class="card-body">
 		                <table class="table table-striped table-bordered text-center">
 		                  <thead>
 		                    <tr>
 		                      <th>Position</th>
-		                      <th>Pseudo</th>
+		                      <th>Pseudo</th>              
 		                      <th>Score</th>
+		                      <th>date</th>
 		                    </tr>
 		                  </thead>
-		                  <tbody>
-		                    <tr>
-		                      <td><img src="${pageContext.servletContext.contextPath}/inc/gold.jpg" alt="" style="width:inherit;height:50px;"></td>
-		                      <td>Personne1</td>
-		                      <td>9001</td>
-		                    </tr>
-		                    <tr>
-		                      <td><img src="${pageContext.servletContext.contextPath}/inc/silver.jpg" alt="" style="width:inherit;height:50px;"></td>
-		                      <td>Personne2</td>
-		                      <td>300</td>
-		                    </tr>
-		                    <tr>
-		                      <td><img src="${pageContext.servletContext.contextPath}/inc/bronze.jpg" alt="" style="width:inherit;height:50px;"></td>
-		                      <td>Personne3</td>
-		                      <td>200</td>
-		                    </tr>
-		                    <tr>
-		                      <td>4</td>
-		                      <td>Personne4</td>
-		                      <td>100</td>
-		                    </tr>
-		                    <tr>
-		                      <td>5</td>
-		                      <td>Personne5</td>
-		                      <td>50</td>
-		                    </tr>
+		                  <tbody>	
+		                  	<c:forEach var="name"  items="${requestScope['best']}" varStatus="loop" >	
+	    							<tr>
+	    								<td><img src="${pageContext.servletContext.contextPath}/inc/${loop.count}.jpg" alt="" style="width:inherit;height:50px;"></td>
+	          							<td><c:out value="${name['pseudoUtilisateur']}" /></td>
+	          							<td><c:out value="${name['score']}" /></td>
+	          							<td><c:out value="${name['date']}" /></td>
+	          						</tr>
+							</c:forEach>
 		                  </tbody>
 		                </table>
 		           	</div>

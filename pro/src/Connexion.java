@@ -38,6 +38,7 @@ public class Connexion extends HttpServlet {
     
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
     	request.setAttribute("partie",returnParties());
+    	request.setAttribute("best", returnBestPlayers());
         this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
     }
 
@@ -64,6 +65,7 @@ public class Connexion extends HttpServlet {
             session.setAttribute( ATT_SESSION_USER, null );
             request.setAttribute( ATT_FORM, form );
             request.setAttribute("partie",returnParties());
+            request.setAttribute("best", returnBestPlayers());
             request.setAttribute( ATT_USER, utilisateur );
             this.getServletContext().getRequestDispatcher( VUE_ACCUEIL ).forward( request, response );
         }
@@ -77,4 +79,9 @@ public class Connexion extends HttpServlet {
 	    	ArrayList<Partie> parties = partieDao.TrouverParties();
 	    	return parties;
 	    }
+	 
+	 public ArrayList<Partie> returnBestPlayers(){
+		 ArrayList<Partie> parties = partieDao.TrouverBestPlayers();
+		 return parties; 
+	 }
 }
