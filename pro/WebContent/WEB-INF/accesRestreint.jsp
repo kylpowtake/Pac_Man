@@ -106,7 +106,7 @@
 							<form method="post" action="gestionCompte">
 							
 								<label for="ancienMotDePasse">Mot de passe<span class="requis"> *</span></label>
-				                <input type="password" id="ancienpMotDePasse" name="ancienpMotDePasse" value="" class="form-control form-control-user"/>
+				                <input type="password" id="ancienpMotDePasse" name="ancienMotDePasse" value="" class="form-control form-control-user"/>
 				                <span class="erreur">${form.erreurs['ancienMotDePasse']}</span>
 				                
 				                <hr style="border: 0;height: 30px;background-image: url(${pageContext.servletContext.contextPath}/inc/hr.png);background-repeat: round;"/>
