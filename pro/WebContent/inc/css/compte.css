@@ -11,6 +11,16 @@ form .requis {
 	margin-bottom: 1em;
 }
 
-.head{
-	background-color: red;
+
+#container {
+    width: 100%;
+    height: 270px;
+    margin: 0;
+    padding: 0;
+}
+
+.pseudo{
+	font-family: "URW Chancery L", cursive;
+	font-size : xx-large;
+	
 }

@@ -29,13 +29,10 @@ form input {
 }
 
 form .requis {
-    color: #c00;
+    color: red;
 }
 form .erreur {
-    color: #900;
-}
-form .succes {
-    color: #090;
+    color: red;
 }
 form .info {
     font-style: italic;
@@ -46,8 +43,6 @@ form .info {
 	margin: 2px 2px 0px 2px;
 	padding: 10px 20px 10px 20px;
 }
-
-
 fieldset.scheduler-border {
     border: 1px groove #fff !important;
     color : white;

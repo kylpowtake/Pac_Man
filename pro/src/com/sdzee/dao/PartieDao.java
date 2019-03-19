@@ -33,5 +33,13 @@ public interface PartieDao {
 	 * @throws DAOException : L'exception pouvant être renvoyée.
      */
 	ArrayList<Partie> TrouverParties () throws DAOException;
+	
+	
+	/**
+     * Permet de trouver les 5 meilleurs joueurs.
+     * @return ArrayList<Partie> : Toutes les parties recherchées
+	 * @throws DAOException : L'exception pouvant être renvoyée.
+     */
+	ArrayList<Partie> TrouverBestPlayers () throws DAOException;
 
 }

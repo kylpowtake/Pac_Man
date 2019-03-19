@@ -86,7 +86,7 @@ public final class ConnexionForm {
                 //On test si on peut bien obtenir le mot de passe chiffre de la base de données à partir du motde passe de l'utilisateur voulant se connecter.
                 if(passwordEncryptor.checkPassword(motDePasse, utilisateurTemp.getMotDePasse())){
                 	//Si le résultat est positif, on connecte l'utilisateur en ajoutant son mot de passe à l'utilisateur renvoyé.
-                    resultat = "Succès de la connexion.";
+                    resultat = "Ce compte  à été supprimé.";
                     utilisateur.setId(utilisateurTemp.getId());
                     utilisateur.setMotDePasse( motDePasse );
                     utilisateur.setActivite(utilisateurTemp.getActivite());
@@ -100,7 +100,7 @@ public final class ConnexionForm {
             }
         } else {
         	//Si l'utilisateur renvoyé par la base de données est nul, alors c'est qu'il n'a pas étét trouvé et donc le pseudo n'est pas le bon, il ne faut donc pas le connecter.
-            resultat = "Échec de la connexion. Ily a des erreurs dans le formulaire.";
+            resultat = "Échec de la connexion. Il y a des erreurs dans le formulaire.";
         }
         return utilisateur;
     }
@@ -112,7 +112,7 @@ public final class ConnexionForm {
     private void validationPseudo( String pseudo ) throws Exception {
     	//Il y a une erreur si le pseudo est nul.
         if ( pseudo == null ) {
-            throw new Exception( "Merci de saisir votre mot de passe." );
+            throw new Exception( "Merci de saisir votre pseudo." );
         }
     }
 

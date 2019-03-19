@@ -1,7 +1,7 @@
 
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,10 +44,20 @@ public class GestionCompte extends HttpServlet {
 		HttpSession session = request.getSession();
 		Utilisateur user = (Utilisateur) session.getAttribute(ATT_SESSION_USER);
 		
-		//récupération du tableau de score de l'utilisateur 
-		request.setAttribute("partie",partieDao.TrouverPartiesAUtilisateur(user.getId()));
 		
-		//si demande de suppression appel a la methode supprimer de utilisateur et redirection vers la page de deconnexio
+		String graphData = "[";
+		//récupération du tableau de score de l'utilisateur 
+		ArrayList<Partie> parties = partieDao.TrouverPartiesAUtilisateur(user.getId());
+		for(int i=0;i<parties.size();i++) {
+			graphData += "['"+parties.get(i).getDate().toString()+"',"+parties.get(i).getScore()+"],";
+		}
+		graphData = graphData.substring(0, graphData.length() - 1);
+		graphData += "]";
+		
+		request.setAttribute("partie",parties);
+		request.setAttribute("graph",graphData);
+		
+		//si demande de suppression appel a la methode supprimer de utilisateur et redirection vers la page de deconnexion
 		if(request.getParameter("supprimer") != null){
 			this.utilisateurDao.SupprimerUtilisateur(user);
 			response.sendRedirect( URL_REDIRECTION );
