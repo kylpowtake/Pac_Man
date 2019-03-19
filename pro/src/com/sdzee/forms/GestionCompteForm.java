@@ -88,7 +88,7 @@ public class GestionCompteForm {
         } catch ( FormValidationException e ) {
             setErreur( CHAMP_PSEUDO, e.getMessage() );
         }
-        utilisateur.setPseudo( pseudo );
+        
     	
     	//Ici, il y en a au moins un qui n'est pas nul, or il faut que les deux ne soient pas nuls.
 	    if((nouveauMotDePasse != null && !nouveauMotDePasse.isEmpty()) || (confMotDePasse != null && !confMotDePasse.isEmpty())) {
@@ -126,7 +126,8 @@ public class GestionCompteForm {
 	    		resultat = "Échec du changement, il faut au moins une valeur à changer pour le faire.";
 	    	} else {
 	    		//Si le pseudo n'est pas vide ou/et les mots de passe ne sont pas vides, on peut appliquer un changement. 
-	    			utilisateurDao.ChangerUtilisateur(utilisateur, pseudo, motDePasseChiffre);	    		
+	    			utilisateurDao.ChangerUtilisateur(utilisateur, pseudo, motDePasseChiffre);
+	    			utilisateur.setPseudo( pseudo );
 	    	}
 	    } else {
 	    	//Il y a des erreurs, il y a donc parmis les trois mots de passe au moins qui a une erreur.

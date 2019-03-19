@@ -22,5 +22,8 @@ form .requis {
 .pseudo{
 	font-family: "URW Chancery L", cursive;
 	font-size : xx-large;
-	
+}
+
+form .erreur {
+    color: red;
 }

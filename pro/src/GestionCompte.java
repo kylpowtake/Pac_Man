@@ -79,7 +79,18 @@ public class GestionCompte extends HttpServlet {
         
         //reset de la session de l'utilisateur 
         session.setAttribute(ATT_SESSION_USER,utilisateur);
-
+        
+        String graphData = "[";
+		//récupération du tableau de score de l'utilisateur 
+		ArrayList<Partie> parties = partieDao.TrouverPartiesAUtilisateur(utilisateur.getId());
+		for(int i=0;i<parties.size();i++) {
+			graphData += "['"+parties.get(i).getDate().toString()+"',"+parties.get(i).getScore()+"],";
+		}
+		graphData = graphData.substring(0, graphData.length() - 1);
+		graphData += "]";
+		
+		request.setAttribute("partie",parties);
+		request.setAttribute("graph",graphData);
         
         
         if(!form.getErreurs().isEmpty()) {
