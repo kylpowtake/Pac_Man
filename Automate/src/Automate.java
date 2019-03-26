@@ -23,11 +23,40 @@ public class Automate{
     String 	etat[];			//etats
     String 	qi;				//etat initial
     String 	f[];			//etats finaux
+    static Vector<String> mots = new Vector<String>();	//vector contenant les mots 
+    
+    static public void readFile(String fileName){
+    	String line = null;
+    	try {
+            FileReader fileReader =  new FileReader(fileName);
+            BufferedReader bufferedReader =  new BufferedReader(fileReader);
+
+            while((line = bufferedReader.readLine()) != null) {
+                mots.add(line);
+            }   
+            
+            generation();
+            bufferedReader.close();  
+        }
+        catch(FileNotFoundException ex) {
+            System.out.println("Unable to open file '" + fileName + "'");                
+        }
+        catch(IOException ex) {
+        	ex.printStackTrace();
+        }
+    }
+    
+    
+    static public void generation(){
+    	Etat etat = new Etat();
+    	etat.InitialiserAccepteurMots(mots);
+    }
     
 
    @SuppressWarnings("resource")
    public Automate(String nomf)throws IOException
-    {
+    {  
+	   	
         int nx,ne,nf;
         String lin;
         nomfich=nomf;
@@ -96,6 +125,7 @@ public class Automate{
             }
         }
         return es;
+        
     }
 
    //Fonction de vérification

@@ -3,8 +3,10 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Vector;
 
 
 @SuppressWarnings("serial")
@@ -23,18 +25,11 @@ public class Vue extends javax.swing.JFrame {
     
     
     public static void main(String args[]) {
-    	/*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Vue().setVisible(true);
             }
-        });*/
-    	Etat fullTruc = new Etat();
-    	Vector<String> vec = new Vector<String>();
-    	vec.add("test");
-    	vec.add("testy");
-    	vec.add("truc");
-    	fullTruc.InitialiserAccepteurMots(vec);
+        });
     }
 	
     public Vue() {
@@ -194,14 +189,14 @@ public class Vue extends javax.swing.JFrame {
      * FileChooser, permet de sélectionner un fichier 
      */
     private void menuchActionPerformed(java.awt.event.ActionEvent evt) {
-        String Nfich="";
+        String fileName="";
         JFileChooser chooser = new JFileChooser();
         chooser.setApproveButtonText("choisir");
-
 		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-			Nfich=chooser.getSelectedFile().getPath();
-        }
-        t2.setText(Nfich);
+			fileName = chooser.getSelectedFile().getPath();
+			Automate.readFile(fileName);
+	    }	
+        t2.setText(fileName);
         t2.setEnabled(false);
     }
 
