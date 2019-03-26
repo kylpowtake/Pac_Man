@@ -1,17 +1,3 @@
-/**
- * fichier.txt:
- * **********************************************************
- * nombre d'alphabets,nombre d'etats,nombre d'etats finaux  *
- * alphabet1,alphabet2....,alphabetn                   		*
- * etat1,etat2.............,etatn                      		*
- * etatfinal1,.....etatfinaln                          		*
- * etat_initial                                        		*
- * etat1,alphabet,etat_suivant                         		*
- * eta2,alphabet,etat_suivant                          		*
- *  .....                                                 	*
- * etatn,alphabet,etat_suivant                          	*
- * **********************************************************
- */
 import java.io.*;
 import java.util.*;
 
@@ -50,6 +36,7 @@ public class Automate{
     static public void generation(){
     	Etat etat = new Etat();
     	etat.InitialiserAccepteurMots(mots);
+    
     }
     
 
