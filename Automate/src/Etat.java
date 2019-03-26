@@ -69,4 +69,28 @@ public class Etat {
 		}
 	}
 	
+	/**
+	 * Vérifie si le mot passé est acceptable ou non.
+	 * @param mot : à vérifié
+	 * @return boolean : acceptabilité du mot.
+	 */
+	public boolean verif(String mot){
+		Etat temp = new Etat();
+		for(int i = 0; i < mot.length(); i++){
+			//Si un label existe déjà pour un caractère, on y va.
+			//Sinon le mot n'est pas acceptable.
+			System.out.println("i : " + i + " mot : " + mot + " sous mot : " + mot.substring(i,i+1));
+			if(_labels.contains(mot.substring(i,i+1))){
+				//On avance dans le caractère en bougeant d'étape.
+				//Ici nous cherchons son indice.
+				int indice = _labels.indexOf(mot.substring(i,i+1));
+				//On utilise son indice pour savoir l'état associé.
+				temp = _etats.get(indice);
+			} else {
+				//Ce n'est pas acceptable.
+				return false;
+			}
+		}		
+		return true;
+	}
 }
