@@ -206,10 +206,10 @@ public class Vue extends javax.swing.JFrame {
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 	   try{
-	       Automate a;
-	       a=new Automate(t2.getText());
-	       boolean b=false;
-	       b=a.verif(a.qi,t1.getText());
+	       Automate a=new Automate(t2.getText());
+	       boolean b = false;
+	       b = a.etat.verif();
+	       //b=a.verif(a.qi,t1.getText());
 	       if(b){
 	           l.setText("Mot accepté");
 	           l.setForeground(Color.GREEN);
