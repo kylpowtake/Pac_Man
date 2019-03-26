@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.util.Vector;
 
 
 @SuppressWarnings("serial")
@@ -22,11 +23,18 @@ public class Vue extends javax.swing.JFrame {
     
     
     public static void main(String args[]) {
+    	/*
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Vue().setVisible(true);
             }
-        });
+        });*/
+    	Etat fullTruc = new Etat();
+    	Vector<String> vec = new Vector<String>();
+    	vec.add("test");
+    	vec.add("testy");
+    	vec.add("truc");
+    	fullTruc.InitialiserAccepteurMots(vec);
     }
 	
     public Vue() {
