@@ -1,108 +1,157 @@
+import java.awt.FileDialog;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
+import java.util.Set;
 
-import weka.attributeSelection.CfsSubsetEval;
-import weka.attributeSelection.GreedyStepwise;
-import weka.classifiers.Classifier;
+import javax.swing.JFrame;
 import weka.classifiers.Evaluation;
-import weka.classifiers.meta.AttributeSelectedClassifier;
 import weka.classifiers.trees.J48;
 import weka.core.Instances;
-import weka.core.UnassignedClassException;
 import weka.core.converters.ConverterUtils.DataSource;
 
 
  
 public class Main {
 	
-	protected static void useClassifier(Instances data) throws Exception {
-	    AttributeSelectedClassifier classifier = new AttributeSelectedClassifier();
-	    CfsSubsetEval eval = new CfsSubsetEval();
-	    GreedyStepwise search = new GreedyStepwise();
-	    search.setSearchBackwards(true);
-	    J48 base = new J48();
-	    classifier.setClassifier(base);
-	    classifier.setEvaluator(eval);
-	    classifier.setSearch(search);
-	    Evaluation evaluation = new Evaluation(data);
-	    evaluation.crossValidateModel(classifier, data, 5, new Random(1));
-	    System.out.println(evaluation.toSummaryString());
-	  }
+	public static String[] options;
+	public static String[] options2;
+	public static String chaineOption = "";
+	public static Map<Integer, Double> tableau  = new HashMap<Integer, Double>();
 	
 	
 	public static void main(String[] args) {	
 		
 		GestionParametres(args);
+		FileDialog fd = new FileDialog(new JFrame());
+		fd.setVisible(true);
 		
 		try {
-			//On charge le fichier à l'emplacement indiqué.
-			DataSource source = new DataSource("/home/etudiant/workspace/ComparaisonAlgo/weather.numeric.arff");
-			//On charge les instances du fichier contenant les données.
+			DataSource source = new DataSource(fd.getFiles()[0].getAbsolutePath());
 			Instances data = source.getDataSet();
-
-			//On charge le fichier à l'emplacement indiqué.(Fichier contenant les données pour s'entraîner)
-			DataSource sourceTrain = new DataSource("/home/etudiant/workspace/ComparaisonAlgo/mushroom_train.arff");
-			//On charge le fichier à l'emplacement indiqué. (Fichier contenant les données pour évaluer)
-			DataSource sourceTest = new DataSource("/home/etudiant/workspace/ComparaisonAlgo/mushroom_valid.arff");
-			//On charge les instances du fichier contenant les données. (Pour s'entraîner)
-			Instances train = sourceTrain.getDataSet();
-			//On charge les instances du fichier contenant les données. (Pour évaluer)
-			Instances test = sourceTest.getDataSet();
-			//Permet de s'occuper d'attributs ayant des valeurs négatives
 			if(data.classIndex() == -1){
 				data.setClassIndex(data.numAttributes() -1);
-			}			
-			//Permet de s'occuper d'attributs ayant des valeurs négatives
-			if(train.classIndex() == -1){
-				train.setClassIndex(train.numAttributes() -1);
-			}			
-			//Permet de s'occuper d'attributs ayant des valeurs négatives
-			if(test.classIndex() == -1){
-				test.setClassIndex(test.numAttributes() -1);
 			}
-			
-			//Si il y a un jeu d'entrainement et un jeu d'évaluation.
-			if(true){
-			//Créer un classifier (ici, J48)
-			J48 jPerso = new J48();
-			//Créer un tableau de string allant contenir les options et on les ajoutes à ce tableau
-			String[] options = new String[5];
-			options[0] = "-C";
-			options[1] = "0.25";
-			options[2] = "-M";
-			options[3] = "2";
-			options[4] = "";
-			//On ajoute les options aux classifiers
-			jPerso.setOptions(options);
-			//On créer un truc
-			AttributeSelectedClassifier cls = new AttributeSelectedClassifier();
-			//On créer un truc pour l'eval
-		    CfsSubsetEval eval = new CfsSubsetEval();
-		    //On créer un truc pour la recherche
-		    GreedyStepwise search = new GreedyStepwise();
-		    //On applique le classifier au truc
-			cls.setClassifier(jPerso);
-			//On applique l'eval au classifier
-			cls.setEvaluator(eval);
-			//On applique la recherche au classifier
-			cls.setSearch(search);
-
-			try{
-			cls.buildClassifier(train);
-			} catch(UnassignedClassException uce){
-				System.out.println("Erreur : cls : " + uce.getMessage());
-			}
-			//On utilise les données pour s'entraîner pour préparer la méthode d'évaluation
-			Evaluation evaltest = new Evaluation(train);
-			//On évalue le odèle obtenue.
-			evaltest.evaluateModel(cls, test);
-			//On affiche le résultat de l'évaluation
-			System.out.println(evaltest.toSummaryString("\nResults\n======\n", false));
-			}
-						
+			useClassifier(data);
+			writeFile(tableau,fd.getFiles()[0].getName());
+			readFile(fd.getFiles()[0].getName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
+	/**
+	 * @param tableau(nombre minimum d'elements pas feuille, taux d'instances mal classés) 
+	 * @param filename (chemin absolu vers le fichier)
+	 * Crée un fichier si il n'existe pas 
+	 * Enregistre les résultats de la méthode utilisée  
+	 */
+	public static void writeFile(Map<Integer, Double> tableau, String filename){
+		Set<Entry<Integer, Double>> setHm = tableau.entrySet();
+	    Iterator<Entry<Integer, Double>> it = setHm.iterator();
+	    try{
+	        String file = "/home/etudiant/workspace/ComparaisonAlgo/optdigits.arff_methodJ48.csv";
+	        FileWriter fw = new FileWriter(file,true);
+	        fw.write("-M"+","+chaineOption+"\n");
+	        while(it.hasNext()){
+		         Entry<Integer, Double> e = it.next();
+		         fw.write(+e.getKey()+","+e.getValue()+"\n");
+		     }
+	        fw.close();
+	    }catch(IOException ioe){
+	        System.err.println("IOException: " + ioe.getMessage());
+	    }
+	}
+	
+	
+	/**
+	 * @param filename (chemin absolu vers le fichier)
+	 * Lit le fichier et renvoi la méthode la plus performante ainsi que la valeur 
+	 */
+	public static void readFile(String filename){
+		String csvFile = filename+"_methodJ48.csv";
+        BufferedReader br = null;
+        String line = "";
+        String cvsSplitBy = ",";
+        double value = 100;
+        String nombreFeuilles = "";
+        String paramètres = "";
+        String paramètresOpti = "";
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                String[] values = line.split(cvsSplitBy);
+                if(!values[0].equals("-M")){
+                	if(Double.parseDouble(values[1])<value){ 	
+                    	nombreFeuilles = values[0];
+                    	value = Double.parseDouble(values[1]);
+                    	paramètresOpti = paramètres;
+                    }
+                }else{
+                	paramètres = values[1];
+                }
+            }
+            System.out.println("Valeur optimale : " + 
+            	   "\nparamètres utilisés : " + paramètresOpti +
+ 				   "\nombre minimum d'elements pas feuille: -M " + nombreFeuilles + 
+ 				   "\ntaux d'erreur : " + value);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+	}
+	
+	/**
+	 * @param data (jeu de données utilisé)
+	 * @throws Exception
+	 * utilisation du la méthode de classification J48 sur les données passées en paramètres 
+	 */
+	protected static void useClassifier(Instances data) throws Exception {
+	    J48 base = new J48();
+	    options[options.length - 2] = "-M";
+	    options2 = new String[options.length];
+	    
+	    int nombreInstance = data.numInstances();
+	    int increment = nombreInstance/90;
+	    //System.out.println(nombreInstance);
+	    
+	    for(int i=2; i<nombreInstance*0.1; i+=increment){
+	    	options[options.length -1] = "" + i;
+	    	
+	    	//recopie du tableau pour ne pas perdre les données 
+	    	//une fois celles-ci consommées
+	    	for (int j =0;j<options.length;j++){
+	    		options2[j] = options[j];
+	    	}
+	    	
+	    	//definit les options a utiliser sur notre classifieur 
+	    	//attention consomme les données 
+	    	base.setOptions(options2);
+	 	    Evaluation evaluation = new Evaluation(data);
+	 	    evaluation.crossValidateModel(base, data, 5, new Random(1));
+	 	    
+	 	    //sauvegarde des résultat dans une map 
+	 	    tableau.put(i, evaluation.errorRate()*100);
+	    }
+	  }
 	
 	
 	public static void GestionParametres(String[] args){
@@ -116,7 +165,7 @@ public class Main {
 		//Et un minimum de paramètres de NombreArguments - 4
 		
 		//les options allant être utilisés pour ajoutés les paramètres à la méthode.
-		String[] options = new String[args.length - 2 - 1];
+		options = new String[args.length + 2];
 		//Le compteur pour savoir où placer l'argument actuel dans le tableau.
 		int compteur = 0;
 		
@@ -140,9 +189,7 @@ public class Main {
 		//Il y a deux chemin vers des fichiers possibles,
 		// celui contenant l'ensemble de de données de l'entraînement.
 		// celui contenant l'ensemble de de données d'évaluation.
-		String CheminEnt = null;
-		String CheminEval = null;
-		for(int i = 2; i < args.length; i++){
+		for(int i = 0; i < args.length; i++){
 			switch(args[i]){
 			case "-L" :
 				options[compteur] = args[i];
@@ -176,6 +223,7 @@ public class Main {
 				options[compteur] = args[i];
 				compteur++;
 				testM = true;
+				System.out.println("on y passe");
 				break;
 			case "-A" :
 				options[compteur] = args[i];
@@ -236,25 +284,31 @@ public class Main {
 				options[compteur] = args[i];
 				compteur++;
 				testU = true;
+				System.out.println("on y passe");
 				break;
 			default :
+				System.out.println("on y passe" + args[i]);
+
 				//Seulement deux possibiltés autorisés,
 				//Le string est ce lui d'un des deux chemin possibles vers le fichier contenant l'ensemble de données(celui d'entraînement et celui d'évaluation)
 				break;
 			}
 		}
 		//On test la présence des paramètres obligatoires et de ceux contradictoires.
-		if((testM == false) 
-				|| (testU == false && testC == false && testQ == false) 
+		if((testU == false && testC == false && testQ == false) 
 				|| ((testQ != testR) || (testR != testN)) 
 				|| (testU == true && testC == true) 
 				|| (testU == true && testQ == true)
 				|| (testC == true && testQ == true)
 				|| (testU == true && testS == true)){
-			System.out.println("Erreur de paramètrage.");
+			System.out.println("Erreur de paramètrage." + testM + testU);
 		} else {
 			System.out.println("Paramétrage réussi.");
-		}
+		}	
+		for(int i=0;i<options.length;i++){
+			if(options[i]!=null)
+				chaineOption += options[i]+" ";
+	    }
 	}
 	
 }
