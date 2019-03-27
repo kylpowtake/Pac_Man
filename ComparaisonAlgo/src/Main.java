@@ -26,8 +26,8 @@ public class Main {
 	public static String chaineOption = "";
 	public static Map<Integer, Double> tableau  = new HashMap<Integer, Double>();
 	
-	
-	public static void main(String[] args) {	
+
+	public static void main(String[] args) {
 		
 		GestionParametres(args);
 		new Vue().setVisible(true);
@@ -41,13 +41,23 @@ public class Main {
 			if(data.classIndex() == -1){
 				data.setClassIndex(data.numAttributes() -1);
 			}
-			useClassifier(data);
-			writeFile(tableau,fd.getFiles()[0].getName());
-			readFile(fd.getFiles()[0].getName());
+			useClassifier(data);							//utilisation du classifier sur le jeu de données
+			writeFile(tableau,fd.getFiles()[0].getName());	//enregistrement des résultats dans un fichier csv
+			readFile(fd.getFiles()[0].getName());			//lecture du fichier er recupération du resultat le plus performant 
+			
+			//afichage du graphe 
+			JFrame p = new JFrame();
+	    	LineChart ex = new LineChart(tableau);
+	    	p.add(ex);
+	    	p.setSize(700, 450);
+	    	p.setLocation(300,200);
+	        p.setVisible(true);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}*/
 	}
+
 	
 	
 	
