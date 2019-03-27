@@ -169,4 +169,38 @@ public class StructureUltime {
 		//Si tous ce passe bien on retourne vrai.
 		return true;
 	}
+	
+	/**
+	 * trie les batiments par surface decroissante
+	 * @param batiments
+	 */
+	public void OrganizedBySurface(){
+		for(int i = 0; i < _batiments.size(); i++){
+			
+			int surface = ReturnSurface(_batiments.get(i));
+			int indiceBatiment = i;
+			
+			for(int j = i; j < _batiments.size(); j++){
+				int surfaceTemp = ReturnSurface(_batiments.get(j));
+				if(surface < surfaceTemp){
+					indiceBatiment = j;
+				}
+			}
+			
+			Double batimentTemp = _batiments.get(i);	
+			
+			_batiments.set(i,_batiments.get(indiceBatiment));
+			_batiments.set(indiceBatiment,batimentTemp);
+		}
+	}
+	
+	
+	/**
+	 * retourne la surface d'un bâtiment 
+	 * @return
+	 */
+	public int ReturnSurface(Double batiment){
+		int surface = batiment.getPremier()*batiment.getSecond();
+		return surface;
+	}
 }

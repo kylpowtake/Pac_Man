@@ -25,10 +25,12 @@ public class Main {
 	            		System.out.println("taille de la structure : " + tableau[0] + " " + tableau[1]);
 	            		break;
 	            	case 1:
-	            		System.out.println("nombre de bâtiments : " + tableau[0]);
+	            		//System.out.println("nombre de bâtiments : " + tableau[0]);
 	            		break;
 	            	default:
 	            		System.out.println("taille du bâtiment : " + tableau[0] + " " + tableau[1]);
+	            		Double batiment = new Double(Integer.parseInt(tableau[0]),Integer.parseInt(tableau[1]));
+	            		structureUltime.getBatiments().add(batiment);
 	            		break;
             	}
             	indiceLigne++;
@@ -41,6 +43,13 @@ public class Main {
         catch(IOException ex) {
         	ex.printStackTrace();
         }
+    	
+    	structureUltime.OrganizedBySurface();
+    	System.out.println("taille des batiments");
+    	for(int i = 0; i < structureUltime.getBatiments().size();i++){
+    		System.out.println(structureUltime.ReturnSurface(structureUltime.getBatiments().get(i)));
+    	}
+    		
 	}
 	
 	public static void main(String[] args) {
