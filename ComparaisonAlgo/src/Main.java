@@ -30,6 +30,8 @@ public class Main {
 	public static void main(String[] args) {	
 		
 		GestionParametres(args);
+		new Vue().setVisible(true);
+		/*
 		FileDialog fd = new FileDialog(new JFrame());
 		fd.setVisible(true);
 		
@@ -44,7 +46,7 @@ public class Main {
 			readFile(fd.getFiles()[0].getName());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	
@@ -59,7 +61,7 @@ public class Main {
 		Set<Entry<Integer, Double>> setHm = tableau.entrySet();
 	    Iterator<Entry<Integer, Double>> it = setHm.iterator();
 	    try{
-	        String file = "/home/etudiant/workspace/ComparaisonAlgo/optdigits.arff_methodJ48.csv";
+	        String file = "/home/etudiant/workspace/ComparaisonAlgo/" + filename + "_methodJ48.csv";
 	        FileWriter fw = new FileWriter(file,true);
 	        fw.write("-M"+","+chaineOption+"\n");
 	        while(it.hasNext()){
@@ -154,6 +156,10 @@ public class Main {
 	  }
 	
 	
+	/**
+	 * Méthode gérant les paramètres données par l'utilisateur pour le test actuel.
+	 * @param args
+	 */
 	public static void GestionParametres(String[] args){
 		//Le premier argument est le nom du fichier
 		//Le deuxième argument est le nom de la méthode à utiliser
