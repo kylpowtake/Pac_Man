@@ -4,11 +4,11 @@
  */
 public class Double {
 
-	//Le premier object.
-	private Object _premier;
+	//Le premier int.
+	private int _premier;
 	
-	//Le deuxième object.
-	private Object _second;
+	//Le deuxième int.
+	private int _second;
 
 	/**
 	 * Initialise le double sans instancier ses valeurs.
@@ -21,7 +21,7 @@ public class Double {
 	 * @param premier : La première valeur.
 	 * @param second : La deuxième valeur.
 	 */
-	public Double(Object premier, Object second){
+	public Double(int premier, int second){
 		setPremier(premier);
 		setSecond(second);
 	}
@@ -35,19 +35,19 @@ public class Double {
 		_second = doubleACopier.getSecond();
 	}
 
-	public Object getPremier() {
+	public int getPremier() {
 		return _premier;
 	}
 
-	public void setPremier(Object premier) {
+	public void setPremier(int premier) {
 		_premier = premier;
 	}
 
-	public Object getSecond() {
+	public int getSecond() {
 		return _second;
 	}
 
-	public void setSecond(Object second) {
+	public void setSecond(int second) {
 		_second = second;
 	}
 

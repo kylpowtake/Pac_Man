@@ -12,6 +12,9 @@ public class StructureUltime {
 	//Contient les positions des batiments dans la grille (le x et le y).
 	private ArrayList<Double> _positions;
 	
+	//La taille de la grille.
+	private Double _tailleGrille;
+	
 	/**
 	 * Initialise la structure et ses valeurs sans les instancier.
 	 */
@@ -72,5 +75,98 @@ public class StructureUltime {
 
 	public void setPositions(ArrayList<Double> positions) {
 		this._positions = positions;
+	}
+
+	public Double getTailleGrille() {
+		return _tailleGrille;
+	}
+
+	public void setTailleGrille(Double tailleGrille) {
+		this._tailleGrille = tailleGrille;
+	}
+	
+	
+	/**
+	 * Méthode rajoutant le batiment donnée dans la grille à la position donnée.
+	 * @param batiment
+	 * @param position
+	 * @return
+	 */
+	public boolean PlacageBatimentPosition(Double batiment, Double position){
+		if(EstPlacable(batiment, position)){
+			Double positionFuture = new Double(position.getPremier() + batiment.getPremier(), position.getSecond() + batiment.getSecond());
+			return RemplieGrilleParBatiment(position, positionFuture);
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * Méthode vérifiant que le batiment donnée puisse être placé à la position donnée.
+	 * @param batiment : Le batiment à placer.
+	 * @param position : La position où placer le batiment.
+	 * @return : La possibilité de placer le batiment donnée à la position donnée.
+	 */
+	public boolean EstPlacable(Double batiment, Double position){
+		//La future position est celle de fin du rectangle
+		Double positionFuture = new Double(position.getPremier() + batiment.getPremier(), position.getSecond() + batiment.getSecond());
+		//On test si les cases voulues sont vides.
+		if(EstVide(position, positionFuture)){
+			//Si les cases sont vides on retourne vrai.
+			return true;
+		} else {
+			//Si les cases voulues ne sont pas vides, on retourne faux.
+			return false;
+		}
+	}
+	
+	/**
+	 * Méthode vérifiant que chaque case du rectangle formé par les deux extrémités données est bien vide.
+	 * @param positionDebut : Première extrémité du rectangle à vérifié.
+	 * @param positionFin : Deuxième extrémité du rectangle à vérifié. 
+	 * @return : la vérification que chaque case est vide ou non.
+	 */
+	public boolean EstVide(Double positionDebut, Double positionFin){
+		//On va du x de la première position au x de la deuxième position
+		for(int i = (int) positionDebut.getPremier(); i < (int) positionFin.getPremier(); i++){
+			//On va du y de la première position au y de la deuxième position			
+			for(int j = (int) positionDebut.getSecond(); j < (int) positionFin.getSecond(); j++){
+				if(i > 0 && j > 0 && i < (int) _tailleGrille.getPremier() && j < (int) _tailleGrille.getSecond()){
+					//Si la case n'est pas vide, on retourne faux.
+					if(_grille.get(i).get(j)){
+						return false;
+					}
+				} else {
+					//Si les coordonnées sont hors limite on renvoie faux.
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+
+	/**
+	 * Méthode rempissant une partie de la grille où on ajoute un batiment représenté par les deux position passés en paramètre.
+	 * @param positionDebut : Partie Haute/Gauche du batiment.
+	 * @param positionFin : Partie Basse/Droite du batiment. 
+	 * @return Si la méthode c'est bien fini.
+	 */
+	public boolean RemplieGrilleParBatiment(Double positionDebut, Double positionFin){
+		//On va du x de la première position au x de la deuxième position
+		for(int i = (int) positionDebut.getPremier(); i < (int) positionFin.getPremier(); i++){
+			//On va du y de la première position au y de la deuxième position			
+			for(int j = (int) positionDebut.getSecond(); j < (int) positionFin.getSecond(); j++){
+				if(i > 0 && j > 0 && i < (int) _tailleGrille.getPremier() && j < (int) _tailleGrille.getSecond()){
+					//On remplie la case.
+					_grille.get(i).set(j, true);
+				} else {
+					//Si les coordonnées sont hors limite on renvoie faux.
+					return false;
+				}
+			}
+		}
+		//Si tous ce passe bien on retourne vrai.
+		return true;
 	}
 }

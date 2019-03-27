@@ -8,17 +8,20 @@ import javax.swing.JFrame;
 
 public class Main {
 	
+    //Structure devant être utilisé pour le reste du programme.
+	public static StructureUltime structureUltime = new StructureUltime();
+	
 	public static void Parser(String fileName){
 		String line = null;
     	try {
             FileReader fileReader =  new FileReader(fileName);
             BufferedReader bufferedReader =  new BufferedReader(fileReader);
             int indiceLigne = 0;
-            
             while((line = bufferedReader.readLine()) != null) {
             	String[] tableau = line.split(",");
             	switch(indiceLigne){
 	            	case 0:
+	            		structureUltime.setTailleGrille(new Double(Integer.parseInt(tableau[0]),Integer.parseInt(tableau[1])));
 	            		System.out.println("taille de la structure : " + tableau[0] + " " + tableau[1]);
 	            		break;
 	            	case 1:
@@ -44,7 +47,6 @@ public class Main {
 		FileDialog fd = new FileDialog(new JFrame());
 		fd.setVisible(true);
 		Parser(fd.getFiles()[0].getAbsolutePath());
-	}
 
 		System.out.println("Début.");
 		/*
