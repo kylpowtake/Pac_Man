@@ -4,15 +4,17 @@ import java.util.Vector;
 public class Etat {
 	private Vector<String> 	_labels; 
 	private Vector<Etat>	_etats;
-	
+	private boolean fin;
 	public Etat(){
 		_labels = new Vector<String>();
 		_etats = new Vector<Etat>();
+		fin = false;
 	}
 	
 	public Etat(Vector<String> labels, Vector<Etat> etats){
 		_labels = labels;
 		_etats = etats;
+		fin = false;
 	}
 	
 	public Vector<String> getLabels(){
@@ -59,12 +61,15 @@ public class Etat {
 				temp = _etats.get(indice);
 			} else {
 				//On ajoute le caractère.
-				_labels.add(mot.substring(i, i+1));
+				temp._labels.add(mot.substring(i, i+1));
 				//On ajoute l'état vide associé au caractère.
 				Etat nouveauEtat = new Etat();
-				_etats.add(nouveauEtat);
+				temp._etats.add(nouveauEtat);
 				//Et on y bouge.
-				temp = _etats.get(_etats.size()-1);
+				temp = temp._etats.get(temp._etats.size()-1);
+			}
+			if(i+1 == mot.length()){
+				temp.fin = true;
 			}
 		}
 	}
@@ -90,7 +95,14 @@ public class Etat {
 				//Ce n'est pas acceptable.
 				return false;
 			}
-		}		
-		return true;
+			if(i+1 == mot.length()){
+				if(temp.fin){
+					return true;
+				}else {
+					return false;
+				}
+			}
+		}	
+		return false;
 	}
 }

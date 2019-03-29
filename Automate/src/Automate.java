@@ -10,7 +10,6 @@ public class Automate{
     String 	qi;				//etat initial
     String 	f[];			//etats finaux
     static Vector<String> mots = new Vector<String>();	//vector contenant les mots 
-    
     static public void readFile(String fileName){
     	String line = null;
     	try {
@@ -34,12 +33,12 @@ public class Automate{
     
     
     static public void generation(){
-    	Etat etat = new Etat();
-    	etat.InitialiserAccepteurMots(mots);
+    	Vue.e = new Etat();
+    	Vue.e.InitialiserAccepteurMots(mots);
     
     }
     
-
+/*
    @SuppressWarnings("resource")
    public Automate(String nomf)throws IOException
     {  
@@ -139,5 +138,5 @@ public class Automate{
         }
         x=true;
         return v;
-    }
+    }*/
 }

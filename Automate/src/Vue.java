@@ -23,6 +23,7 @@ public class Vue extends javax.swing.JFrame {
     private javax.swing.JTextField t1;
     private javax.swing.JTextField t2;
     
+    static Etat e;
     
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -205,10 +206,10 @@ public class Vue extends javax.swing.JFrame {
      * Onclick sur "Vérifier" execute l'automate et génère le résultat 
      */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-	   try{
-	       Automate a=new Automate(t2.getText());
+	  // try{
+	       //Automate a=new Automate(t2.getText());
 	       boolean b = false;
-	       b = a.etat.verif();
+	       b = e.verif(t1.getText());
 	       //b=a.verif(a.qi,t1.getText());
 	       if(b){
 	           l.setText("Mot accepté");
@@ -218,9 +219,10 @@ public class Vue extends javax.swing.JFrame {
 	           l.setText("Mot refusé");
 	           l.setForeground(Color.RED);
 	       }
+	       /*
 	    }catch (IOException e){
 	         System.out.println(e);
-	    }
+	    }*/
         jButton2.setEnabled(true);
         jButton1.setEnabled(false);   
     }
