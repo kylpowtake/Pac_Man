@@ -131,10 +131,10 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     	//On charge l'utilisateur ayant l'id donné en paramètre à load, ce qui nous permet de le mettre à jour.
     	utilisateur = session.load(Utilisateur.class, utilisateur.getId());
     	//Début du test des différentes situations possibles et de leurs applications.
-		if(pseudo.isEmpty()) {
+		if(pseudo == null || pseudo.isEmpty()) {
 			//Le cas où le pseudo est vide, il ne faut donc changer que le mot de passe.
 			utilisateur.setMotDePasse(motDePasse);
-		} else if (motDePasse.isEmpty()) {
+		} else if (pseudo == null || motDePasse.isEmpty()) {
 			//Le cas où le mot de passe est vide, il ne faut donc changer que le pseudo.
 			utilisateur.setPseudo(pseudo);
 		} else {

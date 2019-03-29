@@ -10,19 +10,17 @@ import javax.swing.JTextField;
 
 
 public class ViewConnexion {
-
+	//La fenêtre prncipale affichée.
 	private JFrame fenetre;
-	
 	private JLabel labelPseudo;
-	
 	private JLabel labelMDP;
-	
+	//JTextField devant contenir le pseudo de l'utilisateur.
 	private JTextField textePseudo;
-	
+	//JTextField devant contenir le mot de passe de l'utilisateur.
 	private JTextField texteMDP;
-	
+	//Boutton sur lequel appuyé pour envoyer la tentative de connection au serveur.
 	private JButton buttonEnvoie;
-	
+	//Le résultat de la connection est affiché dans ce JLabel.
 	private JLabel labelResultat;
 	
 	public ViewConnexion(){
@@ -104,7 +102,9 @@ public class ViewConnexion {
 		this.labelResultat.setText(resultat);
 	}
 	
+	//Méthode appelée pour fermer la fenêtre quand l'utilisateur s'est connecté.
 	public void Close(){
+		//Ferme la fenêtre.
 		fenetre.dispose();
 	}
 	

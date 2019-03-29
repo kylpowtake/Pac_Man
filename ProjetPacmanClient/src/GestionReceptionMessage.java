@@ -3,11 +3,19 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+/**
+ * Classe gérant la réception des messages venant du serveur.
+ * @author etudiant
+ */
 public class GestionReceptionMessage {
 
+	/**
+	 * Cherche la méthode lié avec le message à partir du début du message.
+	 * @param message : Le message venant du serveur.
+	 */
 	public static void GestionMessageGlobal(String message){
 		System.out.println(message);
+		// La première partie du message est celle indiquant le type de message et donc la méthode permettant de le traiter.
 		if(message.startsWith("connexion:")){
 			GestionMessageConnexion(message);
 		} else if(message.startsWith("chemin:")){
@@ -24,29 +32,54 @@ public class GestionReceptionMessage {
 	
 
 
-
+	/**
+	 * Méthode envoyant l'URL passé en paramètre au navigateur web.
+	 * @param urlString : L'URL de l'inscription d'un compte Pacman.
+	 */
 	public static void openWebpage(String urlString) {
 		System.out.println(urlString);
 		try {
+			//On essaye d'afficher la page web liée à l'URL en paramètre.
 			Desktop.getDesktop().browse(new URL(urlString).toURI());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}	
 
+	/**
+	 * Méthode utilisée quand l'utilisateur n'a pas réussi à se connecter au serveur à cause de mauvais mot de passe ou pseudo.
+	 * @param message : Le message du serveur contenant l'URL vers l'inscription d'un compte.
+	 */
 	public static void GestionMessageConnexion(String message){
+		/*Le message est constitué de trois parties, 
+		 * La première partie est celle indiquant le type de message et donc la méthode permettant de le traiter.
+		 * La deuxième partie est un ':' permettant de séparer facilement le msaage en deux.
+		 * La troisième partie est celle contenant le 
+		 */		
 		int emplacement = message.indexOf(":") + 1;
 		String messageErreur = message.substring(emplacement);
+		//Envoie le message d'erreur de connexion à la fenere de connexion pour l'afficher à l'utilisateur.
 		MainClient.viewConnexion.setLabelResultat(messageErreur);
+		//Ouvre une page web sur L'URL contenu dans le message d'erreur.
 		openWebpage(messageErreur);
 	}
 	
 	
 	
+	/**
+	 * Méthode utilisé quand le serveur change le labyrinthe utilisé.
+	 * @param message : Contient le nouveau labyrinthe à afficher.
+	 */
 	public static void GestionMessageChemin(String message){
+		//Test si la page de connexion est ouverte et si elle l'est la ferme.
 		if(MainClient.viewConnexion.TestPresent()){
 			MainClient.viewConnexion.Close();
 		}
+		/*Le message est constitué de trois parties, 
+		 * La première partie est celle contenant l'indication "chemin" et le chemin vers le le labyrinthe. 
+		 * La deuxième partie est un ';' permettant de séparer facilement le msaage en deux.
+		 * La troisième partie est celle contenant 
+		 */
 		if(message.contains(";")){
 			String[] partieMessageMajeurs = message.split(";");
 			String[] partieChemin = partieMessageMajeurs[0].split(":");
