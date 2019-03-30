@@ -199,7 +199,7 @@ public class Vue extends javax.swing.JFrame {
 	    }	
         t2.setText(fileName);
         t2.setEnabled(false);
-    }
+        }
 
     /**
      * @param evt
