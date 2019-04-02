@@ -10,21 +10,26 @@ import java.util.ArrayList;
 public class GestionReceptionMessage {
 
 	/**
-	 * Cherche la méthode lié avec le message à partir du début du message.
+	 * Cherche la méthode lié avec le message à partir du début du message (Le mot clé du message).
 	 * @param message : Le message venant du serveur.
 	 */
 	public static void GestionMessageGlobal(String message){
 		System.out.println(message);
 		// La première partie du message est celle indiquant le type de message et donc la méthode permettant de le traiter.
 		if(message.startsWith("connexion:")){
+			//C'est un message concernant la connexion et l'accès au jeu pacman..
 			GestionMessageConnexion(message);
 		} else if(message.startsWith("chemin:")){
+			//C'est un message concernant un chemin vers un nouveau labyrinthe.
 			GestionMessageChemin(message);
 		} else if(message.startsWith("update;")) {
+			//C'est un message concernant la mise à jour du jeu, un tour c'est passé.
 			GestionMessageUpdate(message);
 		} else if(message.startsWith("musique:")){
+			//c'est un message concernant la musique à jouer.
 			GestionMessageMusique(message);
 		} else {
+			//Le message n'est pas bien formé.
 			System.out.println("Message reçu non traitable :    " + message);
 		}
 	}
@@ -39,7 +44,7 @@ public class GestionReceptionMessage {
 	public static void openWebpage(String urlString) {
 		System.out.println(urlString);
 		try {
-			//On essaye d'afficher la page web liée à l'URL en paramètre.
+			//On essaye d'afficher la page web liée à l'URL passé en paramètre.
 			Desktop.getDesktop().browse(new URL(urlString).toURI());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -53,12 +58,12 @@ public class GestionReceptionMessage {
 	public static void GestionMessageConnexion(String message){
 		/*Le message est constitué de trois parties, 
 		 * La première partie est celle indiquant le type de message et donc la méthode permettant de le traiter.
-		 * La deuxième partie est un ':' permettant de séparer facilement le msaage en deux.
-		 * La troisième partie est celle contenant le 
+		 * La deuxième partie est un ':' permettant de séparer facilement le message en deux.
+		 * La troisième partie est celle contenant un URL vers la page d'inscription.
 		 */		
 		int emplacement = message.indexOf(":") + 1;
 		String messageErreur = message.substring(emplacement);
-		//Envoie le message d'erreur de connexion à la fenere de connexion pour l'afficher à l'utilisateur.
+		//Envoie le message d'erreur de connexion à la fenêtre de connexion pour l'afficher à l'utilisateur.
 		MainClient.viewConnexion.setLabelResultat(messageErreur);
 		//Ouvre une page web sur L'URL contenu dans le message d'erreur.
 		openWebpage(messageErreur);
@@ -77,12 +82,16 @@ public class GestionReceptionMessage {
 		}
 		/*Le message est constitué de trois parties, 
 		 * La première partie est celle contenant l'indication "chemin" et le chemin vers le le labyrinthe. 
-		 * La deuxième partie est un ';' permettant de séparer facilement le msaage en deux.
-		 * La troisième partie est celle contenant 
+		 * La possible deuxième partie est un ';' permettant de séparer facilement le msaage en deux.
+		 * La possible troisième partie est celle contenant l'état de la partie (un niveau de finit, l'utilisateur a perdu, ...)
 		 */
+		//On test si il y a une deuxième et troisième partie gâce à un ";" .
 		if(message.contains(";")){
+			//On sépare les parties différentes.
 			String[] partieMessageMajeurs = message.split(";");
+			//On sépare les parties différentes de la première partie.
 			String[] partieChemin = partieMessageMajeurs[0].split(":");
+			//
 			MainClient.view.setChemin(partieChemin[1]);
 			String[] partieEtat = partieMessageMajeurs[1].split(":");
 			MainClient.view.setEtat(partieEtat[1]);
