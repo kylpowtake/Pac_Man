@@ -3,6 +3,17 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="/home/etudiant/Téléchargements/weka-3-8-3/weka.jar"/>
-	<classpathentry kind="lib" path="/home/etudiant/Téléchargements/jfreechart-1.0.19/jfreechart-1.0.19-demo.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/jfreechart-1.0.19-demo.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/servlet.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/orsonpdf-1.6-eval.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/orsoncharts-1.4-eval-nofx.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/jfreesvg-2.0.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/jfreechart-1.0.19-swt.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="/home/etudiant/workspace/ComparaisonAlgo/lib/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
