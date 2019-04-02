@@ -24,7 +24,7 @@ public class Connexion extends HttpServlet {
     public static final String  ATT_FORM                  = "form";
     public static final String  ATT_SESSION_USER          = "sessionUtilisateur";
     public static final String  VUE_ACCUEIL               = "/WEB-INF/connexion.jsp";
-    public static final String 	URL_REDIRECTION			  = "http://localhost:8080/pro/gestionCompte";
+    public static final String 	URL_REDIRECTION			  = "/pro/gestionCompte";
     
     private UtilisateurDao     utilisateurDao;
     private PartieDao		   partieDao;

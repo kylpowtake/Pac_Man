@@ -28,7 +28,7 @@ public class GestionCompte extends HttpServlet {
 	public static final String  ATT_SESSION_USER          =  "sessionUtilisateur";
 	public static final String  ATT_FORM                  =  "form";
 	public static final String  VUE				  		  =  "/WEB-INF/accesRestreint.jsp";
-	public static final String 	URL_REDIRECTION 		  =  "http://localhost:8080/pro/deconnexion";
+	public static final String 	URL_REDIRECTION 		  =  "/pro/deconnexion";
 	
 	private UtilisateurDao     utilisateurDao;
     private PartieDao		   partieDao;
