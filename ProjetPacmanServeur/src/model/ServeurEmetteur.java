@@ -3,12 +3,15 @@ package model;
 import java.net.*;
 import java.io.*;
 
-
+/**
+ * la classe permet d'emettre les informations 
+ * sur l'etat du jeu à un client défini 
+ */
 public class ServeurEmetteur extends Thread {
 	
 	Socket clientSocket;
 	PrintWriter sortie;
-	Game game;
+	Game game;			
 	
 	
 	//constructeur 
@@ -16,18 +19,22 @@ public class ServeurEmetteur extends Thread {
 		clientSocket = so;
 		try {
 		    sortie = new PrintWriter(clientSocket.getOutputStream(),true);
-		    System.out.println(clientSocket.getPort());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
 	}
 	
-	
+	/**
+	 * methode émettant un message au client 
+	 */
 	public void sendMessage(String chaine){
 		sortie.println(chaine);
 	}
 	
-	
+	/**
+	 * méthode qui effectue un tour des que le jeu est lancé
+	 * et tant qu'il n'est pas mis en pause ou terminé
+	 */
 	public void run(){
 		while(game.finThread != true){
 			if(game.getIsRunning() == true){

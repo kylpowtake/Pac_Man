@@ -6,13 +6,9 @@ import java.util.Random;
 
 
 /**
- * 
  * Classe héritant de Game et composé des méthodes pour gérer une partie
- * 
  * getLabyrinthe() de type Maze, contient différentes méthodes liées à l'orientation, déplacement, direction et initialisation d'un getLabyrinthe()
- * 
  * fantomes de type ArrayList<Agent> contient tout les fantomes de a partie
- * 
  * pacmans de type ArrayList<Agent> contient tout les pacmans de la partie
  *
  */
@@ -129,7 +125,7 @@ public class PacmanGame extends Game{
 				setIsInvincible(true);
 				getLabyrinthe().estInvinsible = true;
 				setTourInvincible(getNbTours() + 20);
-				MainServeur.Patate(socket, "musique:sounds/ghost_buster.wav");
+				MainServeur.SendMessageClient(socket, "musique:sounds/ghost_buster.wav");
 			}
 		}
 		
@@ -142,7 +138,7 @@ public class PacmanGame extends Game{
 				
 		gameOver();
 		NbTours += 1 ;
-		MainServeur.Patate(socket, this.toString());
+		MainServeur.SendMessageClient(socket, this.toString());
 		
 		
 	}
@@ -290,7 +286,7 @@ public class PacmanGame extends Game{
 						i--;
 						isAlivePacman = false;
 						this.NbVies -=1;
-						MainServeur.Patate(socket, "musique:sounds/pacman_death.wav");
+						MainServeur.SendMessageClient(socket, "musique:sounds/pacman_death.wav");
 					}
 				}
 				if(isAlivePacman == true && getIsInvincible() == true){
@@ -300,7 +296,7 @@ public class PacmanGame extends Game{
 						getLabyrinthe().getGhosts_start().remove(j);
 						j--;
 						setNbPoints(getNbPoints()+10);
-						MainServeur.Patate(socket, "musique:sounds/ghost_death.wav");
+						MainServeur.SendMessageClient(socket, "musique:sounds/ghost_death.wav");
 					}
 					
 				}
@@ -321,6 +317,20 @@ public class PacmanGame extends Game{
 		return map;
 	}
     
+    
+    public void PartieEnvoieDonnerGameOver(){
+    	Bdd.sendScore(getIdentifiant(),getNbPoints(), getNbFantomesManges(), getCapsulesMangees(), getPacGommesMangees(), getMapsEffectuees(), getNbTours());			
+		//envoi du score, nombre de fantomes, capsules, pacGommes manges, des maps effectuees et des pas faits.
+    	setNbPoints(0);																//remise du score à 0;
+    	setNbies(3);																	//nombre reinit du nombre de vie
+    	setNbiesTemp(3);
+    	setNbFantomesManges(0);
+    	setCapsulesMangees(0);
+    	setPacGommesMangees(0);
+    	setMapsEffectuees(0);
+    	setNbTours(0);
+    }
+    
     /**
      * Fin du jeu si
      * - Tous les pacmans sont morts 
@@ -334,18 +344,11 @@ public class PacmanGame extends Game{
     	//(défaite)
     	if(getNbVies()<=0){
     		stop();																		//jeu en pause 
-    		MainServeur.Patate(socket, "musique:sounds/you_died.wav");
-    		MainServeur.Patate(socket, "chemin:"+this.chemin+";etat:false");					//chargement d'un nouveau labyrinthe 
-    		Bdd.sendScore(getIdentifiant(),getNbPoints(), getNbFantomesManges(), getCapsulesMangees(), getPacGommesMangees(), getMapsEffectuees(), getNbTours());			
-    																							//envoi du score, nombre de fantomes, capsules, pacGommes manges, des maps effectuees et des pas faits.
-    		setNbPoints(0);																//remise du score à 0;
-    		setNbies(3);																	//nombre reinit du nombre de vie
-    		setNbiesTemp(3);
-    		setNbFantomesManges(0);
-    		setCapsulesMangees(0);
-    		setPacGommesMangees(0);
-    		setMapsEffectuees(0);
-    		setNbTours(0);
+    		MainServeur.SendMessageClient(socket, "musique:sounds/you_died.wav");
+    		MainServeur.SendMessageClient(socket, "chemin:"+this.chemin+";etat:false");					//chargement d'un nouveau labyrinthe 
+    		
+    		PartieEnvoieDonnerGameOver();
+    		
     		try {
 				labyrinthe = new Maze(this.getChemin());
 				RechargementAgents();
@@ -379,8 +382,8 @@ public class PacmanGame extends Game{
     	
     	//cas ou il n'y a plus de capsules dans le labyrinthe (victoire)
     	if(noCapsuleFound == true){
-    		MainServeur.Patate(socket, "musique:sounds/next_level.wav");				//envoi du sound de victoire 
-    		MainServeur.Patate(socket, "chemin:"+this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe		
+    		MainServeur.SendMessageClient(socket, "musique:sounds/next_level.wav");				//envoi du sound de victoire 
+    		MainServeur.SendMessageClient(socket, "chemin:"+this.levelUp()+";etat:true");			//envoi d'un nouveau labyrinthe		
     	}
     }
     

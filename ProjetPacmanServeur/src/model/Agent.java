@@ -8,8 +8,7 @@ import Comportement.ComportementAgent;
 
 
 public class Agent {
-	
-	//attributs 
+
 	private boolean typeAgent;
 	private PositionAgent position;
 	private int nextAction;

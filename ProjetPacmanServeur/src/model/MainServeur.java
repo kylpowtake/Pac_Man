@@ -6,12 +6,10 @@ import java.io.*;
 
 public class MainServeur {
 	
-	static ArrayList<ServeurRecepteur> clientRecepteur = new ArrayList<>();
-	static Vector<Socket> clients = new Vector<>();				//vecteur contenant tout les clients (socket)
-	static ServeurRecepteur test = null;
+	static ArrayList<ServeurRecepteur> clientRecepteur = new ArrayList<>(); 	//vecteur contenant tout les clients
+	static String chemin = "layouts/tinyMaze.lay";								//chemin envoyé au client à sa connexion 
 	static PrintWriter out;
-	static String chemin = "layouts/tinyMaze.lay";		//chemin envoyé au client à sa connexion 
-	static int id = 0;
+	
 	
 	
 	public static void main(String[] args)throws IOException{
@@ -34,35 +32,27 @@ public class MainServeur {
 	                clientSocket = serverSocket.accept(); 
 	                System.out.println("nouveau client connecté : " + clientSocket); 
 					
-					//creation de nouveaux gestionnaires pour le client 
+					//création d'un nouveau gestionnaire pour le client 
 	                ServeurRecepteur serveurRecepteur = new ServeurRecepteur(clientSocket);           
-	                serveurRecepteur.id = id;
-	                id++;
 	                clientRecepteur.add(serveurRecepteur);
 	                
-	                //Thread ecoute = new Thread(serveurRecepteur);
-	           
-	                //ajout du client dans la liste
-	                clients.add(clientSocket);
-	  
+	                //démarrage du thread de réception des messages 
 	                serveurRecepteur.start();
-	                for(int  i = 0 ;i < clientRecepteur.size(); i++){
-	                	ServeurRecepteur temp = clientRecepteur.get(i);
-	                	System.out.println("Recepteur de client : num : " + temp.id + " et la socket : " + temp.clientSocket.toString());
-	                }
-	                //lancement des thread d'écoute
-	                //ecoute.start();    
-	                
 				}	
 			}catch (Exception e){ 
 	            e.printStackTrace();
 			}
 		}else{
-			System.out.println("erreur dans la nombre d'arguments  ./Programme port");
+			System.out.println("erreur dans la nombre d'arguments : ./nomProgramme numeroPort");
 		}
 	}
 
-	public static void Patate(Socket socket, String message){
+	/**
+	 * @param socket 
+	 * @param message 
+	 * permet d'envoyer un message un client identifié par son socket s
+	 */
+	public static void SendMessageClient(Socket socket, String message){
 		for(int i = 0; i < clientRecepteur.size(); i++){
 			if(clientRecepteur.get(i).clientSocket.equals(socket)){
 				clientRecepteur.get(i).serveurEmetteur.sendMessage(message);

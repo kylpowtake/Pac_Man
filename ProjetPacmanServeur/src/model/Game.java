@@ -162,6 +162,12 @@ public abstract class Game{
 	 */
 	public void init(){
 		NbTours = 0;
+		NbPoints = 0;
+		NbVies = 3;
+		NbFantomesManges = 0;
+		capsulesMangees = 0;					
+		pacGommesMangees = 0;				
+		mapsEffectuees = 0; 
 		File directory = new File("layouts");	
 		File[] files = directory.listFiles();
 		for ( File f : files) {
@@ -407,6 +413,7 @@ public abstract class Game{
 	abstract public void takeTurn();
 	abstract public void gameOver();
 	abstract public void initializeGame();
+	abstract public void PartieEnvoieDonnerGameOver();
 	abstract public void actualiser(String chemin);
     abstract public boolean isLegalMove(Agent agent, AgentAction action);
     abstract public boolean isLegalMoveInt(Agent agent, int action);

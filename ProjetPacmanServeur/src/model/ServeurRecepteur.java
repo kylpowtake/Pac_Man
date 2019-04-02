@@ -5,12 +5,16 @@ import java.io.*;
 import java.net.InetAddress;
 import java.util.Enumeration;
 
+/**
+ * La classe permet de recrvoir et de traiter 
+ * les méssages envoyés par le client 
+ */
 public class ServeurRecepteur extends Thread {
+	
 	ServeurEmetteur serveurEmetteur;
 	Socket clientSocket;
 	ControleurGame controleur;
-	int id;
-	static String chemin = "layouts/tinyMaze.lay";		//chemin envoyé au client à sa connexion 
+	static String chemin = "layouts/tinyMaze.lay";		//chemin du labyrinthe envoyé au client à sa connexion 
 
 	
 	//constructeur 
@@ -20,11 +24,13 @@ public class ServeurRecepteur extends Thread {
 	
 	/**
 	 * @param chaine
-	 * traite la chaine envoyée par le client(direction,demande de connexion,commande)
+	 * la méthode traite la chaine envoyée 
+	 * par le client(direction,demande de connexion,commande)
 	 */
 	public void traiter(String chaine){
 		String[] parts = chaine.split(":");
 		System.out.println(chaine);
+		
 		//cas d'une direction 
 		if(parts[0].equals("direction")){	
 			switch(parts[1]){
@@ -44,16 +50,19 @@ public class ServeurRecepteur extends Thread {
 				controleur.getGame().pacmans.get(0).setNextAction(4);
 				break;
 			}
-		}//cas d'une demande de connexion
+		}
+		//cas d'une demande de connexion
 		else if(parts[0].equals("pseudo")){		
 			 String[] parts2 = parts[1].split(";");
 			 String pseudo = parts2[0];
 			 String mdp = parts[2];
 			 int identifiant = Bdd.connect(pseudo, mdp);
+			 //si le client dispose d'un compte valide on crée le jeu 
 			 if(identifiant!=-1){
-				 setGame(clientSocket,identifiant);
-				 System.out.println(clientSocket.toString());
-			 }else{
+				 setGame(clientSocket,identifiant);				
+			 }
+			 //sinon on le redirige vers la page d'inscription 
+			 else{
 				 setEmetteur(clientSocket);
 				try {
 					String ip = null;
@@ -71,7 +80,7 @@ public class ServeurRecepteur extends Thread {
 		else if(parts[0].equals("slider")){
 			controleur.slider(Integer.parseInt(parts[1]));
 		}	
-		//cas d'une commande 
+		//cas d'une commande (play/pause/changement de labyrinthe)
 		else{								
 			switch(parts[1]){
 			case "init":
@@ -83,8 +92,9 @@ public class ServeurRecepteur extends Thread {
 			case "pause" :
 				controleur.pause();
 				break;
-			case "chemin":
-				controleur.changement(parts[1]);
+			case "chemin" :
+				MainServeur.SendMessageClient(clientSocket, "chemin:"+parts[2]+";etat:true");
+				controleur.changement(parts[2]);
 			default :
 				System.out.println("cas non pris en charge");
 				break;
@@ -92,6 +102,10 @@ public class ServeurRecepteur extends Thread {
 		}
 	}
 	
+	/**
+	 * la méthode se met en attente d'un message a traiter tant que 
+	 * le client est connecté 
+	 */
 	public void run(){
 		try {
 			String chaine;
@@ -112,23 +126,25 @@ public class ServeurRecepteur extends Thread {
 		}
 	 } 
 	
+	
 	public Thread setEmetteur(Socket so){
 		serveurEmetteur = new ServeurEmetteur(so);
         Thread envoi = new Thread(serveurEmetteur);
 		return envoi;
 	}
 	
-
-	
+	/**
+	 * @param so
+	 * @param identifiant
+	 * la méthode crée le jeu une fois que 
+	 * le client s'est connecté 
+	 */
 	public void setGame(Socket so,int identifiant){
 		try {
 			Maze laby = new Maze(chemin);
 			PacmanGame game = new PacmanGame(laby, chemin, clientSocket);
 			game.setLabyrinthe(laby);
 			controleur = new ControleurGame(game);
-			
-			System.out.println(game.toString());
-			
 			game.setIdentifiant(identifiant);
 			
 			//demarrage du thread d'envoi 
@@ -137,7 +153,7 @@ public class ServeurRecepteur extends Thread {
 			//set du game et du controleur 
 			serveurEmetteur.game = game;
 			
-			//envoi du chemin au client 
+			//envoi du chemin du labyrinthe au client 
 			serveurEmetteur.sendMessage("chemin:"+MainServeur.chemin); 
 			
 			

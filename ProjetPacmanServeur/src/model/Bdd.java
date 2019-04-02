@@ -7,7 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.jasypt.util.password.ConfigurablePasswordEncryptor;
 
-
+/**
+ * La classe permet de gerer tout ce qui est lié à la BDD
+ * connexion d'un utilisateur et enregistrement de son score une fois la partie terminée 
+ * le mot de passe est chiffré avec un algorithme de chiffrement 
+ */
 final public class Bdd {
 	
 	static String url = "jdbc:mysql://localhost:3306/Pacman";
@@ -18,6 +22,7 @@ final public class Bdd {
     static ResultSet resultat = null;
     private static final String ALGO_CHIFFREMENT = "SHA-256";
 
+    
     /**
      * @param pseudo,mdp
      * @return int : -1 si aucun resultat trouvé sinon retourne identifiant 

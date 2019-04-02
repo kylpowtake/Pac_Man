@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 
+@SuppressWarnings("serial")
 public class Maze implements Serializable{
 	
 	/** 

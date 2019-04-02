@@ -24,7 +24,8 @@ public class ControleurGame implements InterfaceControleur{
 	
 	@Override
 	public void changement(String chemin){
-		this. game.changement(chemin);
+		game.PartieEnvoieDonnerGameOver();
+		this.game.changement(chemin);
 	}
 
 	@Override
