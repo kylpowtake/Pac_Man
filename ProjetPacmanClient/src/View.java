@@ -190,10 +190,10 @@ public class View{
 		}
 		
 		
-		this.Restart.setEnabled(true);
+		this.Restart.setEnabled(false);
 		this.Pause.setEnabled(false);
-		this.Step.setEnabled(false);
-		this.Run.setEnabled(false);
+		this.Step.setEnabled(true);
+		this.Run.setEnabled(true);
 		this.changeMaze.setEnabled(true);
 		
 		try {
@@ -417,12 +417,12 @@ public class View{
 				chooser.setCurrentDirectory(new File("layouts")); 
 				chooser.showOpenDialog(null);
 				
-				String chemin = chooser.getSelectedFile().getAbsolutePath();
+				String chemin = chooser.getSelectedFile().getName();
 				
 		    	Restart.setEnabled(true);
 		    	Run.setEnabled(false);
 		    	Step.setEnabled(false);
-		    	ClientEmetteur.setMessage("commande:" + chemin);
+		    	ClientEmetteur.setMessage("commande:chemin:layouts/" + chemin);
 
 			}
 		});
