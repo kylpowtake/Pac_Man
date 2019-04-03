@@ -34,6 +34,13 @@ public class Double {
 		_premier = doubleACopier.getPremier();
 		_second = doubleACopier.getSecond();
 	}
+	
+	public String toString(){
+		String s = "Le double a pour valeur : ";
+		s += this.getPremier() + "   ";
+		s += this.getSecond() + "\n";
+		return s;
+	}
 
 	public int getPremier() {
 		return _premier;
