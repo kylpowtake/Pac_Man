@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class StructureUltime {
@@ -247,8 +248,7 @@ public class StructureUltime {
 	}
 	
 	/**
-	 * trie les batiments par surface decroissante
-	 * @param batiments
+	 * trie les bâtiments par surface decroissante
 	 */
 	public void OrganizedBySurface(){
 		for(int i = 0; i < _batiments.size(); i++){
@@ -268,6 +268,36 @@ public class StructureUltime {
 			_batiments.set(i,_batiments.get(indiceBatiment));
 			_batiments.set(indiceBatiment,batimentTemp);
 		}
+	}
+
+	/**
+	 * tri les bâtiments par encombrement décroissant 
+	 */
+	public void OrganizedBySize(){
+		for(int i = 0; i< _batiments.size();i++){
+			
+			int size = ReturnSize(_batiments.get(i));
+			int indiceBatiment = i;
+			
+			for(int j=i; j < _batiments.size(); j++){
+				int sizeTemp = ReturnSize(_batiments.get(j));
+				if(size < sizeTemp){
+					indiceBatiment = j;
+				}
+			}
+			
+			Double batimentTemp = _batiments.get(i);
+			
+			_batiments.set(i, _batiments.get(indiceBatiment));
+			_batiments.set(indiceBatiment,batimentTemp);
+		}
+	}
+	
+	/**
+	 * tri les bâtiments aléatoirement
+	 */
+	public void OrganisedRandom(){
+		Collections.shuffle(_batiments);
 	}
 	
 	public void Affichage(){
@@ -308,10 +338,20 @@ public class StructureUltime {
 	
 	/**
 	 * retourne la surface d'un bâtiment 
-	 * @return
+	 * @param batiment
+	 * @return surface
 	 */
 	public int ReturnSurface(Double batiment){
 		int surface = batiment.getPremier()*batiment.getSecond();
 		return surface;
+	}
+	/**
+	 * retourne l'encombrement d'un bâtiment
+	 * @param batiment
+	 * @return size
+	 */
+	public int ReturnSize(Double batiment){
+		int size = batiment.getPremier()+batiment.getSecond();
+		return size;
 	}
 }
