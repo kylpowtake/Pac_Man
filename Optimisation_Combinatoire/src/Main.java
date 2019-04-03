@@ -44,11 +44,25 @@ public class Main {
         	ex.printStackTrace();
         }
     	
+    	/*
     	structureUltime.OrganizedBySurface();
     	System.out.println("taille des batiments");
     	for(int i = 0; i < structureUltime.getBatiments().size();i++){
     		System.out.println(structureUltime.ReturnSurface(structureUltime.getBatiments().get(i)));
     	}
+    	
+    	
+    	structureUltime.OrganizedBySize();
+    	System.out.println("taille des batiments");
+    	for(int i = 0; i < structureUltime.getBatiments().size();i++){
+    		System.out.println(structureUltime.ReturnSize(structureUltime.getBatiments().get(i)));
+    	}
+    	
+    	structureUltime.OrganisedRandom();
+    	System.out.println("taille des batiments");
+    	for(int i = 0; i < structureUltime.getBatiments().size();i++){
+    		System.out.println("longeur " + structureUltime.getBatiments().get(i).getPremier() + " largeur " + structureUltime.getBatiments().get(i).getSecond());
+    	}*/
     		
 	}
 	
