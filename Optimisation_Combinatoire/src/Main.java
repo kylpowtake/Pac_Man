@@ -17,13 +17,12 @@ public class Main {
 		ArrayList<Double> listPositionsBatiments = new ArrayList<Double>();
 		for(int i = 0; i < structureUltime.getTailleGrille().getPremier(); i++){
 			for(int j = 0; j < structureUltime.getTailleGrille().getSecond(); j++){
-				System.out.println("Tour : " + i + "  " + j);
 				Double positionTemp = new Double(i,j);
 				int indiceBatiment = structureUltime.ChercheBatimentPlacablePosition(positionTemp);
 				if(indiceBatiment != -1 && structureUltime.PlacageBatimentPosition(structureUltime.getBatiments().get(indiceBatiment), positionTemp, indiceBatiment)){
 					listPositionsBatiments.add(positionTemp);
 				} else {
-					System.out.println(indiceBatiment);
+					//System.out.println(indiceBatiment);
 				}
 			}
 		}
@@ -68,7 +67,7 @@ public class Main {
         	ex.printStackTrace();
         }
     	
-    	structureUltime.OrganizedBySurface();
+    	structureUltime.OrganisedRandom();
     	System.out.println("taille des batiments");
     	for(int i = 0; i < structureUltime.getBatiments().size();i++){
     		System.out.println(structureUltime.ReturnSurface(structureUltime.getBatiments().get(i)));
@@ -76,14 +75,65 @@ public class Main {
     		
 	}
 	
+	
+	
+	public static Double[] Puissances1000(){
+		Double[] tableauFinal = new Double[structureUltime.getBatiments().size()];
+		Double[] tableauTemp = new Double[structureUltime.getBatiments().size()];
+		ArrayList<Double> teee = new ArrayList<Double>();
+		int surface = 0;
+		structureUltime.ReinitUltime();
+		structureUltime.OrganisedRandom();
+		AlgorithmeGlouton();
+		surface = structureUltime.ReturnSurfaceGrille();
+		tableauTemp = structureUltime.getPositionsBatiments();
+		tableauFinal = structureUltime.getPositionsBatiments();
+		structureUltime.ReinitUltime();		
+		for(int i = 0; i < 1000; i++){
+			structureUltime.OrganisedRandom();
+			teee = AlgorithmeGlouton();
+			tableauTemp = structureUltime.getPositionsBatiments();
+			if(structureUltime.ReturnSurfaceGrille() > surface){
+				System.out.println("On passe dans le if, surface : " + surface);
+				tableauFinal = tableauTemp;
+				surface = structureUltime.ReturnSurfaceGrille();
+			}
+			structureUltime.ReinitUltime();
+		}
+		for(int i = 0; i < tableauFinal.length; i++){
+			System.out.println("Final Batiment numéro : " + i + "   de position : " + tableauFinal[i].getPremier() + "   " + tableauFinal[i].getSecond());
+			System.out.println("temp  Batiment numéro : " + i + "   de position : " + tableauTemp[i].getPremier() + "   " + tableauTemp[i].getSecond());
+		}
+		return tableauFinal;
+	}
+	
 	public static void main(String[] args) {
 		FileDialog fd = new FileDialog(new JFrame());
 		fd.setVisible(true);
 		Parser(fd.getFiles()[0].getAbsolutePath());
 
-		AlgorithmeGlouton();
+		Double [] temp = Puissances1000();
 		
-		structureUltime.Affichage();
+		/*
+		ArrayList<Double> teee = AlgorithmeGlouton();
+		
+		for(int i = 0; i < teee.size(); i++){
+			System.out.println("temp  Batiment numéro : " + i + "   de position : " + teee.get(i).getPremier() + "   " + teee.get(i).getSecond());			
+		}
+
+		structureUltime.OrganisedRandom();
+		teee = AlgorithmeGlouton();
+		structureUltime.ReinitUltime();
+		
+		
+		teee = AlgorithmeGlouton();
+		
+		
+		for(int i = 0; i < teee.size(); i++){
+			System.out.println("temp  Batiment numéro : " + i + "   de position : " + teee.get(i).getPremier() + "   " + teee.get(i).getSecond());			
+		}
+		*/
+		
 		
 		System.out.println("Début.");
 		/*

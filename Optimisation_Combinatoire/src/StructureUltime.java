@@ -75,6 +75,19 @@ public class StructureUltime {
 		}
 	}
 	
+	public void Reinit(){
+		for(int i = 0; i < _grille.size(); i++){
+			for(int j = 0; j < _grille.get(i).size(); j++){
+			_grille.get(i).set(j, false);
+			}
+		}
+	}
+	
+	public void ReinitUltime(){
+		Reinit();
+		InstanciationPositionsBatiments();
+	}
+	
 	public void InstanciationPositionsBatiments(){
 		Double position = new Double(-1,-1);
 		for(int i = 0; i < _positionsBatiments.length; i++){
@@ -353,5 +366,21 @@ public class StructureUltime {
 	public int ReturnSize(Double batiment){
 		int size = batiment.getPremier()+batiment.getSecond();
 		return size;
+	}
+	
+	/**
+	 * Méthode renvoyant la surface remplie de la grille.
+	 * @return surface rempllie de la grille.
+	 */
+	public int ReturnSurfaceGrille(){
+		int surfaceGrille = 0;
+		for(int i = 0; i < _grille.size(); i++){
+			for(int j = 0; j < _grille.get(i).size(); j++){
+				if(_grille.get(i).get(j)){
+					surfaceGrille++;
+				}
+			}
+		}
+		return surfaceGrille;
 	}
 }
