@@ -232,6 +232,14 @@ public class StructureUltime {
 		}
 	}
 	
+	public void AffichageGrille(){
+		for(int i = 0; i < _grille.size(); i++){
+			for(int j = 0; j < _grille.get(i).size(); j++){
+				if(_grille.get(i).get(j)){
+					System.out.print("x");
+				} else {
+					System.out.print(" ");					
+				}
 	
 	/**
 	 * retourne la surface d'un bâtiment 
