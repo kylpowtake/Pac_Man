@@ -25,7 +25,7 @@ public class Main {
 	            		System.out.println("taille de la structure : " + tableau[0] + " " + tableau[1]);
 	            		break;
 	            	case 1:
-	            		//System.out.println("nombre de bâtiments : " + tableau[0]);
+	            		System.out.println("nombre de bâtiments : " + tableau[0]);
 	            		break;
 	            	default:
 	            		System.out.println("taille du bâtiment : " + tableau[0] + " " + tableau[1]);
@@ -71,6 +71,19 @@ public class Main {
 		fd.setVisible(true);
 		Parser(fd.getFiles()[0].getAbsolutePath());
 
+		System.out.println("Avant le premier.");
+		structureUltime.PlacageBatimentPosition(new Double(2,2), new Double(0,0));
+		structureUltime.AffichageGrille();
+		System.out.println("Avantle deuxième ");
+		structureUltime.PlacageBatimentPosition(new Double(2,2), new Double(2,0));
+		structureUltime.AffichageGrille();
+		System.out.println("Avant le troisième ");
+		structureUltime.PlacageBatimentPosition(new Double(2,2), new Double(0,2));
+		structureUltime.AffichageGrille();
+		System.out.println("Avant le dernier ");
+		structureUltime.PlacageBatimentPosition(new Double(2,2), new Double(2,2));
+		structureUltime.AffichageGrille();
+		structureUltime.PlacageBatimentPosition(new Double(2,2), new Double(2,2));
 		System.out.println("Début.");
 		/*
 		 * Trois structures de données rasssemblés en une.

@@ -43,6 +43,24 @@ public class StructureUltime {
 		setBatiments(batiments);
 		setPositions(positions);
 	}
+
+
+	
+	/**
+	 * Instancie la structure avec les valeurs données.
+	 * @param grille : La grille avec la précense des batiments.
+	 * @param batiments : Les batiments et leurs tailles.
+	 * @param positions : Les positions des batimens dans la grille.
+ 	 * @param tailleGrille : La taille en longueur et en largeur de la grille.
+	 */
+	public StructureUltime(ArrayList<ArrayList<Boolean>> grille, ArrayList<Double> batiments, ArrayList<Double> positions, Double tailleGrille){
+		setGrille(grille);
+		setBatiments(batiments);
+		setPositions(positions);
+		setTailleGrille(tailleGrille);
+	}
+	
+	
 	
 	/**
 	 * Instancie les valeurs de la structure à partir de celles de la structure passé en paramètre.
@@ -53,6 +71,20 @@ public class StructureUltime {
 		_batiments = structureACopier.getBatiments();
 		_positions = structureACopier.getPositions();
 	}
+	
+	
+	/**
+	 * Instancie entièrement a grille à faux à partir de la taille voulue de la grille.
+	 */
+	public void InstanciationGrille(){
+		for(int i = 0; i < getTailleGrille().getPremier(); i++){
+			_grille.add(new ArrayList<Boolean>());
+			for(int j = 0; j < getTailleGrille().getSecond(); j++){
+				_grille.get(i).add(false);
+			}
+		}
+	}
+	
 
 	public ArrayList<ArrayList<Boolean>> getGrille() {
 		return _grille;
@@ -84,6 +116,7 @@ public class StructureUltime {
 
 	public void setTailleGrille(Double tailleGrille) {
 		this._tailleGrille = tailleGrille;
+		this.InstanciationGrille();
 	}
 	
 	
@@ -96,8 +129,10 @@ public class StructureUltime {
 	public boolean PlacageBatimentPosition(Double batiment, Double position){
 		if(EstPlacable(batiment, position)){
 			Double positionFuture = new Double(position.getPremier() + batiment.getPremier(), position.getSecond() + batiment.getSecond());
+			System.out.println("Le batiment peut-être placé.");
 			return RemplieGrilleParBatiment(position, positionFuture);
 		} else {
+			System.out.println("Le batiment ne peut pas être placé.");
 			return false;
 		}
 	}
@@ -114,9 +149,11 @@ public class StructureUltime {
 		//On test si les cases voulues sont vides.
 		if(EstVide(position, positionFuture)){
 			//Si les cases sont vides on retourne vrai.
+			System.out.println("Le batiment est placable");
 			return true;
 		} else {
 			//Si les cases voulues ne sont pas vides, on retourne faux.
+			System.out.println("Le batiment n'est pas placable");
 			return false;
 		}
 	}
@@ -132,8 +169,9 @@ public class StructureUltime {
 		for(int i = (int) positionDebut.getPremier(); i < (int) positionFin.getPremier(); i++){
 			//On va du y de la première position au y de la deuxième position			
 			for(int j = (int) positionDebut.getSecond(); j < (int) positionFin.getSecond(); j++){
-				if(i > 0 && j > 0 && i < (int) _tailleGrille.getPremier() && j < (int) _tailleGrille.getSecond()){
+				if(i >= 0 && j >= 0 && i < (int) _tailleGrille.getPremier() && j < (int) _tailleGrille.getSecond()){
 					//Si la case n'est pas vide, on retourne faux.
+					System.out.println("i : " + i + "  j : " + j);
 					if(_grille.get(i).get(j)){
 						return false;
 					}
@@ -158,7 +196,7 @@ public class StructureUltime {
 		for(int i = (int) positionDebut.getPremier(); i < (int) positionFin.getPremier(); i++){
 			//On va du y de la première position au y de la deuxième position			
 			for(int j = (int) positionDebut.getSecond(); j < (int) positionFin.getSecond(); j++){
-				if(i > 0 && j > 0 && i < (int) _tailleGrille.getPremier() && j < (int) _tailleGrille.getSecond()){
+				if(i >= 0 && j >= 0 && i < (int) _tailleGrille.getPremier() && j < (int) _tailleGrille.getSecond()){
 					//On remplie la case.
 					_grille.get(i).set(j, true);
 				} else {
