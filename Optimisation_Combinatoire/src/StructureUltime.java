@@ -4,7 +4,7 @@ import java.util.Collections;
 
 public class StructureUltime {
 
-	//La grille contenant la présence des batiments.
+	//La grille contenant la présence des batiments, vide si sa valeur est false.
 	private ArrayList<ArrayList<Boolean>> _grille;
 	
 	//Contient les batiments et leurs tailles.
@@ -18,9 +18,8 @@ public class StructureUltime {
 		
 	/**
 	 * Instancie la structure avec les valeurs données.
-	 * @param grille : La grille avec la précense des batiments.
 	 * @param batiments : Les batiments et leurs tailles.
-	 * @param positions : Les positions des batimens dans la grille.
+	 * @param tailleGrille : La taille de la grille.
 	 */
 	public StructureUltime(ArrayList<Double> batiments, Double tailleGrille){
 		setGrille(new ArrayList<ArrayList<Boolean>>());
@@ -35,9 +34,8 @@ public class StructureUltime {
 	
 	/**
 	 * Instancie la structure avec les valeurs données.
-	 * @param grille : La grille avec la précense des batiments.
+	 * @param grille : La grille avec l'occupation de l'espace.
 	 * @param batiments : Les batiments et leurs tailles.
-	 * @param positions : Les positions des batimens dans la grille.
  	 * @param tailleGrille : La taille en longueur et en largeur de la grille.
 	 */
 	public StructureUltime(ArrayList<ArrayList<Boolean>> grille, ArrayList<Double> batiments, Double tailleGrille){
@@ -73,6 +71,19 @@ public class StructureUltime {
 				_grille.get(i).add(false);
 			}
 		}
+	}
+	
+	public void Reinit(){
+		for(int i = 0; i < _grille.size(); i++){
+			for(int j = 0; j < _grille.get(i).size(); j++){
+			_grille.get(i).set(j, false);
+			}
+		}
+	}
+	
+	public void ReinitUltime(){
+		Reinit();
+		InstanciationPositionsBatiments();
 	}
 	
 	public void InstanciationPositionsBatiments(){
@@ -353,5 +364,21 @@ public class StructureUltime {
 	public int ReturnSize(Double batiment){
 		int size = batiment.getPremier()+batiment.getSecond();
 		return size;
+	}
+	
+	/**
+	 * Méthode renvoyant la surface remplie de la grille.
+	 * @return surface rempllie de la grille.
+	 */
+	public int ReturnSurfaceGrille(){
+		int surfaceGrille = 0;
+		for(int i = 0; i < _grille.size(); i++){
+			for(int j = 0; j < _grille.get(i).size(); j++){
+				if(_grille.get(i).get(j)){
+					surfaceGrille++;
+				}
+			}
+		}
+		return surfaceGrille;
 	}
 }

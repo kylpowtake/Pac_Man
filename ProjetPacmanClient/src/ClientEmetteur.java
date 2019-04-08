@@ -52,7 +52,6 @@ public class ClientEmetteur extends Thread{
 				sortie.flush();
 			}
 		} catch(NullPointerException npe){
-			//Un pointer est null, probablement la socket.
 			System.out.println("Problème : " + npe.getMessage());
 		} catch (IOException e) {
 			System.out.println("Problème : " + e.getMessage());

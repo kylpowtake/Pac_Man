@@ -104,51 +104,57 @@ public class GestionReceptionMessage {
 	}
 	
 	
-	
+	/**
+	 * Méthode lançant la musique contenu dans le message passé en paramètre.
+	 * @param message : contient la musique a joué.
+	 */
 	public static void GestionMessageMusique(String message){
+		// La deuxième partie du message contient la musique à jouer.
 		String[] parties = message.split(":");
 		View.playSound(parties[1]);
 	}
 	
 	
 	
-
+	/**
+	 * Méthode s'occupant de la répartition des données liées au changement de tour.
+	 * @param message : contient les données pour mettre à jour le jeu.
+	 */
 	public static void GestionMessageUpdate(String message){
-		//Contient les parties de message de type 		nominfo : infos
-		String partiesMessageMajeurs[] = null;
-		
+		String partiesMessageMajeurs[] = null;		
 		//On s'assure que le message contient un ;
 		if(message.contains(";")){
-			//On sépare le string avec  ;  comme séparateur et qu'on met dans partiesMessageMajeurs[].
+			//On sépare le string avec  ;  comme séparateur et on met les différentes parties dans partiesMessageMajeurs[].
 			partiesMessageMajeurs = message.split(";");
 		} else {
-			System.out.println("Il n'y a pas de séparateur dans message update :  ;    On est mal là");
+			System.out.println("Il n'y a pas de séparateur dans message update :  ;");
 			System.exit(1);
 		}
 		//On s'assure qu'il y a assez de partie dans le message.
 		if(partiesMessageMajeurs.length == 9){
 			//On s'occupe des différentes parties une par une.
 			//L'ordre est : food, invincible, agent, score, vie, nbtours, nomterrain, musique, etat.
-			//On s'occupe de food.
+			//La partie food : l'emplacment des pacGommes.
 			GestionPartieMessageFood(partiesMessageMajeurs[1]);
-			//On s'occupe des capsules.
+			//La partie capsules : l'emplacement des capsules.
 			GestionPartieMessageCapsule(partiesMessageMajeurs[2]);
-			//On s'occupe d'invincible
+			//La partie invincible : Si l'état d'invulnérabilité est actif.
 			GestionPartieMessageInvincible(partiesMessageMajeurs[3]);
+			//La partie agents : Les positions des agents(pacmans et fantomes).
 			GestionPartieMessageAgents(partiesMessageMajeurs[4]);
-
+			//La partie du score actuel.
 			GestionPartieMessageScore(partiesMessageMajeurs[5]);
-
+			//La partie de la vie restantes.
 			GestionPartieMessageVie(partiesMessageMajeurs[6]);
-
+			//La partie du nombre de tours actuels.
 			GestionPartieMessageTours(partiesMessageMajeurs[7]);
-
+			//La partie du chemin liée au labyrinthe actuellement utlisé.
 			GestionPartieMessageChemin(partiesMessageMajeurs[8]);
-			
+			//On lance l'actualisation de la vue.
 			MainClient.view.actualiser();
 			
 		} else {
-			System.out.println("Il n'y a pas assez de parties dans le message, il en faut 9 en tout : on est mal là : " + partiesMessageMajeurs.length);
+			System.out.println("Il n'y a pas assez de parties dans le message, il en faut 9 en tout : " + partiesMessageMajeurs.length);
 			System.exit(1);
 		}
 		
