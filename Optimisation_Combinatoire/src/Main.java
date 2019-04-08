@@ -278,6 +278,7 @@ public class Main {
 		Double temp[] = Puissances1000();
 		
 		structureUltime.UtilisationSolution(temp);
+		Vue vue = new Vue(structureUltime);
 		
 		structureUltime.AffichageGrille();
 	}

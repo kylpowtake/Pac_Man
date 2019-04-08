@@ -5,7 +5,7 @@ import java.util.Collections;
 public class StructureUltime {
 
 	//La grille contenant la présence des batiments, vide si sa valeur est false.
-	private ArrayList<ArrayList<Boolean>> _grille;
+	private ArrayList<ArrayList<Integer>> _grille;
 	
 	//Contient les batiments et leurs tailles.
 	private ArrayList<Double> _batiments;
@@ -22,7 +22,7 @@ public class StructureUltime {
 	 * @param tailleGrille : La taille de la grille.
 	 */
 	public StructureUltime(ArrayList<Double> batiments, Double tailleGrille){
-		setGrille(new ArrayList<ArrayList<Boolean>>());
+		setGrille(new ArrayList<ArrayList<Integer>>());
 		setTailleGrille(tailleGrille);
 		setBatiments(batiments);
 		setPositionsBatiments(new Double[batiments.size()]);
@@ -37,7 +37,7 @@ public class StructureUltime {
 	 * @param batiments : Les batiments et leurs tailles.
  	 * @param tailleGrille : La taille en longueur et en largeur de la grille.
 	 */
-	public StructureUltime(ArrayList<ArrayList<Boolean>> grille, ArrayList<Double> batiments, Double tailleGrille){
+	public StructureUltime(ArrayList<ArrayList<Integer>> grille, ArrayList<Double> batiments, Double tailleGrille){
 		setGrille(grille);
 		setTailleGrille(tailleGrille);
 		InstanciationGrille();
@@ -65,9 +65,9 @@ public class StructureUltime {
 	 */
 	public void InstanciationGrille(){
 		for(int i = 0; i < getTailleGrille().getPremier(); i++){
-			_grille.add(new ArrayList<Boolean>());
+			_grille.add(new ArrayList<Integer>());
 			for(int j = 0; j < getTailleGrille().getSecond(); j++){
-				_grille.get(i).add(false);
+				_grille.get(i).add(-1);
 			}
 		}
 	}
@@ -75,7 +75,7 @@ public class StructureUltime {
 	public void Reinit(){
 		for(int i = 0; i < _grille.size(); i++){
 			for(int j = 0; j < _grille.get(i).size(); j++){
-			_grille.get(i).set(j, false);
+			_grille.get(i).set(j, -1);
 			}
 		}
 	}
@@ -92,11 +92,11 @@ public class StructureUltime {
 	}
 	
 
-	public ArrayList<ArrayList<Boolean>> getGrille() {
+	public ArrayList<ArrayList<Integer>> getGrille() {
 		return _grille;
 	}
 
-	public void setGrille(ArrayList<ArrayList<Boolean>> grille) {
+	public void setGrille(ArrayList<ArrayList<Integer>> grille) {
 		this._grille = grille;
 	}
 
@@ -142,7 +142,7 @@ public class StructureUltime {
 		if(EstPlacable(batiment, position)){
 			positionFuture = new Double(position.getPremier() + batiment.getPremier() -1, position.getSecond() + batiment.getSecond()-1);
 			//On le place
-			if(RemplieGrilleParBatiment(position, positionFuture)){
+			if(RemplieGrilleParBatiment(position, positionFuture,indiceBatiment)){
 				//On ajoute sa position au tableau d'enregistrement de batiments.
 				Double pos = new Double(position.getPremier(), position.getSecond());
 				this._positionsBatiments[indiceBatiment] = pos;
@@ -214,7 +214,7 @@ public class StructureUltime {
 		for(int i = (int) positionDebut.getPremier(); i <= (int) positionFin.getPremier(); i++){
 			//On va du y de la première position au y de la deuxième position			
 			for(int j = (int) positionDebut.getSecond(); j <= (int) positionFin.getSecond(); j++){
-				if(i < 0 || j < 0 || i >= (int) _grille.size() || j >= (int) _grille.get(i).size() || _grille.get(i).get(j).booleanValue()){
+				if(i < 0 || j < 0 || i >= (int) _grille.size() || j >= (int) _grille.get(i).size() || _grille.get(i).get(j) != -1){
 					//Si les coordonnées sont hors limite on renvoie faux.
 					return false;
 				}
@@ -230,7 +230,7 @@ public class StructureUltime {
 	 * @param positionFin : Partie Basse/Droite du batiment. 
 	 * @return Si la méthode c'est bien fini.
 	 */
-	public boolean RemplieGrilleParBatiment(Double positionDebut, Double positionFin){
+	public boolean RemplieGrilleParBatiment(Double positionDebut, Double positionFin,int indiceBatiment){
 		//On vérifie que chaque coordonnée n'est pas hors limite.
 		if(positionDebut.getPremier() >= 0 && positionDebut.getSecond() >= 0 &&
 				positionFin.getPremier() >= 0 && positionFin.getSecond() >= 0 &&
@@ -241,7 +241,7 @@ public class StructureUltime {
 				//On va du y de la première position au y de la deuxième position			
 				for(int j = (int) positionDebut.getSecond(); j <= (int) positionFin.getSecond(); j++){
 						//On remplie la case.
-						_grille.get(i).set(j, true);
+						_grille.get(i).set(j, indiceBatiment);
 				}
 			}
 		} else {
@@ -330,7 +330,7 @@ public class StructureUltime {
 	public void AffichageGrille(){
 		for(int i = 0; i < _grille.size(); i++){
 			for(int j = 0; j < _grille.get(i).size(); j++){
-				if(_grille.get(i).get(j)){
+				if(_grille.get(i).get(j) != -1){
 					System.out.print("x ");
 				} else {
 					System.out.print("  ");				
@@ -368,7 +368,7 @@ public class StructureUltime {
 		int surfaceGrille = 0;
 		for(int i = 0; i < _grille.size(); i++){
 			for(int j = 0; j < _grille.get(i).size(); j++){
-				if(_grille.get(i).get(j)){
+				if(_grille.get(i).get(j) != -1){
 					surfaceGrille++;
 				}
 			}
