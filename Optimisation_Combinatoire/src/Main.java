@@ -276,7 +276,7 @@ public class Main {
 		FileDialog fd = new FileDialog(new JFrame());
 		fd.setVisible(true);
 		Parser(fd.getFiles()[0].getAbsolutePath());
-		
+				
 		AlgorithmeGlouton();
 		
 		Vue vue = new Vue(structureUltime);
@@ -291,7 +291,6 @@ public class Main {
 	 * Méthode lançant la résolution d'un problème avec 1000 ordres de bâtiments aléatoires.
 	 */
 	public static void lancementPuissances1000(){
-		//GeneratorProblem(10);
 		
 		Double temp[] = Puissances1000();
 		
@@ -313,8 +312,6 @@ public class Main {
 	 * Prend environ 30 secondes avec 10 batiments.
 	 */
 	public static void lancementPermutationTotale(){
-
-		//GeneratorProblem(10);
 		
 		Main.PermutationTotale();
 		
@@ -350,6 +347,9 @@ public class Main {
 		
 		//Lance la résolution avec 1000 ordres de batiment aléatoires.
 		lancementPuissances1000();
+		
+		//Génère un problème de 10*10 cases et le met directement dans structureUltime. 
+		GeneratorProblem(10);
 		
 		//Lance la résolution avec toutes les permutations possibles de l'ordre de batiment.
 		//Prend environ 30 secondes avec 10 batiments.
