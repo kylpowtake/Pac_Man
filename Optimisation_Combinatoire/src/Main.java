@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import java.math; 
 
 
 public class Main {
@@ -16,19 +15,62 @@ public class Main {
 	
 	
 	/**
-	 * L'algorithme glouton, prend la liste de batiments et place le premier qu'il peut jusqu'à ce qu'il ne puisse plus en placer.
+	 * L'algorithme glouton, prend la liste de batiments et place le premier pouvant être placer jusqu'à ce qu'il ne puisse plus en placer.
+	 * De plus il affiche la taille des bâtiments avant de commencer et affiche la grille/le batiment placer/ la position choisie à chaque bâtiment placer.
 	 * @return : Une ArrayList de Double représentant la position où sont placés les batiments.
 	 */
-	public static ArrayList<Double> AlgorithmeGlouton(){
-		ArrayList<Double> listPositionsBatiments = new ArrayList<Double>();
+	public static Double[] AlgorithmeGloutonAvecAffichage(){
+    	System.out.println("taille des batiments");
+    	int somme = 0;
+    	for(int i = 0; i < structureUltime.getBatiments().size();i++){
+    		int temp = structureUltime.ReturnSurface(structureUltime.getBatiments().get(i));
+    		//System.out.println(temp);
+    		somme += temp;
+    	}
+    	System.out.println("Some des surfaces : " + somme);
+		Double[] listPositionsBatiments = new Double[structureUltime.getBatiments().size()];
 		for(int i = 0; i < structureUltime.getTailleGrille().getPremier(); i++){
 			for(int j = 0; j < structureUltime.getTailleGrille().getSecond(); j++){
 				Double positionTemp = new Double(i,j);
 				int indiceBatiment = structureUltime.ChercheBatimentPlacablePosition(positionTemp);
 				if(indiceBatiment != -1 && structureUltime.PlacageBatimentPosition(structureUltime.getBatiments().get(indiceBatiment), positionTemp, indiceBatiment)){
-					listPositionsBatiments.add(positionTemp);
-				} else {
-					//System.out.println(indiceBatiment);
+					Double temp = new Double(structureUltime.getPositionsBatiments()[indiceBatiment].getPremier(), structureUltime.getPositionsBatiments()[indiceBatiment].getSecond());
+					listPositionsBatiments[indiceBatiment] = temp;
+					System.out.println("numéro: " + indiceBatiment + " de position : " + positionTemp.getPremier() + "   " + positionTemp.getSecond());			
+					System.out.println("numéro: " + indiceBatiment + " de taille : " + structureUltime.getBatiments().get(indiceBatiment).getPremier() + "   " + structureUltime.getBatiments().get(indiceBatiment).getSecond());
+					//structureUltime.AffichageGrille();
+				}
+			}
+		}
+		return listPositionsBatiments;
+	}
+	
+	
+	
+	/**
+	 * L'algorithme glouton, prend la liste de batiments et place le premier pouvant être placer jusqu'à ce qu'il ne puisse plus en placer.
+	 * @return : Une ArrayList de Double représentant la position où sont placés les batiments.
+	 */
+	public static Double[] AlgorithmeGlouton(){
+		//tableau des positions à retourner.
+		//Réinitialise le tableau.
+		structureUltime.ReinitUltime();
+		Double[] listPositionsBatiments = new Double[structureUltime.getBatiments().size()];
+		for(int i = 0; i< listPositionsBatiments.length; i++){
+			listPositionsBatiments[i] = new Double(-1,-1);
+		}
+		for(int i = 0; i < structureUltime.getGrille().size(); i++){
+			for(int j = 0; j < structureUltime.getGrille().get(i).size(); j++){
+				//position actuelle.
+				Double positionTemp = new Double(i,j);
+				//L'indice du batiment pouvant être placé.
+				int indiceBatiment = structureUltime.ChercheBatimentPlacablePosition(positionTemp);
+				//Pose le batiment.
+				if(indiceBatiment != -1){
+					if( structureUltime.PlacageBatimentPosition(structureUltime.getBatiments().get(indiceBatiment), positionTemp, indiceBatiment)){
+					Double temp = new Double(structureUltime.getPositionsBatiments()[indiceBatiment].getPremier(), structureUltime.getPositionsBatiments()[indiceBatiment].getSecond());
+					listPositionsBatiments[indiceBatiment] = temp;
+					}
 				}
 			}
 		}
@@ -94,6 +136,9 @@ public class Main {
 	public static Double[] CopiageTableau(Double[] tableau){
 		Double[] result = new Double[tableau.length];
 		for(int i = 0; i < tableau.length; i++){
+			result[i] = new Double(-1,-1);
+		}
+		for(int i = 0; i < tableau.length; i++){
 			result[i] = tableau[i];
 		}
 		return result;
@@ -114,16 +159,17 @@ public class Main {
 			//On utilise le randomiseur de batiments.
 			structureUltime.OrganisedRandom();
 			//On applique l'algo glouton.
-			teee = AlgorithmeGlouton();
+			AlgorithmeGlouton();
 			if(structureUltime.ReturnSurfaceGrille() >= surface){
 				tableauFinal = CopiageTableau(structureUltime.getPositionsBatiments());
+				teee = new ArrayList<Double> (structureUltime.getBatiments());
 				surface = structureUltime.ReturnSurfaceGrille();
 			}
-			//On réinitialise la grille si ce n'est pas le dernier tour.
-			if( i < 999 ){
+			//On réinitialise la grille.
 			structureUltime.ReinitUltime();
-			}
 		}
+		//On met les batiments dans l'ordre permettant le résultat optimal.
+		structureUltime.setBatiments(teee);
 		//On retourne les positions optimales trouvées.
 		return tableauFinal;
 	}
@@ -134,8 +180,8 @@ public class Main {
 		Double tailleGrille = new Double(L, L);
 		ArrayList<Double> batiments = new ArrayList<Double>();
 		while(batiments.size() < L){
-	        int rand1 = (int) (Math.random()%(2*Math.sqrt(L)));
-	        int rand2 = (int) (Math.random()%(2*Math.sqrt(L)));
+	        int rand1 = (int) (Math.random()*1000%(2*Math.sqrt(L)));
+	        int rand2 = (int) (Math.random()*1000%(2*Math.sqrt(L)));
 	        if(rand1 >= 1 && rand2 >= 1 && rand1 <= (2*Math.sqrt(L)) && rand2 <= (2*Math.sqrt(L))){
 		        Double tailleBatiment = new Double(rand1, rand2);
 		        batiments.add(tailleBatiment);
@@ -153,21 +199,21 @@ public class Main {
 		FileDialog fd = new FileDialog(new JFrame());
 		fd.setVisible(true);
 		Parser(fd.getFiles()[0].getAbsolutePath());
-
-		Double [] temp = Puissances1000();
+		
+		GeneratorProblem(10);
+		
+		Double temp[] = Puissances1000();
+		
+		structureUltime.UtilisationSolution(temp);
 		
 
 		for(int i = 0; i < temp.length; i++){
-			System.out.println("Ultime Batiment numéro : " + i + "   de position : " + temp[i].getPremier() + "   " + temp[i].getSecond());			
+			System.out.println("Ultime Batiment numéro : " + i + "   de position : " + temp[i].getPremier() + "   " + temp[i].getSecond());	
+			System.out.println("Ultime Batiment numéro : " + i + "   de position : " + structureUltime.getPositionsBatiments()[i].getPremier() + "   " + structureUltime.getPositionsBatiments()[i].getSecond());
+			System.out.println("Ultime Batiment numéro : " + i + "   de taille : " + structureUltime.getBatiments().get(i).getPremier() + "   " + structureUltime.getBatiments().get(i).getSecond());			
 		}
 		
-		System.out.println("Début.");
-		/*
-		 * Trois structures de données rasssemblés en une.
-		 * 1 : Structure contenant les batiments et leurs tailles.
-		 * 2 : Structure contenant leurs posituion (x et y)
-		 * 3 : Structure contenant la grille en elle même (tab de tab de bool)
-		 */
+		structureUltime.AffichageGrille();
 		
 		System.out.println("Fin du programme");
 	}
