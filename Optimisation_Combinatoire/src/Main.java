@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
@@ -268,27 +269,52 @@ public class Main {
 	}
 	
 	
+	/**
+	 * Méthode lançant la sélection d'un fichier/problèmeet sa résolution.
+	 */
+	public static void LancementGestionFichier(){
+		FileDialog fd = new FileDialog(new JFrame());
+		fd.setVisible(true);
+		Parser(fd.getFiles()[0].getAbsolutePath());
+		
+		AlgorithmeGlouton();
+		
+		Vue vue = new Vue(structureUltime);
+		try {
+			TimeUnit.SECONDS.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Méthode lançant la résolution d'un problème avec 1000 ordres de bâtiments aléatoires.
 	 */
 	public static void lancementPuissances1000(){
-		GeneratorProblem(10);
+		//GeneratorProblem(10);
 		
 		Double temp[] = Puissances1000();
 		
 		structureUltime.UtilisationSolution(temp);
-		Vue vue = new Vue(structureUltime);
 		
 		structureUltime.AffichageGrille();
+		
+		Vue vue = new Vue(structureUltime);
+		
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Méthode lançant la résolution d'un problème avec toutes les permutations possibles.
+	 * Prend environ 30 secondes avec 10 batiments.
 	 */
 	public static void lancementPermutationTotale(){
 
-		GeneratorProblem(10);
+		//GeneratorProblem(10);
 		
 		Main.PermutationTotale();
 		
@@ -302,6 +328,13 @@ public class Main {
 		structureUltime.UtilisationSolution(temp);
 		
 		structureUltime.AffichageGrille();
+		
+		Vue vue = new Vue(structureUltime);
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -311,16 +344,17 @@ public class Main {
 	public static void main(String[] args) {
 		
 		System.out.println("Début du programme.");
-		FileDialog fd = new FileDialog(new JFrame());
-		fd.setVisible(true);
-		Parser(fd.getFiles()[0].getAbsolutePath());
+
+		//Lance la sélection d'un fichier/problème et sa résolution.
+		LancementGestionFichier();
 		
 		//Lance la résolution avec 1000 ordres de batiment aléatoires.
 		lancementPuissances1000();
 		
 		//Lance la résolution avec toutes les permutations possibles de l'ordre de batiment.
+		//Prend environ 30 secondes avec 10 batiments.
 		lancementPermutationTotale();
-		
+				
 		System.out.println("Fin du programme");
 	}
 	

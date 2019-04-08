@@ -12,7 +12,7 @@ public class Vue extends JFrame {
 		JPanel container = new JPanel();
 		this.setSize(500,500);
 		this.setLocation(700,300);
-		container.setLayout(new GridLayout(10,10));
+		container.setLayout(new GridLayout(s.getGrille().size(), s.getTailleGrille().getSecond()));
 		
 		for(int i = 0; i < s.getGrille().size(); i++){
 			for(int j = 0; j < s.getGrille().get(i).size(); j++){
