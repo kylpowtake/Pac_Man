@@ -15,7 +15,7 @@ public class AgentAction {
 	//attributs 
 	private int direction;
 	
-	//constrcuteur 
+	//constructeur 
 	public AgentAction(){}
 	
 	public AgentAction(int direction){
