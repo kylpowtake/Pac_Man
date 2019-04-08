@@ -205,6 +205,7 @@ public class Main {
 		Double temp[] = Puissances1000();
 		
 		structureUltime.UtilisationSolution(temp);
+		Vue vue = new Vue(structureUltime);
 		
 
 		for(int i = 0; i < temp.length; i++){
