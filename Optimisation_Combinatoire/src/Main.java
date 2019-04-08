@@ -13,6 +13,17 @@ public class Main {
     //Structure devant être utilisé pour le reste du programme.
 	public static StructureUltime structureUltime;
 	
+	//Tableau pour les permutations.
+	public static Double[] TableauPermut;
+	
+	//Resultat optimal pour les permutations.
+	public static int resultat;
+	
+	//Position  optimal pour les permutations.
+	public static Double[] PositionOpti;
+	
+	//Ordre optimal pour les permutations.
+	public static Double[] OrdreOpti;
 	
 	/**
 	 * L'algorithme glouton, prend la liste de batiments et place le premier pouvant être placer jusqu'à ce qu'il ne puisse plus en placer.
@@ -174,6 +185,72 @@ public class Main {
 		return tableauFinal;
 	}
 	
+	
+	
+	/**
+	 * Méthode testant l'algorithme sur toutes les permutations.
+	 * @return : Les positions de batiments donnant une surface utilisée maximale.
+	 */
+	public static void PermutationTotale(){
+
+		TableauPermut = new Double[structureUltime.getBatiments().size()];
+		for(int i = 0; i < TableauPermut.length; i++){
+			TableauPermut[i] = new Double(structureUltime.getBatiments().get(i));
+		}
+		OrdreOpti = new Double[structureUltime.getBatiments().size()];
+		PositionOpti = new Double[structureUltime.getBatiments().size()];
+		resultat = 0;
+		PermutAll(structureUltime.getBatiments().size());
+	}
+	
+	
+	public static void PermutAll(int n) {
+		if(n == 1) {
+			Appli();
+		} else {
+			for(int i = 0; i < n-1; i++) {
+				PermutAll(n - 1);
+			    if(n % 2 == 0) {
+			    	swap(i, n-1);
+			    } else {
+			    	swap(0, n-1);
+			    }
+			}
+			PermutAll(n - 1);
+		}
+	}
+				
+	private static void swap(int a, int b) {
+		Double tmp = TableauPermut[a];
+		TableauPermut[a] = TableauPermut[b];
+		TableauPermut[b] = tmp;
+	}
+
+	private static void Appli() {
+		
+		//On réinitialise la grille.
+		structureUltime.ReinitUltime();
+		
+		
+		ArrayList<Double> arrTemp = new ArrayList<Double>();
+		for(int i  =0; i < Main.TableauPermut.length; i++){
+			arrTemp.add(TableauPermut[i]);
+		}
+		structureUltime.setBatiments(arrTemp);
+		//On applique l'algo glouton.
+		AlgorithmeGlouton();
+		//On test si c'est plus optimal.
+		if(structureUltime.ReturnSurfaceGrille() >= Main.resultat){
+			Main.PositionOpti = CopiageTableau(structureUltime.getPositionsBatiments());
+			Double[] temp = new Double[structureUltime.getBatiments().size()];
+			for(int i = 0; i < temp.length; i++){
+				temp[i] = new Double(structureUltime.getBatiments().get(i));
+			}
+			Main.OrdreOpti = temp;
+			Main.resultat = structureUltime.ReturnSurfaceGrille();
+		}
+	}
+	
 
 	
 	public static void GeneratorProblem(int L){
@@ -190,30 +267,58 @@ public class Main {
 		structureUltime = new StructureUltime(batiments, tailleGrille);
 	}
 	
+	
+	
 	/**
-	 * Le main.
+	 * Méthode lançant la résolution d'un problème avec 1000 ordres de bâtiments aléatoires.
 	 */
-	public static void main(String[] args) {
-		
-		System.out.println("Programme commencé.");
-		FileDialog fd = new FileDialog(new JFrame());
-		fd.setVisible(true);
-		Parser(fd.getFiles()[0].getAbsolutePath());
-		
+	public static void lancementPuissances1000(){
 		GeneratorProblem(10);
 		
 		Double temp[] = Puissances1000();
 		
 		structureUltime.UtilisationSolution(temp);
 		
+		structureUltime.AffichageGrille();
+	}
+	
+	/**
+	 * Méthode lançant la résolution d'un problème avec toutes les permutations possibles.
+	 */
+	public static void lancementPermutationTotale(){
 
-		for(int i = 0; i < temp.length; i++){
-			System.out.println("Ultime Batiment numéro : " + i + "   de position : " + temp[i].getPremier() + "   " + temp[i].getSecond());	
-			System.out.println("Ultime Batiment numéro : " + i + "   de position : " + structureUltime.getPositionsBatiments()[i].getPremier() + "   " + structureUltime.getPositionsBatiments()[i].getSecond());
-			System.out.println("Ultime Batiment numéro : " + i + "   de taille : " + structureUltime.getBatiments().get(i).getPremier() + "   " + structureUltime.getBatiments().get(i).getSecond());			
+		GeneratorProblem(10);
+		
+		Main.PermutationTotale();
+		
+		Double[] temp = new Double[structureUltime.getBatiments().size()];
+		temp = Main.PositionOpti;
+		ArrayList<Double> arrTemp = new ArrayList<Double>();
+		for(int i  =0; i < Main.OrdreOpti.length; i++){
+			arrTemp.add(OrdreOpti[i]);
 		}
+		structureUltime.setBatiments(arrTemp);
+		structureUltime.UtilisationSolution(temp);
 		
 		structureUltime.AffichageGrille();
+	}
+	
+	
+	/**
+	 * Le main.
+	 */
+	public static void main(String[] args) {
+		
+		System.out.println("Début du programme.");
+		FileDialog fd = new FileDialog(new JFrame());
+		fd.setVisible(true);
+		Parser(fd.getFiles()[0].getAbsolutePath());
+		
+		//Lance la résolution avec 1000 ordres de batiment aléatoires.
+		lancementPuissances1000();
+		
+		//Lance la résolution avec toutes les permutations possibles de l'ordre de batiment.
+		lancementPermutationTotale();
 		
 		System.out.println("Fin du programme");
 	}
